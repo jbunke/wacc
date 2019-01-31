@@ -92,6 +92,37 @@ public class Token {
   Type getType() { return type; }
 
   @Override
+  public boolean equals(Object other) {
+    Token otherToken;
+
+    try {
+      otherToken = (Token)other;
+    } catch (ClassCastException cce) {
+      return false;
+    }
+
+    if (!(type == otherToken.type))
+      return false;
+
+    switch (type) {
+      case IDENTIFIER:
+        return ident.equals(otherToken.ident);
+      case NUMBER:
+        return number == otherToken.number;
+      case CHR_LIT:
+      case STR_LIT:
+        return value.equals(otherToken.value);
+      default:
+        return true;
+    }
+  }
+
+  @Override
+  public int hashCode() {
+    return type.ordinal();
+  }
+
+  @Override
   public String toString() {
     StringBuilder ts = new StringBuilder(type.toString());
 
