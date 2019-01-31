@@ -41,6 +41,7 @@ public class Lexer {
   );
 
   private List<Token> tokens;
+  private int index;
 
   public Lexer(String filename) {
     String fileText = readFile(filename);
@@ -170,5 +171,16 @@ public class Lexer {
     }
 
     return res;
+  }
+
+  public boolean hasNext() {
+    return index < tokens.size();
+  }
+
+  public Token next() {
+    assert (hasNext());
+    Token token =  tokens.get(index);
+    index++;
+    return token;
   }
 }
