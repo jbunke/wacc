@@ -71,6 +71,10 @@ public class Token {
 
   // Use for IDENTIFIER, NUMBER, CHR_LIT, STR_LIT tokens
   static Token typeToken(Type type, String value) {
+    if (type == Type.CHR_LIT || type == Type.STR_LIT) {
+      value = value.substring(1, value.length() - 1);
+    }
+
     return new Token(type, value);
   }
 
