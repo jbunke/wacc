@@ -44,6 +44,9 @@ public class Lexer {
   private int index;
 
   public Lexer(String filename) {
+    if (!file.endsWith(".wacc")) {
+      throw new IllegalArgumentException("Invalid! File type must be a .wacc file");
+    }
     String fileText = readFile(filename);
     this.tokens = lexical_analysis(fileText);
   }
