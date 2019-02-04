@@ -9,7 +9,7 @@ public class LexerTests {
   @Test
   public void arrayWACCLexerCorrectness() {
     Lexer arrayWACC = new Lexer(
-            "..\\wacc_examples\\valid\\array\\array.wacc");
+            "res\\valid\\array\\array.wacc");
 
     assertEquals(arrayWACC.next(),
             Token.typeToken(Token.Type.COMMENT, null));
