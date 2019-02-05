@@ -3,6 +3,7 @@ bin
 src/antlr
 out
 .idea/
+rules
 
 #ignore Java class files
 *.class
