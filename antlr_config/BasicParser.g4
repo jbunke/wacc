@@ -4,9 +4,14 @@ options {
   tokenVocab=BasicLexer;
 }
 
-binaryOper: PLUS | MINUS ;
+unaryOper: NOT | LEN | ORD | CHR;
 
-expr: expr binaryOper expr
+binaryOper: TIMES | DIVIDE | MOD | PLUS | MINUS | GREATER_THAN |
+GREATER_THAN_OR_EQUAL | LESS_THAN | LESS_THAN_OR_EQUAL | EQUAL | NOT_EQUAL |
+AND | OR ;
+
+expr: unaryOper expr
+| expr binaryOper expr
 | INTEGER
 | OPEN_PARENTHESES expr CLOSE_PARENTHESES
 ;
