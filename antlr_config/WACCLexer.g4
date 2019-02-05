@@ -1,4 +1,4 @@
-lexer grammar BasicLexer;
+lexer grammar WACCLexer;
 
 //operators
 NOT: '!';
@@ -19,11 +19,33 @@ NOT_EQUAL: '!=';
 AND: '&&';
 OR: '||';
 
+//statement
+SKP: 'skip';
+READ: 'read';
+FREE: 'free';
+RETURN: 'return';
+EXIT: 'exit';
+PRINT: 'print';
+PRINTLN: 'println';
+IF: 'if';
+THEN: 'then';
+ELSE: 'else';
+FI: 'fi';
+WHILE: 'while';
+DO: 'do';
+DONE: 'done';
+BEGIN: 'begin';
+END: 'end';
+
 //brackets
 OPEN_PARENTHESES: '(' ;
 CLOSE_PARENTHESES: ')' ;
 OPEN_BRACKET: '[';
 CLOSE_BRACKET: ']';
+
+//function
+CALL: 'call';
+IS: 'is';
 
 //numbers
 fragment DIGIT: '0'..'9' ;
@@ -35,20 +57,21 @@ CHAR: 'char';
 STRING: 'string';
 
 PAIR: 'pair';
-
 FST: 'fst';
 SND: 'snd';
-
+NEW_PAIR: 'newpair';
 INTEGER: DIGIT+ ;
+UNDERSCORE: '_';
+LOWERCASE: [a-z];
+UPPERCASE: [A-Z];
 
 //identifier
-UNDERSCORE: '_';
-fragment LOWERCASE: [a-z];
-fragment UPPERCASE: [A-Z];
 fragment IDENTIFIER_INITIAL: UNDERSCORE | LOWERCASE | UPPERCASE;
-fragment IDENTIFIER_MAIN: UNDERSCORE | LOWERCASE | UPPERCASE | DIGIT;
-fragment IDENTIFIER: IDENTIFIER_INITIAL IDENTIFIER_MAIN*;
+fragment IDENTIFIER_MAIN: IDENTIFIER_INITIAL | DIGIT;
+IDENTIFIER: IDENTIFIER_INITIAL IDENTIFIER_MAIN*;
+
 COMMA: ',';
+SEMI_COLON: ';';
 
-
-
+//stuff to ignore
+WS:(' '|'\t'|'\r'|'\n')+->skip;

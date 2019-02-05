@@ -1,7 +1,7 @@
 package frontend.lexer;
 
-import antlr.BasicLexer;
-import antlr.BasicParser;
+import antlr.WACCLexer;
+import antlr.WACCParser;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -13,13 +13,13 @@ public class MainExample {
     public static void main(String[] args) throws IOException {
         CharStream input = new ANTLRInputStream(System.in);
 
-        BasicLexer lexer = new BasicLexer(input);
+        WACCLexer lexer = new WACCLexer(input);
 
         CommonTokenStream tokens = new CommonTokenStream(lexer);
 
-        BasicParser parser = new BasicParser(tokens);
+        WACCParser parser = new WACCParser(tokens);
 
-        BasicParser.ProgContext tree = parser.prog();
+        WACCParser.ProgContext tree = parser.prog();
 
         MyVisitor visitor = new MyVisitor();
         visitor.visit(tree);
