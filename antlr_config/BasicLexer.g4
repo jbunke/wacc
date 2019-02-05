@@ -22,13 +22,30 @@ OR: '||';
 //brackets
 OPEN_PARENTHESES: '(' ;
 CLOSE_PARENTHESES: ')' ;
+OPEN_BRACKET: '[';
+CLOSE_BRACKET: ']';
 
 //numbers
-fragment DIGIT: '0'..'9' ; 
+fragment DIGIT: '0'..'9' ;
+
+// type
+INT: 'int';
+BOOL: 'bool';
+CHAR: 'char';
+STRING: 'string';
+
+PAIR: 'pair';
 
 INTEGER: DIGIT+ ;
 
-
+//identifier
+UNDERSCORE: '_';
+fragment LOWERCASE: [a-z];
+fragment UPPERCASE: [A-Z];
+fragment IDENTIFIER_INITIAL: UNDERSCORE | LOWERCASE | UPPERCASE;
+fragment IDENTIFIER_MAIN: UNDERSCORE | LOWERCASE | UPPERCASE | DIGIT;
+fragment IDENTIFIER: IDENTIFIER_INITIAL IDENTIFIER_MAIN*;
+COMMA: ',';
 
 
 
