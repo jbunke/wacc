@@ -36,6 +36,9 @@ STRING: 'string';
 
 PAIR: 'pair';
 
+FST: 'fst';
+SND: 'snd';
+
 INTEGER: DIGIT+ ;
 
 //identifier

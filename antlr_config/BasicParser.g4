@@ -21,15 +21,21 @@ type: baseType | arrayType | pairType;
 
 baseType: INT | BOOL | CHAR | STRING;
 
+arrayElem: IDENTIFIER (OPEN_BRACKET expr CLOSE_BRACKET)+;
+
 // Before removing left recursion: arrayType: type OPEN_BRACKET CLOSE_BRACKET;
 arrayType: baseType OPEN_BRACKET CLOSE_BRACKET
 | arrayType OPEN_BRACKET CLOSE_BRACKET
 | pairType OPEN_BRACKET CLOSE_BRACKET;
 
+pairElem: FST expr | SND expr;
+
 pairElemType: baseType | arrayType | PAIR;
 
 pairType: PAIR OPEN_BRACKET pairElemType COMMA pairElemType CLOSE_PARENTHESES;
 
+// assign
+assignLhs: IDENTIFIER | arrayElem | pairElem;
 
 // EOF indicates that the program must consume to the end of the input.
 prog: (expr)*  EOF ;
