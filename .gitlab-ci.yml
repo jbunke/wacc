@@ -4,7 +4,7 @@ stages:
 
 build:
   stage: build
-  script: echo "This is an empty build stage"
+  script: sh antlr_config/antlr_build
 
 test:
   stage: test
