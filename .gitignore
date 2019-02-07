@@ -7,3 +7,6 @@ rules
 
 #ignore Java class files
 *.class
+.classpath
+.project
+wacc_23.iml
