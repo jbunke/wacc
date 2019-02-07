@@ -12,12 +12,14 @@ binaryOper: TIMES | DIVIDE | MOD | PLUS | MINUS
 | EQUAL | NOT_EQUAL
 |AND | OR ;
 
+identifier: IDENTIFIER;
+
 expr: intLiteral
 | boolLiteral
 | charLiteral
 | stringLiteral
 | pairLiter
-| IDENTIFIER
+| identifier
 | arrayElem
 | unaryOper expr
 | expr binaryOper expr
@@ -25,21 +27,13 @@ expr: intLiteral
 
 // Literals
 intSign: PLUS | MINUS;
-intLiteral: intSign? DIGIT+;
+integer: INTEGER;
+intLiteral: intSign? integer;
 boolLiteral: TRUE | FALSE;
-escChar: ESC_ZERO
-| ESC_B
-| ESC_T
-| ESC_N
-| ESC_F
-| ESC_R
-| STR_QUOTE
-| CHAR_QUOTE
-| ESC;
 
-character: RESTRICTED_ASCII | ESC escChar;
+character: CHARACTER;
 charLiteral: CHAR_QUOTE character CHAR_QUOTE;
-stringLiteral: STR_QUOTE character* STR_QUOTE;
+stringLiteral: STRING_LITERAL;
 pairLiter: NULL;
 
 // Types

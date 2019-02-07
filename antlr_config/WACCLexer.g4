@@ -48,9 +48,21 @@ STR_QUOTE: '"';
 // For literals
 TRUE: 'true';
 FALSE: 'false';
-ESC: '\\';
-RESTRICTED_ASCII: CHAR_QUOTE ~('\\' | '\'' | '"')* CHAR_QUOTE;
+fragment ESC: '\\';
+fragment RESTRICTED_ASCII: ~('\\' | '\'' | '"');
+fragment ESC_CHAR: '0'
+         | 'b'
+         | 't'
+         | 'n'
+         | 'f'
+         | 'r'
+         | '"'
+         | '\''
+         | '\\';
+
 NULL: 'null';
+STRING_LITERAL: '"' (RESTRICTED_ASCII | ESC ESC_CHAR)* '"';
+CHARACTER: RESTRICTED_ASCII | ESC ESC_CHAR;
 
 // escape charaters
 ESC_ZERO: '0';
@@ -65,7 +77,7 @@ CALL: 'call';
 IS: 'is';
 
 //numbers
-DIGIT: '0'..'9' ;
+fragment DIGIT: '0'..'9' ;
 
 // type
 INT: 'int';
@@ -77,7 +89,7 @@ PAIR: 'pair';
 FST: 'fst';
 SND: 'snd';
 NEW_PAIR: 'newpair';
-INTEGER: DIGIT+ ;
+INTEGER: [0-9]+;
 UNDERSCORE: '_';
 LOWERCASE: [a-z];
 UPPERCASE: [A-Z];

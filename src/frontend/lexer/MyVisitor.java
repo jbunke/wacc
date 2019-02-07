@@ -10,6 +10,46 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 public class MyVisitor implements WACCParserVisitor<Void>{
 
     @Override
+    public Void visitIntSign(WACCParser.IntSignContext ctx) {
+        return null;
+    }
+
+    @Override
+    public Void visitIntLiteral(WACCParser.IntLiteralContext ctx) {
+        return null;
+    }
+
+    @Override
+    public Void visitBoolLiteral(WACCParser.BoolLiteralContext ctx) {
+        return null;
+    }
+
+    @Override
+    public Void visitEscChar(WACCParser.EscCharContext ctx) {
+        return null;
+    }
+
+    @Override
+    public Void visitCharacter(WACCParser.CharacterContext ctx) {
+        return null;
+    }
+
+    @Override
+    public Void visitCharLiteral(WACCParser.CharLiteralContext ctx) {
+        return null;
+    }
+
+    @Override
+    public Void visitStringLiteral(WACCParser.StringLiteralContext ctx) {
+        return null;
+    }
+
+    @Override
+    public Void visitPairLiter(WACCParser.PairLiterContext ctx) {
+        return null;
+    }
+
+    @Override
     public Void visitUnaryOper(WACCParser.UnaryOperContext ctx) {
         return null;
     }
