@@ -37,18 +37,35 @@ DONE: 'done';
 BEGIN: 'begin';
 END: 'end';
 
-//brackets
+//brackets and quotes
 OPEN_PARENTHESES: '(' ;
 CLOSE_PARENTHESES: ')' ;
 OPEN_BRACKET: '[';
 CLOSE_BRACKET: ']';
+CHAR_QUOTE: '\'';
+STR_QUOTE: '"';
+
+// For literals
+TRUE: 'true';
+FALSE: 'false';
+ESC: '\\';
+RESTRICTED_ASCII: CHAR_QUOTE ~('\\' | '\'' | '"')* CHAR_QUOTE;
+NULL: 'null';
+
+// escape charaters
+ESC_ZERO: '0';
+ESC_B: 'b';
+ESC_T: 't';
+ESC_N: 'n';
+ESC_F: 'f';
+ESC_R: 'r';
 
 //function
 CALL: 'call';
 IS: 'is';
 
 //numbers
-fragment DIGIT: '0'..'9' ;
+DIGIT: '0'..'9' ;
 
 // type
 INT: 'int';
@@ -70,8 +87,12 @@ fragment IDENTIFIER_INITIAL: UNDERSCORE | LOWERCASE | UPPERCASE;
 fragment IDENTIFIER_MAIN: IDENTIFIER_INITIAL | DIGIT;
 IDENTIFIER: IDENTIFIER_INITIAL IDENTIFIER_MAIN*;
 
+EOL: '\n';
+
 COMMA: ',';
 SEMI_COLON: ';';
 
 //stuff to ignore
-WS:(' '|'\t'|'\r'|'\n')+->skip;
+// TODO
+// WS:(' '|'\t'|'\r'|'\n'|)+->skip;
+LINE_COMMENT: '//' ~[\r\n]* -> skip;
