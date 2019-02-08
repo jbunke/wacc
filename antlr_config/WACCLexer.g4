@@ -4,6 +4,9 @@ lexer grammar WACCLexer;
 fragment DIGIT: '0'..'9';
 INTEGER: DIGIT+;
 
+//assignment
+ASSIGN: '=';
+
 // operators
 NOT: '!';
 LEN: 'len';

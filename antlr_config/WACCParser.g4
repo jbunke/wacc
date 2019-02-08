@@ -71,18 +71,18 @@ assignRhs: expr
 
 // statement
 stat: SKP
-| type IDENTIFIER EQUAL assignRhs
-| assignLhs EQUAL assignRhs
-| READ assignLhs
-| FREE expr
-| RETURN expr
-| EXIT expr
-| PRINT expr
-| PRINTLN expr
-| IF expr THEN stat ELSE stat FI
-| WHILE expr DO stat DONE
-| BEGIN stat END
-| stat SEMI_COLON stat;
+| type OP_BREAK IDENTIFIER BREAK ASSIGN BREAK assignRhs
+| assignLhs OP_BREAK ASSIGN OP_BREAK assignRhs
+| READ BREAK assignLhs
+| FREE BREAK expr
+| RETURN BREAK expr
+| EXIT BREAK expr
+| PRINT BREAK expr
+| PRINTLN BREAK expr
+| IF BREAK expr BREAK THEN BREAK stat BREAK ELSE BREAK stat BREAK FI
+| WHILE BREAK expr BREAK DO BREAK stat BREAK DONE
+| BEGIN BREAK stat BREAK END
+| stat OP_BREAK SEMI_COLON OP_BREAK stat;
 
 // EOF indicates that the program must consume to the end of the input.
 prog: BEGIN (func)* stat END EOF ;
