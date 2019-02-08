@@ -1,5 +1,6 @@
 parser grammar WACCParser;
 
+
 options {
   tokenVocab=WACCLexer;
 }
@@ -27,8 +28,7 @@ expr: intLiteral
 
 // Literals
 intSign: PLUS | MINUS;
-integer: INTEGER;
-intLiteral: intSign? integer;
+intLiteral: intSign? INTEGER;
 boolLiteral: TRUE | FALSE;
 
 character: CHARACTER;

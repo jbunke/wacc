@@ -1,5 +1,9 @@
 lexer grammar WACCLexer;
 
+//numbers
+fragment DIGIT: '0'..'9' ;
+INTEGER: DIGIT+;
+
 //operators
 NOT: '!';
 LEN: 'len';
@@ -76,8 +80,7 @@ ESC_R: 'r';
 CALL: 'call';
 IS: 'is';
 
-//numbers
-fragment DIGIT: '0'..'9' ;
+
 
 // type
 INT: 'int';
@@ -89,7 +92,7 @@ PAIR: 'pair';
 FST: 'fst';
 SND: 'snd';
 NEW_PAIR: 'newpair';
-INTEGER: [0-9]+;
+
 UNDERSCORE: '_';
 LOWERCASE: [a-z];
 UPPERCASE: [A-Z];
