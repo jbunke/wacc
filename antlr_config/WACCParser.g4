@@ -26,6 +26,22 @@ expr: intLiteral
 | expr binaryOper expr
 | OPEN_PARENTHESES expr CLOSE_PARENTHESES;
 
+// statement
+stat: SKP
+| type IDENTIFIER ASSIGN assignRhs
+| assignLhs ASSIGN assignRhs
+| READ assignLhs
+| FREE expr
+| RETURN expr
+| EXIT expr
+| PRINT expr
+| PRINTLN expr
+| IF expr THEN stat ELSE stat FI
+| WHILE expr DO stat DONE
+| BEGIN stat END
+| stat SEMI_COLON stat;
+
+
 // literals
 intSign: PLUS | MINUS;
 intLiteral: intSign? INTEGER;
@@ -61,28 +77,16 @@ argList: expr (COMMA expr)*;
 param: type IDENTIFIER;
 paramList: param (COMMA param)*;
 
+
 // assign
 assignLhs: IDENTIFIER | arrayElem | pairElem;
+
 assignRhs: expr
 | arrayLiteral
 | NEW_PAIR OPEN_PARENTHESES expr COMMA expr CLOSE_PARENTHESES
 | pairElem
 | CALL IDENTIFIER OPEN_PARENTHESES argList? CLOSE_PARENTHESES;
 
-// statement
-stat: SKP
-| type IDENTIFIER ASSIGN assignRhs
-| assignLhs ASSIGN assignRhs
-| READ assignLhs
-| FREE expr
-| RETURN expr
-| EXIT expr
-| PRINT expr
-| PRINTLN expr
-| IF expr THEN stat ELSE stat FI
-| WHILE expr DO stat DONE
-| BEGIN stat END
-| stat SEMI_COLON stat;
 
 // EOF indicates that the program must consume to the end of the input.
-prog: BEGIN (func)* stat END EOF ;
+prog: BEGIN func* stat END EOF ;
