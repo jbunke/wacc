@@ -1,10 +1,10 @@
 lexer grammar WACCLexer;
 
-//numbers
-fragment DIGIT: '0'..'9' ;
+// numbers
+fragment DIGIT: '0'..'9';
 INTEGER: DIGIT+;
 
-//operators
+// operators
 NOT: '!';
 LEN: 'len';
 ORD: 'ord';
@@ -23,7 +23,7 @@ NOT_EQUAL: '!=';
 AND: '&&';
 OR: '||';
 
-//statement
+// statement
 SKP: 'skip';
 READ: 'read';
 FREE: 'free';
@@ -41,15 +41,15 @@ DONE: 'done';
 BEGIN: 'begin';
 END: 'end';
 
-//brackets and quotes
-OPEN_PARENTHESES: '(' ;
-CLOSE_PARENTHESES: ')' ;
+// brackets and quotes
+OPEN_PARENTHESES: '(';
+CLOSE_PARENTHESES: ')';
 OPEN_BRACKET: '[';
 CLOSE_BRACKET: ']';
 CHAR_QUOTE: '\'';
 STR_QUOTE: '"';
 
-// For literals
+// literals
 TRUE: 'true';
 FALSE: 'false';
 fragment ESC: '\\';
@@ -76,11 +76,9 @@ ESC_N: 'n';
 ESC_F: 'f';
 ESC_R: 'r';
 
-//function
+// function
 CALL: 'call';
 IS: 'is';
-
-
 
 // type
 INT: 'int';
@@ -97,7 +95,7 @@ UNDERSCORE: '_';
 LOWERCASE: [a-z];
 UPPERCASE: [A-Z];
 
-//identifier
+// identifier
 fragment IDENTIFIER_INITIAL: UNDERSCORE | LOWERCASE | UPPERCASE;
 fragment IDENTIFIER_MAIN: IDENTIFIER_INITIAL | DIGIT;
 IDENTIFIER: IDENTIFIER_INITIAL IDENTIFIER_MAIN*;
@@ -107,7 +105,7 @@ EOL: '\n';
 COMMA: ',';
 SEMI_COLON: ';';
 
-//stuff to ignore
+// stuff to ignore
 // TODO
 // WS:(' '|'\t'|'\r'|'\n'|)+->skip;
 LINE_COMMENT: '//' ~[\r\n]* -> skip;

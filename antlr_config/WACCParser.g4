@@ -11,7 +11,7 @@ binaryOper: TIMES | DIVIDE | MOD | PLUS | MINUS
 | GREATER_THAN |GREATER_THAN_OR_EQUAL
 | LESS_THAN | LESS_THAN_OR_EQUAL
 | EQUAL | NOT_EQUAL
-|AND | OR ;
+|AND | OR;
 
 identifier: IDENTIFIER;
 
@@ -26,7 +26,7 @@ expr: intLiteral
 | expr binaryOper expr
 | OPEN_PARENTHESES expr CLOSE_PARENTHESES;
 
-// Literals
+// literals
 intSign: PLUS | MINUS;
 intLiteral: intSign? INTEGER;
 boolLiteral: TRUE | FALSE;
@@ -36,14 +36,14 @@ charLiteral: CHAR_QUOTE character CHAR_QUOTE;
 stringLiteral: STRING_LITERAL;
 pairLiter: NULL;
 
-// Types
+// types
 type: baseType | arrayType | pairType;
 
 baseType: INT | BOOL | CHAR | STRING;
 
 arrayElem: IDENTIFIER (OPEN_BRACKET expr CLOSE_BRACKET)+;
 
-// Before removing left recursion: arrayType: type OPEN_BRACKET CLOSE_BRACKET;
+// before removing left recursion: arrayType: type OPEN_BRACKET CLOSE_BRACKET;
 arrayType: baseType OPEN_BRACKET CLOSE_BRACKET
 | arrayType OPEN_BRACKET CLOSE_BRACKET
 | pairType OPEN_BRACKET CLOSE_BRACKET;
