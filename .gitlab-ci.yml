@@ -4,7 +4,7 @@ stages:
 
 build:
   stage: build
-  script: make; sh antlr_config/antlrBuild
+  script: make
 
 test:
   stage: test
