@@ -8,160 +8,127 @@ import org.antlr.v4.runtime.tree.RuleNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 public class MyVisitor implements WACCParserVisitor<Void>{
-
-    @Override
-    public Void visitIntSign(WACCParser.IntSignContext ctx) {
-        return null;
-    }
-
-    @Override
-    public Void visitIntLiteral(WACCParser.IntLiteralContext ctx) {
-        return null;
-    }
-
-    @Override
-    public Void visitBoolLiteral(WACCParser.BoolLiteralContext ctx) {
-        return null;
-    }
-
-    @Override
-    public Void visitEscChar(WACCParser.EscCharContext ctx) {
-        return null;
-    }
-
-    @Override
-    public Void visitCharacter(WACCParser.CharacterContext ctx) {
-        return null;
-    }
-
-    @Override
-    public Void visitCharLiteral(WACCParser.CharLiteralContext ctx) {
-        return null;
-    }
-
-    @Override
-    public Void visitStringLiteral(WACCParser.StringLiteralContext ctx) {
-        return null;
-    }
-
-    @Override
-    public Void visitPairLiter(WACCParser.PairLiterContext ctx) {
-        return null;
-    }
-
-    @Override
     public Void visitUnaryOper(WACCParser.UnaryOperContext ctx) {
         return null;
     }
 
-    @Override
-    public Void visitType(WACCParser.TypeContext ctx) {
-        return null;
-    }
-
-    @Override
-    public Void visitBaseType(WACCParser.BaseTypeContext ctx) {
-        return null;
-    }
-
-    @Override
-    public Void visitArrayElem(WACCParser.ArrayElemContext ctx) {
-        return null;
-    }
-
-    @Override
-    public Void visitArrayType(WACCParser.ArrayTypeContext ctx) {
-        return null;
-    }
-
-    @Override
-    public Void visitArrayLiteral(WACCParser.ArrayLiteralContext ctx) {
-        return null;
-    }
-
-    @Override
-    public Void visitPairElem(WACCParser.PairElemContext ctx) {
-        return null;
-    }
-
-    @Override
-    public Void visitPairElemType(WACCParser.PairElemTypeContext ctx) {
-        return null;
-    }
-
-    @Override
-    public Void visitPairType(WACCParser.PairTypeContext ctx) {
-        return null;
-    }
-
-    @Override
-    public Void visitFunc(WACCParser.FuncContext ctx) {
-        return null;
-    }
-
-    @Override
-    public Void visitArgList(WACCParser.ArgListContext ctx) {
-        return null;
-    }
-
-    @Override
-    public Void visitParam(WACCParser.ParamContext ctx) {
-        return null;
-    }
-
-    @Override
-    public Void visitParamList(WACCParser.ParamListContext ctx) {
-        return null;
-    }
-
-    @Override
-    public Void visitAssignLhs(WACCParser.AssignLhsContext ctx) {
-        return null;
-    }
-
-    @Override
-    public Void visitAssignRhs(WACCParser.AssignRhsContext ctx) {
-        return null;
-    }
-
-    @Override
-    public Void visitStat(WACCParser.StatContext ctx) {
-        return null;
-    }
-
-    @Override
     public Void visitBinaryOper(WACCParser.BinaryOperContext ctx) {
         return null;
     }
 
-    @Override
+    public Void visitIdentifier(WACCParser.IdentifierContext ctx) {
+        return null;
+    }
+
     public Void visitExpr(WACCParser.ExprContext ctx) {
         return null;
     }
 
-    @Override
+    public Void visitIntSign(WACCParser.IntSignContext ctx) {
+        return null;
+    }
+
+    public Void visitIntLiteral(WACCParser.IntLiteralContext ctx) {
+        return null;
+    }
+
+    public Void visitBoolLiteral(WACCParser.BoolLiteralContext ctx) {
+        return null;
+    }
+
+    public Void visitCharacter(WACCParser.CharacterContext ctx) {
+        return null;
+    }
+
+    public Void visitCharLiteral(WACCParser.CharLiteralContext ctx) {
+        return null;
+    }
+
+    public Void visitStringLiteral(WACCParser.StringLiteralContext ctx) {
+        return null;
+    }
+
+    public Void visitPairLiter(WACCParser.PairLiterContext ctx) {
+        return null;
+    }
+
+    public Void visitType(WACCParser.TypeContext ctx) {
+        return null;
+    }
+
+    public Void visitBaseType(WACCParser.BaseTypeContext ctx) {
+        return null;
+    }
+
+    public Void visitArrayElem(WACCParser.ArrayElemContext ctx) {
+        return null;
+    }
+
+    public Void visitArrayType(WACCParser.ArrayTypeContext ctx) {
+        return null;
+    }
+
+    public Void visitArrayLiteral(WACCParser.ArrayLiteralContext ctx) {
+        return null;
+    }
+
+    public Void visitPairElem(WACCParser.PairElemContext ctx) {
+        return null;
+    }
+
+    public Void visitPairElemType(WACCParser.PairElemTypeContext ctx) {
+        return null;
+    }
+
+    public Void visitPairType(WACCParser.PairTypeContext ctx) {
+        return null;
+    }
+
+    public Void visitFunc(WACCParser.FuncContext ctx) {
+        return null;
+    }
+
+    public Void visitArgList(WACCParser.ArgListContext ctx) {
+        return null;
+    }
+
+    public Void visitParam(WACCParser.ParamContext ctx) {
+        return null;
+    }
+
+    public Void visitParamList(WACCParser.ParamListContext ctx) {
+        return null;
+    }
+
+    public Void visitAssignLhs(WACCParser.AssignLhsContext ctx) {
+        return null;
+    }
+
+    public Void visitAssignRhs(WACCParser.AssignRhsContext ctx) {
+        return null;
+    }
+
+    public Void visitStat(WACCParser.StatContext ctx) {
+        return null;
+    }
+
     public Void visitProg(WACCParser.ProgContext ctx) {
-        System.out.println("Visiting program");
         return null;
     }
 
-    @Override
-    public Void visit(ParseTree parseTree) {
+    public Void visit(ParseTree tree) {
         return null;
     }
 
-    @Override
-    public Void visitChildren(RuleNode ruleNode) {
+    public Void visitChildren(RuleNode node) {
         return null;
     }
 
-    @Override
-    public Void visitTerminal(TerminalNode terminalNode) {
+    public Void visitTerminal(TerminalNode node) {
         return null;
     }
 
-    @Override
-    public Void visitErrorNode(ErrorNode errorNode) {
+    public Void visitErrorNode(ErrorNode node) {
         return null;
     }
 }
