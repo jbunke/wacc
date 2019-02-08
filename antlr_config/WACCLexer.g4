@@ -4,6 +4,10 @@ lexer grammar WACCLexer;
 fragment DIGIT: '0'..'9';
 INTEGER: DIGIT+;
 
+//ignore whitespace and line comment
+WS: [ \t\n]+ -> skip;
+LINE_COMMENT: '#' ~[\r\n]* -> skip;
+
 //assignment
 ASSIGN: '=';
 
@@ -103,12 +107,9 @@ fragment IDENTIFIER_INITIAL: UNDERSCORE | LOWERCASE | UPPERCASE;
 fragment IDENTIFIER_MAIN: IDENTIFIER_INITIAL | DIGIT;
 IDENTIFIER: IDENTIFIER_INITIAL IDENTIFIER_MAIN*;
 
-EOL: '\n';
+//EOL: '\n';
 
 COMMA: ',';
 SEMI_COLON: ';';
 
-// stuff to ignore
-// TODO
-// WS:(' '|'\t'|'\r'|'\n'|)+->skip;
-LINE_COMMENT: '//' ~[\r\n]* -> skip;
+
