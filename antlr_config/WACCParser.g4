@@ -44,7 +44,7 @@ stat: SKP
 
 // literals
 intSign: PLUS | MINUS;
-intLiteral: intSign? INTEGER;
+intLiteral: intSign? UNSIGNED;
 boolLiteral: TRUE | FALSE;
 
 character: CHARACTER;

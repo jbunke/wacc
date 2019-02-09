@@ -2,7 +2,7 @@ lexer grammar WACCLexer;
 
 // numbers
 fragment DIGIT: '0'..'9';
-INTEGER: DIGIT+;
+UNSIGNED: DIGIT+;
 
 //ignore whitespace and line comment
 WS: [ \t\n]+ -> skip;
