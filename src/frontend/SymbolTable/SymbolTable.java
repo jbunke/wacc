@@ -6,6 +6,7 @@ import java.util.Map;
 public class SymbolTable {
 
     //TODO populate reserved words into top-level Symbol Table
+
     private final String[] reservedWords = new String[]{
             "begin", "is", "end", "skip", "read", "free", "return", "exit",
             "print", "println", "if", "then", "else", "fi", "while", "do", "done",
@@ -18,7 +19,7 @@ public class SymbolTable {
 
     public SymbolTable(SymbolTable parent) {
         this.parent = parent;
-        identifierMap = new HashMap<String, IdentifierType>();
+        identifierMap = new HashMap<>();
     }
 
     public void add(String identifier, IdentifierType type) {
