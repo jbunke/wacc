@@ -1,9 +1,6 @@
 package frontend.AbstractSyntaxTree.Expressions;
 
-import frontend.SymbolTable.IdentifierType;
-import frontend.SymbolTable.SemanticError;
-import frontend.SymbolTable.SemanticErrorList;
-import frontend.SymbolTable.SymbolTable;
+import frontend.SymbolTable.*;
 import frontend.SymbolTable.Types.Type;
 
 public class IdentifierNode extends ExpressionNode {
@@ -34,10 +31,15 @@ public class IdentifierNode extends ExpressionNode {
         return identifier;
     }
 
-    // TODO what should getType return here? Is it necessary?
+
+    //TODO Design Decision: Identifier ENUM and Variable getters
 
     @Override
     public Type getType(SymbolTable symbolTable) {
-        return null;
+        IdentifierType ident = symbolTable.getType(identifier);
+        if (ident == null || !(ident ==  IdentifierType.VARIABLE)){
+            return null;
+        }
+        return ((Variable) ident).getType(); // TODO ENUM and Class Clash
     }
 }
