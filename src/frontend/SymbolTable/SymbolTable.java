@@ -15,22 +15,22 @@ public class SymbolTable {
     };
 
     private final SymbolTable parent;
-    private final Map<String, IdentifierType> identifierMap;
+    private final Map<String, Identifier> identifierMap;
 
     public SymbolTable(SymbolTable parent) {
         this.parent = parent;
         identifierMap = new HashMap<>();
     }
 
-    public void add(String identifier, IdentifierType type) {
+    public void add(String identifier, Identifier type) {
         identifierMap.put(identifier, type);
     }
 
-    public IdentifierType getType(String identifier) {
+    public Identifier fetchType(String identifier) {
         if (identifierMap.containsKey(identifier)) {
             return identifierMap.get(identifier);
         } else if (parent != null) {
-            return parent.getType(identifier);
+            return parent.fetchType(identifier);
         }
         return null;
     }

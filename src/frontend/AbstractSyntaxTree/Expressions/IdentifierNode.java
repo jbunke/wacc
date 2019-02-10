@@ -13,14 +13,14 @@ public class IdentifierNode extends ExpressionNode {
     @Override
     public void semanticCheck(SymbolTable symbolTable, SemanticErrorList errorList) {
 
-        IdentifierType id = symbolTable.getType(identifier);
+        Identifier id = symbolTable.fetchType(identifier);
         if (id == null) {
             errorList.addError(new SemanticError(
                     "Identifier \"" + identifier + "\" is used before it is declared."
             ));
         }
 
-        else if (!(id == IdentifierType.VARIABLE)) {
+        else if (!(id instanceof Variable)) {
             errorList.addError(new SemanticError(
                     "Identifier \"" + this.identifier + "\" used as a variable incorrectly"
             ));
@@ -31,15 +31,12 @@ public class IdentifierNode extends ExpressionNode {
         return identifier;
     }
 
-
-    //TODO Design Decision: Identifier ENUM and Variable getters
-
     @Override
     public Type getType(SymbolTable symbolTable) {
-        IdentifierType ident = symbolTable.getType(identifier);
-        if (ident == null || !(ident ==  IdentifierType.VARIABLE)){
+        Identifier ident = symbolTable.fetchType(identifier);
+        if (ident == null || !(ident instanceof Variable)){
             return null;
         }
-        return ((Variable) ident).getType(); // TODO ENUM and Class Clash
+        return ((Variable) ident).getType();
     }
 }

@@ -2,7 +2,7 @@ package frontend.SymbolTable;
 
 import frontend.SymbolTable.Types.Type;
 
-public class Function {
+public class Function extends Identifier {
 
     // TODO arguments and getArgs function (after AST Nodes)
     private final Type returnType;

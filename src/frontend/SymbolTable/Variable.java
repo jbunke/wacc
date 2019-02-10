@@ -3,7 +3,7 @@ package frontend.SymbolTable;
 
 import frontend.SymbolTable.Types.Type;
 
-public class Variable {
+public class Variable extends Identifier{
     private final Type type;
 
     public Variable(Type type) {
