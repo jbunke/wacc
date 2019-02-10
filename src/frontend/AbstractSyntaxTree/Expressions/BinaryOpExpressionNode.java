@@ -3,7 +3,6 @@ package frontend.AbstractSyntaxTree.Expressions;
 import frontend.SymbolTable.SemanticError;
 import frontend.SymbolTable.SemanticErrorList;
 import frontend.SymbolTable.SymbolTable;
-import frontend.SymbolTable.Types.Array;
 import frontend.SymbolTable.Types.BaseTypes;
 import frontend.SymbolTable.Types.Type;
 
