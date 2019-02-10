@@ -1,8 +1,8 @@
 package frontend.AbstractSyntaxTree;
 
+import frontend.SymbolTable.SemanticErrorList;
 import frontend.SymbolTable.SymbolTable;
 
 public interface Node {
-    //TODO pass SemanticErrorList after merging SymbolTable
-    void semanticCheck(SymbolTable symbolTable);
+    void semanticCheck(SymbolTable symbolTable, SemanticErrorList errorList);
 }

@@ -1,5 +1,6 @@
 package frontend.AbstractSyntaxTree.TypeNodes;
 
+import frontend.SymbolTable.SemanticErrorList;
 import frontend.SymbolTable.SymbolTable;
 import frontend.SymbolTable.Types.Array;
 import frontend.SymbolTable.Types.Type;
@@ -11,11 +12,10 @@ public class ArrayTypeNode extends TypeNode {
         this.arrayType = arrayType;
     }
 
-    //TODO pass SemanticErrorList after merging SymbolTable
 
     @Override
-    public void semanticCheck(SymbolTable symbolTable) {
-        arrayType.semanticCheck(symbolTable);
+    public void semanticCheck(SymbolTable symbolTable, SemanticErrorList errorList) {
+        arrayType.semanticCheck(symbolTable, errorList);
     }
 
     @Override

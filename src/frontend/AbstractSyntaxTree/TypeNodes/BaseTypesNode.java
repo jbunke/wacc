@@ -1,5 +1,6 @@
 package frontend.AbstractSyntaxTree.TypeNodes;
 
+import frontend.SymbolTable.SemanticErrorList;
 import frontend.SymbolTable.SymbolTable;
 import frontend.SymbolTable.Types.Array;
 import frontend.SymbolTable.Types.BaseTypes;
@@ -32,8 +33,7 @@ public class BaseTypesNode extends TypeNode {
         }
     }
 
-    //TODO pass SemanticErrorList after merging SymbolTable
     @Override
-    public void semanticCheck(SymbolTable symbolTable) {
+    public void semanticCheck(SymbolTable symbolTable, SemanticErrorList errorList) {
     }
 }
