@@ -1,6 +1,5 @@
 package frontend.AbstractSyntaxTree.Expressions;
 
-import com.sun.org.apache.xpath.internal.operations.Variable;
 import frontend.SymbolTable.IdentifierType;
 import frontend.SymbolTable.SemanticError;
 import frontend.SymbolTable.SemanticErrorList;
