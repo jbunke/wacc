@@ -5,7 +5,6 @@ import frontend.SymbolTable.SemanticErrorList;
 import frontend.SymbolTable.SymbolTable;
 import frontend.SymbolTable.Types.Array;
 import frontend.SymbolTable.Types.BaseTypes;
-import frontend.SymbolTable.Types.Pair;
 import frontend.SymbolTable.Types.Type;
 
 import java.util.Map;
@@ -17,9 +16,7 @@ public class UnaryOpExpressionNode extends ExpressionNode {
             Map.entry("-", OperatorType.NEGATIVE),
             Map.entry("len", OperatorType.LENGTH),
             Map.entry("ord", OperatorType.ORD),
-            Map.entry("chr", OperatorType.CHR),
-            Map.entry("fst", OperatorType.FST),
-            Map.entry("snd", OperatorType.SND)
+            Map.entry("chr", OperatorType.CHR)
     );
 
     private final OperatorType operatorType;
@@ -36,9 +33,7 @@ public class UnaryOpExpressionNode extends ExpressionNode {
         POSITIVE,
         LENGTH,
         ORD,
-        CHR,
-        FST,
-        SND
+        CHR
     }
 
     @Override
@@ -55,11 +50,6 @@ public class UnaryOpExpressionNode extends ExpressionNode {
 
             case CHR:
                 return new BaseTypes(BaseTypes.base_types.CHAR);
-
-            case FST:
-                if (!(operand.getType(symbolTable) instanceof Pair)) {
-
-                }
         }
         return null;
     }

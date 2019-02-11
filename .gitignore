@@ -1,6 +1,12 @@
 #ignore generated binary files and auto-generated ANTLR code
 bin
 src/antlr
+out
+.idea/
+rules
 
 #ignore Java class files
 *.class
+.classpath
+.project
+wacc_23.iml
