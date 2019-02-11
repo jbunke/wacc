@@ -7,9 +7,27 @@ import frontend.SymbolTable.Types.BaseTypes;
 import frontend.SymbolTable.Types.Type;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class BinaryOpExpressionNode extends ExpressionNode {
+    private final static Map<String, OperatorType> stringOpMap = Map.ofEntries(
+            Map.entry("*", OperatorType.TIMES),
+            Map.entry("/", OperatorType.DIVIDE),
+            Map.entry("%", OperatorType.MOD),
+            Map.entry("+", OperatorType.PLUS),
+            Map.entry("-", OperatorType.MINUS),
+            Map.entry(">", OperatorType.GREATER_THAN),
+            Map.entry(">=", OperatorType.GREATER_THAN_OR_EQUAL),
+            Map.entry("<", OperatorType.LESS_THAN),
+            Map.entry("<=", OperatorType.LESS_THAN_OR_EQUAL),
+            Map.entry("==", OperatorType.EQUAL),
+            Map.entry("!=", OperatorType.NOT_EQUAL),
+            Map.entry("&&", OperatorType.AND),
+            Map.entry("||", OperatorType.OR)
+    );
+
     private final ExpressionNode left;
     private final ExpressionNode right;
     private final OperatorType operatorType;
@@ -21,19 +39,29 @@ public class BinaryOpExpressionNode extends ExpressionNode {
     }
 
     private enum OperatorType {
-        TIMES,
-        DIVIDE,
-        MOD,
-        PLUS,
-        MINUS,
-        GREATER_THAN,
-        GREATER_THAN_OR_EQUAL,
-        LESS_THAN,
-        LESS_THAN_OR_EQUAL,
-        EQUAL,
-        NOT_EQUAL,
-        AND,
-        OR
+        TIMES(2),
+        DIVIDE(2),
+        MOD(2),
+        PLUS(2),
+        MINUS(2),
+        GREATER_THAN(1),
+        GREATER_THAN_OR_EQUAL(1),
+        LESS_THAN(1),
+        LESS_THAN_OR_EQUAL(1),
+        EQUAL(0),
+        NOT_EQUAL(0),
+        AND(0),
+        OR(0);
+
+        /* 0 - Boolean operators that take boolean arguments
+         * 1 - Boolean operators that take arithmetic arguments
+         * 2 - Arithmetic operators */
+
+        public final int value;
+
+        OperatorType(int value) {
+            this.value = value;
+        }
     }
 
     @Override
@@ -62,24 +90,12 @@ public class BinaryOpExpressionNode extends ExpressionNode {
                 expected.add(new BaseTypes(BaseTypes.base_types.BOOL));
             }
 
-            if (operatorType == OperatorType.TIMES
-                    || operatorType == OperatorType.DIVIDE
-                    || operatorType == OperatorType.MOD
-                    || operatorType == OperatorType.PLUS
-                    || operatorType == OperatorType.MINUS
-                    || operatorType == OperatorType.LESS_THAN
-                    || operatorType == OperatorType.LESS_THAN_OR_EQUAL
-                    || operatorType == OperatorType.GREATER_THAN
-                    || operatorType == OperatorType.GREATER_THAN_OR_EQUAL
-            ) {
+            // TODO: Is the inclusion of the boolean operators here the intended behaviour?
+            if (operatorType.value > 0) {
                 expected.add(new BaseTypes(BaseTypes.base_types.INT));
             }
 
-            if (operatorType == OperatorType.LESS_THAN
-                    || operatorType == OperatorType.LESS_THAN_OR_EQUAL
-                    || operatorType == OperatorType.GREATER_THAN
-                    || operatorType == OperatorType.GREATER_THAN_OR_EQUAL
-            ) {
+            if (operatorType.value < 2) {
                 expected.add(new BaseTypes(BaseTypes.base_types.CHAR));
             }
 
@@ -98,13 +114,12 @@ public class BinaryOpExpressionNode extends ExpressionNode {
                 ));
             }
         }
-
     }
 
     public Type getType(SymbolTable symbolTable) {
-
         Type leftType = left.getType(symbolTable);
         Type rightType = right.getType(symbolTable);
+
         if (leftType == null || rightType == null || !leftType.equals(rightType)) {
             return null;
         }
@@ -119,7 +134,6 @@ public class BinaryOpExpressionNode extends ExpressionNode {
             case AND:
             case OR:
                 return new BaseTypes(BaseTypes.base_types.BOOL);
-
             case TIMES:
             case DIVIDE:
             case MOD:
@@ -132,35 +146,9 @@ public class BinaryOpExpressionNode extends ExpressionNode {
     }
 
     private static OperatorType stringToType(String operator) {
-        switch (operator) {
-            case "*":
-                return OperatorType.TIMES;
-            case "/":
-                return OperatorType.DIVIDE;
-            case "%":
-                return OperatorType.MOD;
-            case "+":
-                return OperatorType.PLUS;
-            case "-":
-                return OperatorType.MINUS;
-            case ">":
-                return OperatorType.GREATER_THAN;
-            case ">=":
-                return OperatorType.GREATER_THAN_OR_EQUAL;
-            case "<":
-                return OperatorType.LESS_THAN;
-            case "<=":
-                return OperatorType.LESS_THAN_OR_EQUAL;
-            case "==":
-                return OperatorType.EQUAL;
-            case "!=":
-                return OperatorType.NOT_EQUAL;
-            case "&&":
-                return OperatorType.AND;
-            case "||":
-                return OperatorType.OR;
-            default:
-                throw new IllegalArgumentException();
+        if (stringOpMap.containsKey(operator)) {
+            return stringOpMap.get(operator);
         }
+        throw new IllegalArgumentException();
     }
 }
