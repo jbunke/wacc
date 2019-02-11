@@ -19,7 +19,6 @@ public class IntLiteralExpressionNode extends ExpressionNode {
 
     @Override
     public void semanticCheck(SymbolTable symbolTable, SemanticErrorList errorList) {
-        //intentionally left blank as this is a literal expression
     }
 
     @Override
