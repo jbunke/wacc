@@ -7,7 +7,18 @@ import frontend.SymbolTable.Types.Array;
 import frontend.SymbolTable.Types.BaseTypes;
 import frontend.SymbolTable.Types.Type;
 
+import java.util.Map;
+
 public class UnaryOpExpressionNode extends ExpressionNode {
+    private final static Map<String, OperatorType> stringOpMap = Map.ofEntries(
+            Map.entry("!", OperatorType.NOT),
+            Map.entry("+", OperatorType.POSITIVE),
+            Map.entry("-", OperatorType.NEGATIVE),
+            Map.entry("len", OperatorType.LENGTH),
+            Map.entry("ord", OperatorType.ORD),
+            Map.entry("chr", OperatorType.CHR)
+    );
+
     private final OperatorType operatorType;
     private final ExpressionNode operand;
 
@@ -57,21 +68,7 @@ public class UnaryOpExpressionNode extends ExpressionNode {
             return;
         }
 
-        Type expected = null;
-        switch (operatorType) {
-            case NOT:
-                expected = new BaseTypes(BaseTypes.base_types.BOOL);
-                break;
-
-            case NEGATIVE:
-            case POSITIVE:
-            case CHR:
-                expected = new BaseTypes(BaseTypes.base_types.INT);
-                break;
-            case ORD:
-                expected = new BaseTypes(BaseTypes.base_types.CHAR);
-                break;
-        }
+        Type expected = getType(null);
 
         if (!operandType.equals(expected)) {
             errorList.addError(new SemanticError(
@@ -83,21 +80,9 @@ public class UnaryOpExpressionNode extends ExpressionNode {
     }
 
     private OperatorType stringToType(String operator) {
-        switch (operator) {
-            case "!":
-                return OperatorType.NOT;
-            case "+":
-                return OperatorType.POSITIVE;
-            case "-":
-                return OperatorType.NEGATIVE;
-            case "len":
-                return OperatorType.LENGTH;
-            case "ord":
-                return OperatorType.ORD;
-            case "chr":
-                return OperatorType.CHR;
-            default:
-                throw new IllegalArgumentException();
+        if (stringOpMap.containsKey(operator)) {
+            return stringOpMap.get(operator);
         }
+        throw new IllegalArgumentException();
     }
 }

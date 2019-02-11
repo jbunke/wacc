@@ -7,7 +7,6 @@ import frontend.SymbolTable.Types.BaseTypes;
 import frontend.SymbolTable.Types.Type;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -82,41 +81,43 @@ public class BinaryOpExpressionNode extends ExpressionNode {
             ));
         }
 
-        if (!leftType.equals(rightType)) {
-            errorList.addError(new SemanticError(
-                    "Binary operator \"" + operatorType.toString() + "\" given operands of different types. "
-                            + "Types given are \"" + leftType.toString() + "\" and \""
-                            + rightType.toString() + "\"."
-            ));
-        }
-
-        List<Type> expected = new ArrayList<>();
-        if (operatorType == OperatorType.AND || operatorType == OperatorType.OR) {
-            expected.add(new BaseTypes(BaseTypes.base_types.BOOL));
-        }
-
-        // TODO: Is the inclusion of the boolean operators here the intended behaviour?
-        if (operatorType.value > 0) {
-            expected.add(new BaseTypes(BaseTypes.base_types.INT));
-        }
-
-        if (operatorType.value < 2) {
-            expected.add(new BaseTypes(BaseTypes.base_types.CHAR));
-        }
-
-        boolean found = false;
-        for (Type t : expected) {
-            if (t.equals(leftType)) {
-                found = true;
-                break;
+        if (leftType != null && rightType != null) {
+            if (!leftType.equals(rightType)) {
+                errorList.addError(new SemanticError(
+                        "Binary operator \"" + operatorType.toString() + "\" given operands of different types. "
+                                + "Types given are \"" + leftType.toString() + "\" and \""
+                                + rightType.toString() + "\"."
+                ));
             }
-        }
-        if (!(found || operatorType == OperatorType.EQUAL || operatorType == OperatorType.NOT_EQUAL)) {
-            errorList.addError(new SemanticError(
-                    "Possible expected operands: " + expected.toString() +
-                            " but received operands of type: \"" + leftType.toString() +
-                            "\" for binary operator: " + operatorType.toString() + "."
-            ));
+
+            List<Type> expected = new ArrayList<>();
+            if (operatorType == OperatorType.AND || operatorType == OperatorType.OR) {
+                expected.add(new BaseTypes(BaseTypes.base_types.BOOL));
+            }
+
+            if (operatorType.value > 0) {
+                expected.add(new BaseTypes(BaseTypes.base_types.INT));
+            }
+
+            if (operatorType.value == 1) {
+                expected.add(new BaseTypes(BaseTypes.base_types.CHAR));
+            }
+
+            boolean found = false;
+            for (Type t : expected) {
+                if (t.equals(leftType)) {
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!(found || operatorType == OperatorType.EQUAL || operatorType == OperatorType.NOT_EQUAL)) {
+                errorList.addError(new SemanticError(
+                        "Possible expected operands: " + expected.toString() +
+                                " but received operands of type: \"" + leftType.toString() +
+                                "\" for binary operator: " + operatorType.toString() + "."
+                ));
+            }
         }
     }
 
