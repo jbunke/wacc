@@ -2,6 +2,7 @@ package frontend;
 
 import antlr.WACCParser;
 import antlr.WACCParserVisitor;
+import frontend.AbstractSyntaxTree.Expressions.*;
 import frontend.AbstractSyntaxTree.Node;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -15,6 +16,7 @@ public class Visitor implements WACCParserVisitor<Node> {
     return null;
   }
 
+  @Override
   public Node visitBinaryOper(WACCParser.BinaryOperContext ctx) {
     return null;
   }
@@ -40,27 +42,31 @@ public class Visitor implements WACCParserVisitor<Node> {
 
   @Override
   public Node visitIntLiteral(WACCParser.IntLiteralContext ctx) {
-    return null;
+    Integer intLit = Integer.parseInt(ctx.getText());
+    return new IntLiteralExpressionNode(intLit);
   }
 
   @Override
   public Node visitBoolLiteral(WACCParser.BoolLiteralContext ctx) {
-    return null;
+    Boolean boolLit = Boolean.parseBoolean(ctx.getText());
+    return new BooleanLiteralExpressionNode(boolLit);
   }
 
   @Override
   public Node visitCharLiteral(WACCParser.CharLiteralContext ctx) {
-    return null;
+    Character charLit = ctx.CHAR_LIT().getText().charAt(0);
+    return new CharacterLiteralExpressionNode(charLit);
   }
 
   @Override
   public Node visitStringLiteral(WACCParser.StringLiteralContext ctx) {
-    return null;
+    String stringLit = ctx.getText();
+    return new StringLiteralExpressionNode(stringLit);
   }
 
   @Override
   public Node visitPairLiter(WACCParser.PairLiterContext ctx) {
-    return null;
+    return new PairLiteralExpressionNode();
   }
 
   @Override
