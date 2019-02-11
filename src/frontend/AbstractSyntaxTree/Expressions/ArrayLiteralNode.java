@@ -39,6 +39,20 @@ public class ArrayLiteralNode extends ExpressionNode {
                             "Variable is of type \"" + identifierType.toString() + "\"."
             ));
         }
+
+        int dimensions = 0;
+        Type t = identifierType;
+        while (t instanceof Array){
+            t = ((Array) t).getElementType();
+            dimensions++;
+        }
+
+        if (indices.size() > dimensions){
+            errorList.addError(new SemanticError(
+                    "Error: Too many indices! Array only has" + dimensions + " dimensions, " +
+                            "but has been supplied" + indices.size() + " indices."
+            ));
+        }
     }
 
     @Override
