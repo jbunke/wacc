@@ -1,23 +1,23 @@
 package frontend;
 
-import antlr.BasicParser;
-import antlr.BasicParserVisitor;
+import antlr.WACCParser;
+import antlr.WACCParserVisitor;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.RuleNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
-public class Visitor implements BasicParserVisitor<Void> {
+public class Visitor implements WACCParserVisitor<Void> {
 
-  public Void visitBinaryOper(BasicParser.BinaryOperContext ctx) {
+  public Void visitBinaryOper(WACCParser.BinaryOperContext ctx) {
     return null;
   }
 
-  public Void visitExpr(BasicParser.ExprContext ctx) {
+  public Void visitExpr(WACCParser.ExprContext ctx) {
     return null;
   }
 
-  public Void visitProg(BasicParser.ProgContext ctx) {
+  public Void visitProg(WACCParser.ProgContext ctx) {
     return null;
   }
 
