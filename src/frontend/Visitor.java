@@ -36,11 +36,6 @@ public class Visitor implements WACCParserVisitor<Node> {
   }
 
   @Override
-  public Node visitIntSign(WACCParser.IntSignContext ctx) {
-    return null;
-  }
-
-  @Override
   public Node visitIntLiteral(WACCParser.IntLiteralContext ctx) {
     Integer intLit = Integer.parseInt(ctx.getText());
     return new IntLiteralExpressionNode(intLit);
