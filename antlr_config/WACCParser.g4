@@ -4,7 +4,7 @@ options {
   tokenVocab=WACCLexer;
 }
 
-unaryOper: NOT | LEN | ORD | CHR;
+unaryOper: NOT | LEN | ORD | CHR | MINUS;
 
 multDivMod: TIMES | DIVIDE | MOD;
 addSub: PLUS | MINUS;
