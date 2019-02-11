@@ -7,7 +7,6 @@ import frontend.SymbolTable.Types.BaseTypes;
 import frontend.SymbolTable.Types.Type;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
