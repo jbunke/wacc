@@ -17,7 +17,22 @@ public class Visitor implements WACCParserVisitor<Node> {
   }
 
   @Override
-  public Node visitBinaryOper(WACCParser.BinaryOperContext ctx) {
+  public Node visitMultDivMod(WACCParser.MultDivModContext ctx) {
+    return null;
+  }
+
+  @Override
+  public Node visitAddSub(WACCParser.AddSubContext ctx) {
+    return null;
+  }
+
+  @Override
+  public Node visitCompLsGr(WACCParser.CompLsGrContext ctx) {
+    return null;
+  }
+
+  @Override
+  public Node visitCompEq(WACCParser.CompEqContext ctx) {
     return null;
   }
 
