@@ -1,6 +1,5 @@
 parser grammar WACCParser;
 
-
 options {
   tokenVocab=WACCLexer;
 }
@@ -28,6 +27,7 @@ expr: intLiteral
 
 // statement
 stat: SKP
+| stat SEMI_COLON stat
 | type IDENTIFIER ASSIGN assignRhs
 | assignLhs ASSIGN assignRhs
 | READ assignLhs
@@ -38,17 +38,14 @@ stat: SKP
 | PRINTLN expr
 | IF expr THEN stat ELSE stat FI
 | WHILE expr DO stat DONE
-| BEGIN stat END
-| stat SEMI_COLON stat;
-
+| BEGIN stat END;
 
 // literals
 intSign: PLUS | MINUS;
 intLiteral: intSign? UNSIGNED;
 boolLiteral: TRUE | FALSE;
 
-character: CHARACTER;
-charLiteral: CHAR_QUOTE character CHAR_QUOTE;
+charLiteral: CHAR_LIT;
 stringLiteral: STRING_LITERAL;
 pairLiter: NULL;
 
@@ -69,7 +66,8 @@ pairElem: FST expr | SND expr;
 
 pairElemType: baseType | arrayType | PAIR;
 
-pairType: PAIR OPEN_BRACKET pairElemType COMMA pairElemType CLOSE_PARENTHESES;
+pairType: PAIR OPEN_PARENTHESES pairElemType COMMA pairElemType
+CLOSE_PARENTHESES;
 
 // function
 func: type IDENTIFIER OPEN_PARENTHESES paramList? CLOSE_PARENTHESES IS stat END;
