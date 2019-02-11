@@ -11,11 +11,11 @@ import frontend.SymbolTable.Variable;
 
 import java.util.List;
 
-public class ArrayLiteralNode extends ExpressionNode {
+public class ArrayElementNode extends ExpressionNode {
     private final IdentifierNode identifier;
     private final List<ExpressionNode> indices;
 
-    public ArrayLiteralNode(List<ExpressionNode> indices, IdentifierNode identifier) {
+    public ArrayElementNode(List<ExpressionNode> indices, IdentifierNode identifier) {
         this.indices = indices;
         this.identifier = identifier;
     }
