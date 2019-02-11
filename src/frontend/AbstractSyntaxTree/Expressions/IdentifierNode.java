@@ -33,10 +33,10 @@ public class IdentifierNode extends ExpressionNode {
 
     @Override
     public Type getType(SymbolTable symbolTable) {
-        Identifier ident = symbolTable.fetchType(identifier);
-        if (ident == null || !(ident instanceof Variable)){
+        Identifier identifier = symbolTable.fetchType(this.identifier);
+        if (identifier == null || !(identifier instanceof Variable)){
             return null;
         }
-        return ((Variable) ident).getType();
+        return ((Variable) identifier).getType();
     }
 }
