@@ -5,7 +5,7 @@ import frontend.SymbolTable.SymbolTable;
 import frontend.SymbolTable.Types.Pair;
 import frontend.SymbolTable.Types.Type;
 
-public class NewPairNode implements Assign {
+public class NewPairNode implements AssignRHS {
     private final ExpressionNode leftExpression;
     private final ExpressionNode rightExpression;
 

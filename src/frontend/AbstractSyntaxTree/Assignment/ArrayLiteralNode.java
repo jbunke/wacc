@@ -10,7 +10,7 @@ import frontend.SymbolTable.Types.Type;
 
 import java.util.List;
 
-public class ArrayLiteralNode implements Assign {
+public class ArrayLiteralNode implements AssignRHS {
     private final List<ExpressionNode> arrayElements;
 
     public ArrayLiteralNode(List<ExpressionNode> arrayElements) {
