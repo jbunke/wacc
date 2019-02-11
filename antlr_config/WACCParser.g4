@@ -45,7 +45,6 @@ intSign: PLUS | MINUS;
 intLiteral: intSign? UNSIGNED;
 boolLiteral: TRUE | FALSE;
 
-character: CHARACTER;
 charLiteral: CHAR_LIT;
 stringLiteral: STRING_LITERAL;
 pairLiter: NULL;

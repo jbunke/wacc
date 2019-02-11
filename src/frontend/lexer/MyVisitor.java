@@ -36,10 +36,6 @@ public class MyVisitor implements WACCParserVisitor<Void>{
         return null;
     }
 
-    public Void visitCharacter(WACCParser.CharacterContext ctx) {
-        return null;
-    }
-
     public Void visitCharLiteral(WACCParser.CharLiteralContext ctx) {
         return null;
     }
