@@ -7,7 +7,7 @@ import frontend.SymbolTable.SymbolTable;
 import frontend.SymbolTable.Types.Pair;
 import frontend.SymbolTable.Types.Type;
 
-public class AssignPairElementNode implements AssignLeft, AssignRight {
+public class AssignPairElementNode implements Assign {
     private final IdentifierNode identifier;
     private final int position;
 
