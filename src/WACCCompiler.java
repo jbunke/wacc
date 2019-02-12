@@ -1,33 +1,33 @@
 import antlr.WACCLexer;
 import antlr.WACCParser;
 
-import org.antlr.v4.runtime.ANTLRInputStream;
+import org.antlr.v4.runtime.CharStream;
+import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 
 public class WACCCompiler {
 
+    private static final int EXPECTED_NUM_ARGS = 1;
+    private static final int INCORRECT_ARGS_EXIT = 1;
+
     public static void main(String[] args) {
         // Test arguments are correct
 
-        if (args.length == 0) {
-            System.out.println("No File was specified");
-            System.exit(1);
-        }
-        if (args.length > 1) {
-            System.out.println("Too many arguments given");
-            System.exit(1);
+        if (args.length != EXPECTED_NUM_ARGS) {
+            System.out.println(args.length + " arguments given, " +
+                               EXPECTED_NUM_ARGS + " expected.");
+            System.exit(INCORRECT_ARGS_EXIT);
         }
 
         String file = args[0];
 
-        try (FileInputStream fileInputStream = new FileInputStream(file)) {
-            ANTLRInputStream input = new ANTLRInputStream(fileInputStream);
+        try {
+            CharStream input = CharStreams.fromFileName(file);
             WACCLexer lexer = new WACCLexer(input);
-            CommonTokenStream tokenStream = new CommonTokenStream(lexer);
-            WACCParser parser = new WACCParser(tokenStream);
+            CommonTokenStream tokens = new CommonTokenStream(lexer);
+            WACCParser parser = new WACCParser(tokens);
 
             //ExampleVisitor visitor = new ExampleVisitor();
             WACCParser.ProgContext parseTree = parser.prog();
