@@ -7,7 +7,6 @@ import frontend.AbstractSyntaxTree.Node;
 import frontend.AbstractSyntaxTree.TypeNodes.ArrayTypeNode;
 import frontend.AbstractSyntaxTree.TypeNodes.BaseTypesNode;
 import frontend.AbstractSyntaxTree.TypeNodes.TypeNode;
-import frontend.SymbolTable.Types.Type;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.RuleNode;
@@ -35,7 +34,10 @@ public class Visitor implements WACCParserVisitor<Node> {
 
   @Override
   public Node visitMultDivModExp(WACCParser.MultDivModExpContext ctx) {
-    return null;
+    String operator = ctx.MULTDIVMOD().getText();
+    ExpressionNode left = (ExpressionNode) visit(ctx.expr(0));
+    ExpressionNode right = (ExpressionNode) visit(ctx.expr(1));
+    return new BinaryOpExpressionNode(left, operator, right);
   }
 
   @Override
@@ -67,7 +69,7 @@ public class Visitor implements WACCParserVisitor<Node> {
 
   @Override
   public Node visitCompEqExp(WACCParser.CompEqExpContext ctx) {
-    String operator = ctx.compEq().getText();
+    String operator = ctx.COMP_EQ().getText();
     ExpressionNode left = (ExpressionNode) visit(ctx.expr(0));
     ExpressionNode right = (ExpressionNode) visit(ctx.expr(1));
     return new BinaryOpExpressionNode(left, operator, right);
@@ -75,7 +77,7 @@ public class Visitor implements WACCParserVisitor<Node> {
 
   @Override
   public Node visitCompLsGrExp(WACCParser.CompLsGrExpContext ctx) {
-    String operator = ctx.compLsGr().getText();
+    String operator = ctx.COMP_LS_GR().getText();
     ExpressionNode left = (ExpressionNode) visit(ctx.expr(0));
     ExpressionNode right = (ExpressionNode) visit(ctx.expr(1));
     return new BinaryOpExpressionNode(left, operator, right);
@@ -96,7 +98,10 @@ public class Visitor implements WACCParserVisitor<Node> {
 
   @Override
   public Node visitAddSubExp(WACCParser.AddSubExpContext ctx) {
-    return null;
+    String operator = ctx.ADDSUB().getText();
+    ExpressionNode left = (ExpressionNode) visit(ctx.expr(0));
+    ExpressionNode right = (ExpressionNode) visit(ctx.expr(1));
+    return new BinaryOpExpressionNode(left, operator, right);
   }
 
   @Override
@@ -175,28 +180,8 @@ public class Visitor implements WACCParserVisitor<Node> {
   }
 
   @Override
-  public Node visitMultDivMod(WACCParser.MultDivModContext ctx) {
-    return null;
-  }
-
-  @Override
-  public Node visitAddSub(WACCParser.AddSubContext ctx) {
-    return null;
-  }
-
-  @Override
-  public Node visitCompLsGr(WACCParser.CompLsGrContext ctx) {
-    return null;
-  }
-
-  @Override
-  public Node visitCompEq(WACCParser.CompEqContext ctx) {
-    return null;
-  }
-
-  @Override
   public Node visitIdentifier(WACCParser.IdentifierContext ctx) {
-    return null;
+    return new IdentifierNode(ctx.getText());
   }
 
   @Override
@@ -262,11 +247,6 @@ public class Visitor implements WACCParserVisitor<Node> {
 
   @Override
   public Node visitPairElemType(WACCParser.PairElemTypeContext ctx) {
-    return null;
-  }
-
-  @Override
-  public Node visitPairType(WACCParser.PairTypeContext ctx) {
     return null;
   }
 

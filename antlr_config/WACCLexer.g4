@@ -9,6 +9,13 @@ fragment UPPERCASE: [A-Z];
 //assignment
 ASSIGN: '=';
 
+// precedence categories
+MULTDIVMOD: TIMES | DIVIDE | MOD;
+ADDSUB: PLUS | MINUS;
+COMP_LS_GR: GREATER_THAN | GREATER_THAN_OR_EQUAL
+| LESS_THAN | LESS_THAN_OR_EQUAL;
+COMP_EQ: EQUAL | NOT_EQUAL;
+
 // operators
 NOT: '!';
 LEN: 'len';

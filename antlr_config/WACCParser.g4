@@ -6,12 +6,6 @@ options {
 
 unaryOper: NOT | LEN | ORD | CHR | MINUS;
 
-multDivMod: TIMES | DIVIDE | MOD;
-addSub: PLUS | MINUS;
-compLsGr: GREATER_THAN | GREATER_THAN_OR_EQUAL
-| LESS_THAN | LESS_THAN_OR_EQUAL;
-compEq: EQUAL | NOT_EQUAL;
-
 identifier: IDENTIFIER;
 
 expr:
@@ -23,10 +17,10 @@ expr:
 | identifier                                # IdentifierExp
 | arrayElem                                 # ArrayElemExp
 | op=unaryOper exp=expr                     # UnaryOperExp
-| expr multDivMod expr                      # MultDivModExp
-| expr addSub expr                          # AddSubExp
-| expr compLsGr expr                        # CompLsGrExp
-| expr compEq expr                          # CompEqExp
+| expr MULTDIVMOD expr                      # MultDivModExp
+| expr ADDSUB expr                          # AddSubExp
+| expr COMP_LS_GR expr                      # CompLsGrExp
+| expr COMP_EQ expr                         # CompEqExp
 | expr AND expr                             # AndExp
 | expr OR expr                              # OrExp
 | OPEN_PARENTHESIS expr CLOSE_PARENTHESIS   # BracketedExpr
@@ -74,9 +68,6 @@ pairElemType: baseType
 | type OPEN_BRACKET CLOSE_BRACKET
 | PAIR
 ;
-
-pairType: PAIR OPEN_PARENTHESIS pairElemType COMMA pairElemType
-CLOSE_PARENTHESIS;
 
 // function
 func: type IDENTIFIER OPEN_PARENTHESIS paramList? CLOSE_PARENTHESIS IS stat END;
