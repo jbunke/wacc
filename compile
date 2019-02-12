@@ -1,2 +1,1 @@
-cd bin;
-java WACCCompiler $@;
+java -cp bin:lib/antlr-4.7-complete.jar WACCCompiler $@;
