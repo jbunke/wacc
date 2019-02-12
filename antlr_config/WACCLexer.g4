@@ -63,7 +63,7 @@ NEW_PAIR: 'newpair';
 
 // numbers
 fragment DIGIT: '0'..'9';
-UNSIGNED: DIGIT+;
+INT_LIT: ('+'|'-')? DIGIT+;
 
 // identifier
 fragment IDENTIFIER_INITIAL: UNDERSCORE | LOWERCASE | UPPERCASE;

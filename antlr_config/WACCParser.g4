@@ -4,13 +4,13 @@ options {
   tokenVocab=WACCLexer;
 }
 
-unaryOper: NOT | LEN | ORD | CHR;
+unaryOper: NOT | LEN | ORD | CHR | MINUS;
 
-binaryOper: TIMES | DIVIDE | MOD | PLUS | MINUS
-| GREATER_THAN |GREATER_THAN_OR_EQUAL
-| LESS_THAN | LESS_THAN_OR_EQUAL
-| EQUAL | NOT_EQUAL
-|AND | OR;
+multDivMod: TIMES | DIVIDE | MOD;
+addSub: PLUS | MINUS;
+compLsGr: GREATER_THAN | GREATER_THAN_OR_EQUAL
+| LESS_THAN | LESS_THAN_OR_EQUAL;
+compEq: EQUAL | NOT_EQUAL;
 
 identifier: IDENTIFIER;
 
@@ -22,7 +22,12 @@ expr: intLiteral
 | identifier
 | arrayElem
 | unaryOper expr
-| expr binaryOper expr
+| expr multDivMod expr
+| expr addSub expr
+| expr compLsGr expr
+| expr compEq expr
+| expr AND expr
+| expr OR expr
 | OPEN_PARENTHESES expr CLOSE_PARENTHESES;
 
 // statement
