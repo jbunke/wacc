@@ -16,6 +16,9 @@ COMP_LS_GR: GREATER_THAN | GREATER_THAN_OR_EQUAL
 | LESS_THAN | LESS_THAN_OR_EQUAL;
 COMP_EQ: EQUAL | NOT_EQUAL;
 
+// unary ops
+UNARY: NOT | LEN | ORD | CHR | MINUS;
+
 // operators
 NOT: '!';
 LEN: 'len';

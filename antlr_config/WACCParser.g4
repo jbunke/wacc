@@ -4,8 +4,6 @@ options {
   tokenVocab=WACCLexer;
 }
 
-unaryOper: NOT | LEN | ORD | CHR | MINUS;
-
 identifier: IDENTIFIER;
 
 expr:
@@ -16,7 +14,7 @@ expr:
 | pairLiter                                 # PairLitExp
 | identifier                                # IdentifierExp
 | arrayElem                                 # ArrayElemExp
-| op=unaryOper exp=expr                     # UnaryOperExp
+| UNARY expr                                # UnaryOperExp
 | expr MULTDIVMOD expr                      # MultDivModExp
 | expr ADDSUB expr                          # AddSubExp
 | expr COMP_LS_GR expr                      # CompLsGrExp

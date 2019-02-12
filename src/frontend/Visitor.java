@@ -2,8 +2,11 @@ package frontend;
 
 import antlr.WACCParser;
 import antlr.WACCParserVisitor;
+import frontend.AbstractSyntaxTree.Assignment.AssignLHS;
+import frontend.AbstractSyntaxTree.Assignment.AssignRHS;
 import frontend.AbstractSyntaxTree.Expressions.*;
 import frontend.AbstractSyntaxTree.Node;
+import frontend.AbstractSyntaxTree.Statements.DeclarationStatementNode;
 import frontend.AbstractSyntaxTree.TypeNodes.ArrayTypeNode;
 import frontend.AbstractSyntaxTree.TypeNodes.BaseTypesNode;
 import frontend.AbstractSyntaxTree.TypeNodes.TypeNode;
@@ -47,7 +50,7 @@ public class Visitor implements WACCParserVisitor<Node> {
 
   @Override
   public Node visitUnaryOperExp(WACCParser.UnaryOperExpContext ctx) {
-    String operator = ctx.unaryOper().getText();
+    String operator = ctx.UNARY().getText();
     ExpressionNode expression = (ExpressionNode) visit(ctx.expr());
     return new UnaryOpExpressionNode(operator, expression);
   }
@@ -136,7 +139,11 @@ public class Visitor implements WACCParserVisitor<Node> {
 
   @Override
   public Node visitInitAssignStat(WACCParser.InitAssignStatContext ctx) {
-    return null;
+    TypeNode typeNode = (TypeNode) visit(ctx.type());
+    IdentifierNode ident = new IdentifierNode(ctx.IDENTIFIER().getText());
+    AssignRHS rhs = (AssignRHS) visit(ctx.assignRhs());
+
+    return new DeclarationStatementNode(typeNode, ident, rhs);
   }
 
   @Override
@@ -161,6 +168,8 @@ public class Visitor implements WACCParserVisitor<Node> {
 
   @Override
   public Node visitAssignStat(WACCParser.AssignStatContext ctx) {
+    AssignLHS lhs = (AssignLHS) visit(ctx.assignLhs());
+    AssignRHS rhs = (AssignRHS) visit(ctx.assignRhs());
     return null;
   }
 
@@ -171,11 +180,6 @@ public class Visitor implements WACCParserVisitor<Node> {
 
   @Override
   public Node visitPrintStat(WACCParser.PrintStatContext ctx) {
-    return null;
-  }
-
-  @Override
-  public Node visitUnaryOper(WACCParser.UnaryOperContext ctx) {
     return null;
   }
 
