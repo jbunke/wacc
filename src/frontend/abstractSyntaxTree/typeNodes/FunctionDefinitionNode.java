@@ -42,6 +42,15 @@ public class FunctionDefinitionNode implements Node {
         body.semanticCheck(symbolTable, errorList);
     }
 
-    // TODO Implement Syntax Error for functions without return/exit or for functions with statements after return/exit
+    public String syntaxCheck() {
+        if (!body.containsReturn() && !body.containsExit()) {
+            return "Function \"" + identifier.getName() + "\" has no return or exit statement.";
+
+        } else if (!body.endsWithReturn()) {
+            return "Function  \"" + identifier.getName() + "\" contains statements after return statement.";
+        }
+
+        return "";
+    }
 
 }
