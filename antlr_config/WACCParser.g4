@@ -29,7 +29,7 @@ expr:
 | expr compEq expr                          # CompEqExp
 | expr AND expr                             # AndExp
 | expr OR expr                              # OrExp
-| OPEN_PARENTHESES expr CLOSE_PARENTHESES   # BracketedExpr
+| OPEN_PARENTHESIS expr CLOSE_PARENTHESIS   # BracketedExpr
 ;
 
 // statement
@@ -56,27 +56,30 @@ stringLiteral: STRING_LITERAL;
 pairLiter: NULL;
 
 // types
-type: baseType | arrayType | pairType;
+type: baseType                                                              # BaseTp
+| type OPEN_BRACKET CLOSE_BRACKET                                           # ArrayTp
+| PAIR OPEN_PARENTHESIS pairElemType COMMA pairElemType CLOSE_PARENTHESIS   # PairTp
+;
 
 baseType: INT | BOOL | CHAR | STRING;
 
 arrayElem: IDENTIFIER (OPEN_BRACKET expr CLOSE_BRACKET)+;
 
 // before removing left recursion: arrayType: type OPEN_BRACKET CLOSE_BRACKET;
-arrayType: baseType OPEN_BRACKET CLOSE_BRACKET
-| arrayType OPEN_BRACKET CLOSE_BRACKET
-| pairType OPEN_BRACKET CLOSE_BRACKET;
 arrayLiteral: OPEN_BRACKET (expr (COMMA expr)*)? CLOSE_BRACKET;
 
 pairElem: FST expr | SND expr;
 
-pairElemType: baseType | arrayType | PAIR;
+pairElemType: baseType
+| type OPEN_BRACKET CLOSE_BRACKET
+| PAIR
+;
 
-pairType: PAIR OPEN_PARENTHESES pairElemType COMMA pairElemType
-CLOSE_PARENTHESES;
+pairType: PAIR OPEN_PARENTHESIS pairElemType COMMA pairElemType
+CLOSE_PARENTHESIS;
 
 // function
-func: type IDENTIFIER OPEN_PARENTHESES paramList? CLOSE_PARENTHESES IS stat END;
+func: type IDENTIFIER OPEN_PARENTHESIS paramList? CLOSE_PARENTHESIS IS stat END;
 argList: expr (COMMA expr)*;
 param: type IDENTIFIER;
 paramList: param (COMMA param)*;
@@ -87,9 +90,9 @@ assignLhs: IDENTIFIER | arrayElem | pairElem;
 
 assignRhs: expr
 | arrayLiteral
-| NEW_PAIR OPEN_PARENTHESES expr COMMA expr CLOSE_PARENTHESES
+| NEW_PAIR OPEN_PARENTHESIS expr COMMA expr CLOSE_PARENTHESIS
 | pairElem
-| CALL IDENTIFIER OPEN_PARENTHESES argList? CLOSE_PARENTHESES;
+| CALL IDENTIFIER OPEN_PARENTHESIS argList? CLOSE_PARENTHESIS;
 
 
 // EOF indicates that the program must consume to the end of the input.

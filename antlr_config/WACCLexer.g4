@@ -75,8 +75,8 @@ WS: [ \t\n]+ -> skip;
 LINE_COMMENT: '#' ~[\r\n]* -> skip;
 
 // brackets and quotes
-OPEN_PARENTHESES: '(';
-CLOSE_PARENTHESES: ')';
+OPEN_PARENTHESIS: '(';
+CLOSE_PARENTHESIS: ')';
 OPEN_BRACKET: '[';
 CLOSE_BRACKET: ']';
 CHAR_QUOTE: '\'';
