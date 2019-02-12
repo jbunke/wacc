@@ -2,7 +2,9 @@ package frontend;
 
 import antlr.WACCParser;
 import antlr.WACCParserVisitor;
+import frontend.abstractSyntaxTree.assignment.ArrayLiteralNode;
 import frontend.abstractSyntaxTree.assignment.AssignLHS;
+import frontend.abstractSyntaxTree.assignment.AssignPairElementNode;
 import frontend.abstractSyntaxTree.assignment.AssignRHS;
 import frontend.abstractSyntaxTree.expressions.*;
 import frontend.abstractSyntaxTree.Node;
@@ -271,12 +273,23 @@ public class Visitor implements WACCParserVisitor<Node> {
 
   @Override
   public Node visitArrayLiteral(WACCParser.ArrayLiteralContext ctx) {
-    return null;
+    List<ExpressionNode> elems = new ArrayList<>();
+    for (WACCParser.ExprContext exprContext : ctx.expr()) {
+      elems.add((ExpressionNode) visit(exprContext));
+    }
+    return new ArrayLiteralNode(elems);
   }
 
   @Override
-  public Node visitPairElem(WACCParser.PairElemContext ctx) {
-    return null;
+  public Node visitFstElem(WACCParser.FstElemContext ctx) {
+    IdentifierNode ident = (IdentifierNode) visit(ctx.expr());
+    return new AssignPairElementNode(ident, 0);
+  }
+
+  @Override
+  public Node visitSndElem(WACCParser.SndElemContext ctx) {
+    IdentifierNode ident = (IdentifierNode) visit(ctx.expr());
+    return new AssignPairElementNode(ident, 1);
   }
 
   @Override

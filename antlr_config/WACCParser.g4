@@ -60,7 +60,9 @@ arrayElem: IDENTIFIER (OPEN_BRACKET expr CLOSE_BRACKET)+;
 // before removing left recursion: arrayType: type OPEN_BRACKET CLOSE_BRACKET;
 arrayLiteral: OPEN_BRACKET (expr (COMMA expr)*)? CLOSE_BRACKET;
 
-pairElem: FST expr | SND expr;
+pairElem: FST expr        # FstElem
+| SND expr                # SndElem
+;
 
 pairElemType: baseType
 | type OPEN_BRACKET CLOSE_BRACKET
