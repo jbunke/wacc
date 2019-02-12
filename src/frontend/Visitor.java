@@ -7,8 +7,11 @@ import frontend.AbstractSyntaxTree.Assignment.AssignRHS;
 import frontend.AbstractSyntaxTree.Expressions.*;
 import frontend.AbstractSyntaxTree.Node;
 import frontend.AbstractSyntaxTree.Statements.DeclarationStatementNode;
+import frontend.AbstractSyntaxTree.Statements.PrintLineStatementNode;
+import frontend.AbstractSyntaxTree.Statements.PrintStatementNode;
 import frontend.AbstractSyntaxTree.TypeNodes.ArrayTypeNode;
 import frontend.AbstractSyntaxTree.TypeNodes.BaseTypesNode;
+import frontend.AbstractSyntaxTree.TypeNodes.PairTypeNode;
 import frontend.AbstractSyntaxTree.TypeNodes.TypeNode;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -163,7 +166,8 @@ public class Visitor implements WACCParserVisitor<Node> {
 
   @Override
   public Node visitPrintlnStat(WACCParser.PrintlnStatContext ctx) {
-    return null;
+    ExpressionNode expression = (ExpressionNode) visit(ctx.expr());
+    return new PrintLineStatementNode(expression);
   }
 
   @Override
@@ -180,7 +184,8 @@ public class Visitor implements WACCParserVisitor<Node> {
 
   @Override
   public Node visitPrintStat(WACCParser.PrintStatContext ctx) {
-    return null;
+    ExpressionNode expression = (ExpressionNode) visit(ctx.expr());
+    return new PrintStatementNode(expression);
   }
 
   @Override
@@ -226,7 +231,9 @@ public class Visitor implements WACCParserVisitor<Node> {
 
   @Override
   public Node visitPairTp(WACCParser.PairTpContext ctx) {
-    return null;
+    TypeNode fst = (TypeNode) visit(ctx.pairElemType(0));
+    TypeNode snd = (TypeNode) visit(ctx.pairElemType(1));
+    return new PairTypeNode(fst, snd);
   }
 
   @Override
