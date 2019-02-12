@@ -27,7 +27,7 @@ public class IdentifierNode extends ExpressionNode {
         }
     }
 
-    public String getId() {
+    public String getName() {
         return identifier;
     }
 

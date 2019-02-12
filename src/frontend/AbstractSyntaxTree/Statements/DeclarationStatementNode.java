@@ -41,7 +41,7 @@ public class DeclarationStatementNode extends StatementNode {
     }
 
     Variable variable = new Variable(identifierType.getType());
-    symbolTable.add(identifier.getId(), variable);
+    symbolTable.add(identifier.getName(), variable);
   }
 
   IdentifierNode getIdentifier() {
