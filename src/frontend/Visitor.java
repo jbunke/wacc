@@ -4,12 +4,89 @@ import antlr.WACCParser;
 import antlr.WACCParserVisitor;
 import frontend.AbstractSyntaxTree.Expressions.*;
 import frontend.AbstractSyntaxTree.Node;
+import frontend.AbstractSyntaxTree.TypeNodes.PairTypeNode;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.RuleNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 public class Visitor implements WACCParserVisitor<Node> {
+
+  @Override
+  public Node visitIdentifierExp(WACCParser.IdentifierExpContext ctx) {
+    return visitIdentifier(ctx.identifier());
+  }
+
+  @Override
+  public Node visitAndExp(WACCParser.AndExpContext ctx) {
+    return null;
+  }
+
+  @Override
+  public Node visitStringLitExp(WACCParser.StringLitExpContext ctx) {
+    return visitStringLiteral(ctx.stringLiteral());
+  }
+
+  @Override
+  public Node visitMultDivModExp(WACCParser.MultDivModExpContext ctx) {
+    return null;
+  }
+
+  @Override
+  public Node visitArrayElemExp(WACCParser.ArrayElemExpContext ctx) {
+    return visitArrayElem(ctx.arrayElem());
+  }
+
+  @Override
+  public Node visitUnaryOperExp(WACCParser.UnaryOperExpContext ctx) {
+    //return new UnaryOpExpressionNode(ctx.op.toString(), (ExpressionNode)visit(ctx));
+    return null;
+  }
+
+  @Override
+  public Node visitBracketedExpr(WACCParser.BracketedExprContext ctx) {
+    return visit(ctx.expr());
+  }
+
+  @Override
+  public Node visitIntLitExp(WACCParser.IntLitExpContext ctx) {
+    return visitIntLiteral(ctx.intLiteral());
+  }
+
+  @Override
+  public Node visitPairLitExp(WACCParser.PairLitExpContext ctx) {
+    return visitPairLiter(ctx.pairLiter());
+  }
+
+  @Override
+  public Node visitCompEqExp(WACCParser.CompEqExpContext ctx) {
+    return null;
+  }
+
+  @Override
+  public Node visitCompLsGrExp(WACCParser.CompLsGrExpContext ctx) {
+    return null;
+  }
+
+  @Override
+  public Node visitOrExp(WACCParser.OrExpContext ctx) {
+    return null;
+  }
+
+  @Override
+  public Node visitCharLitExp(WACCParser.CharLitExpContext ctx) {
+    return visitCharLiteral(ctx.charLiteral());
+  }
+
+  @Override
+  public Node visitAddSubExp(WACCParser.AddSubExpContext ctx) {
+    return null;
+  }
+
+  @Override
+  public Node visitBoolLitExp(WACCParser.BoolLitExpContext ctx) {
+    return visitBoolLiteral(ctx.boolLiteral());
+  }
 
   @Override
   public Node visitUnaryOper(WACCParser.UnaryOperContext ctx) {
@@ -38,10 +115,6 @@ public class Visitor implements WACCParserVisitor<Node> {
 
   @Override
   public Node visitIdentifier(WACCParser.IdentifierContext ctx) {
-    return null;
-  }
-
-  public Node visitExpr(WACCParser.ExprContext ctx) {
     return null;
   }
 
@@ -149,22 +222,27 @@ public class Visitor implements WACCParserVisitor<Node> {
     return null;
   }
 
+  @Override
   public Node visitProg(WACCParser.ProgContext ctx) {
     return null;
   }
 
+  @Override
   public Node visit(ParseTree tree) {
     return null;
   }
 
+  @Override
   public Node visitChildren(RuleNode node) {
     return null;
   }
 
+  @Override
   public Node visitTerminal(TerminalNode node) {
     return null;
   }
 
+  @Override
   public Node visitErrorNode(ErrorNode node) {
     return null;
   }

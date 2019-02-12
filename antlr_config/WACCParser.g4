@@ -14,21 +14,23 @@ compEq: EQUAL | NOT_EQUAL;
 
 identifier: IDENTIFIER;
 
-expr: intLiteral
-| boolLiteral
-| charLiteral
-| stringLiteral
-| pairLiter
-| identifier
-| arrayElem
-| unaryOper expr
-| expr multDivMod expr
-| expr addSub expr
-| expr compLsGr expr
-| expr compEq expr
-| expr AND expr
-| expr OR expr
-| OPEN_PARENTHESES expr CLOSE_PARENTHESES;
+expr:
+  intLiteral                                # IntLitExp
+| boolLiteral                               # BoolLitExp
+| charLiteral                               # CharLitExp
+| stringLiteral                             # StringLitExp
+| pairLiter                                 # PairLitExp
+| identifier                                # IdentifierExp
+| arrayElem                                 # ArrayElemExp
+| op=unaryOper exp=expr                     # UnaryOperExp
+| expr multDivMod expr                      # MultDivModExp
+| expr addSub expr                          # AddSubExp
+| expr compLsGr expr                        # CompLsGrExp
+| expr compEq expr                          # CompEqExp
+| expr AND expr                             # AndExp
+| expr OR expr                              # OrExp
+| OPEN_PARENTHESES expr CLOSE_PARENTHESES   # BracketedExpr
+;
 
 // statement
 stat: SKP
