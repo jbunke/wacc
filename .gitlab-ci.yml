@@ -8,4 +8,4 @@ build:
 
 test:
   stage: test
-  script: echo "this is an empty testing stage"
+  script: mvn test
