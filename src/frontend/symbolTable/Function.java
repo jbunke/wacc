@@ -1,17 +1,24 @@
 package frontend.symbolTable;
 
+import frontend.abstractSyntaxTree.typeNodes.ParameterListNode;
 import frontend.symbolTable.types.Type;
+import java.util.List;
 
 public class Function extends Identifier {
 
-    // TODO arguments and getArgs function (after AST Nodes)
-    private final Type returnType;
+  private final Type returnType;
+  private final List<Type> parameters;
 
-    public Function(Type returnType) {
-        this.returnType = returnType;
-    }
+  public List<Type> getParameters() {
+    return parameters;
+  }
 
-    public Type getReturnType() {
-        return returnType;
-    }
+  public Function(Type returnType, ParameterListNode parameters) {
+    this.returnType = returnType;
+    this.parameters = parameters.getParamTypes();
+  }
+
+  public Type getReturnType() {
+    return returnType;
+  }
 }
