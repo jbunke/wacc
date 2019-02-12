@@ -125,26 +125,22 @@ public class Visitor implements WACCParserVisitor<Node> {
 
   @Override
   public Node visitIntLiteral(WACCParser.IntLiteralContext ctx) {
-    Integer intLit = Integer.parseInt(ctx.getText());
-    return new IntLiteralExpressionNode(intLit);
+    return new IntLiteralExpressionNode(Integer.parseInt(ctx.getText()));
   }
 
   @Override
   public Node visitBoolLiteral(WACCParser.BoolLiteralContext ctx) {
-    Boolean boolLit = Boolean.parseBoolean(ctx.getText());
-    return new BooleanLiteralExpressionNode(boolLit);
+    return new BooleanLiteralExpressionNode(Boolean.parseBoolean(ctx.getText()));
   }
 
   @Override
   public Node visitCharLiteral(WACCParser.CharLiteralContext ctx) {
-    Character charLit = ctx.CHAR_LIT().getText().charAt(0);
-    return new CharacterLiteralExpressionNode(charLit);
+    return new CharacterLiteralExpressionNode(ctx.CHAR_LIT().getText().charAt(0));
   }
 
   @Override
   public Node visitStringLiteral(WACCParser.StringLiteralContext ctx) {
-    String stringLit = ctx.getText();
-    return new StringLiteralExpressionNode(stringLit);
+    return new StringLiteralExpressionNode(ctx.getText());
   }
 
   @Override

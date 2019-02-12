@@ -33,20 +33,20 @@ expr:
 ;
 
 // statement
-stat: SKP
-| stat SEMI_COLON stat
-| type IDENTIFIER ASSIGN assignRhs
-| assignLhs ASSIGN assignRhs
-| READ assignLhs
-| FREE expr
-| RETURN expr
-| EXIT expr
-| PRINT expr
-| PRINTLN expr
-| IF expr THEN stat ELSE stat FI
-| WHILE expr DO stat DONE
-| BEGIN stat END;
-
+stat: SKP                                   # SkipStat
+| stat SEMI_COLON stat                      # StatSeq
+| type IDENTIFIER ASSIGN assignRhs          # InitAssignStat
+| assignLhs ASSIGN assignRhs                # AssignStat
+| READ assignLhs                            # ReadStat
+| FREE expr                                 # FreeStat
+| RETURN expr                               # ReturnStat
+| EXIT expr                                 # ExitStat
+| PRINT expr                                # PrintStat
+| PRINTLN expr                              # PrintlnStat
+| IF expr THEN stat ELSE stat FI            # CondStat
+| WHILE expr DO stat DONE                   # WhileStat
+| BEGIN stat END                            # ScopeStat
+;
 // literals
 intLiteral: INT_LIT;
 boolLiteral: TRUE | FALSE;
