@@ -89,6 +89,71 @@ public class Visitor implements WACCParserVisitor<Node> {
   }
 
   @Override
+  public Node visitReturnStat(WACCParser.ReturnStatContext ctx) {
+    return null;
+  }
+
+  @Override
+  public Node visitExitStat(WACCParser.ExitStatContext ctx) {
+    return null;
+  }
+
+  @Override
+  public Node visitScopeStat(WACCParser.ScopeStatContext ctx) {
+    return null;
+  }
+
+  @Override
+  public Node visitFreeStat(WACCParser.FreeStatContext ctx) {
+    return null;
+  }
+
+  @Override
+  public Node visitSkipStat(WACCParser.SkipStatContext ctx) {
+    return null;
+  }
+
+  @Override
+  public Node visitInitAssignStat(WACCParser.InitAssignStatContext ctx) {
+    return null;
+  }
+
+  @Override
+  public Node visitWhileStat(WACCParser.WhileStatContext ctx) {
+    return null;
+  }
+
+  @Override
+  public Node visitReadStat(WACCParser.ReadStatContext ctx) {
+    return null;
+  }
+
+  @Override
+  public Node visitStatSeq(WACCParser.StatSeqContext ctx) {
+    return null;
+  }
+
+  @Override
+  public Node visitPrintlnStat(WACCParser.PrintlnStatContext ctx) {
+    return null;
+  }
+
+  @Override
+  public Node visitAssignStat(WACCParser.AssignStatContext ctx) {
+    return null;
+  }
+
+  @Override
+  public Node visitCondStat(WACCParser.CondStatContext ctx) {
+    return null;
+  }
+
+  @Override
+  public Node visitPrintStat(WACCParser.PrintStatContext ctx) {
+    return null;
+  }
+
+  @Override
   public Node visitUnaryOper(WACCParser.UnaryOperContext ctx) {
     return null;
   }
@@ -115,11 +180,6 @@ public class Visitor implements WACCParserVisitor<Node> {
 
   @Override
   public Node visitIdentifier(WACCParser.IdentifierContext ctx) {
-    return null;
-  }
-
-  @Override
-  public Node visitStat(WACCParser.StatContext ctx) {
     return null;
   }
 
