@@ -2,21 +2,22 @@ package frontend;
 
 import antlr.WACCParser;
 import antlr.WACCParserVisitor;
-import frontend.AbstractSyntaxTree.Assignment.AssignLHS;
-import frontend.AbstractSyntaxTree.Assignment.AssignRHS;
-import frontend.AbstractSyntaxTree.Expressions.*;
-import frontend.AbstractSyntaxTree.Node;
-import frontend.AbstractSyntaxTree.Statements.DeclarationStatementNode;
-import frontend.AbstractSyntaxTree.Statements.PrintLineStatementNode;
-import frontend.AbstractSyntaxTree.Statements.PrintStatementNode;
-import frontend.AbstractSyntaxTree.TypeNodes.ArrayTypeNode;
-import frontend.AbstractSyntaxTree.TypeNodes.BaseTypesNode;
-import frontend.AbstractSyntaxTree.TypeNodes.PairTypeNode;
-import frontend.AbstractSyntaxTree.TypeNodes.TypeNode;
+import frontend.abstractSyntaxTree.assignment.AssignLHS;
+import frontend.abstractSyntaxTree.assignment.AssignRHS;
+import frontend.abstractSyntaxTree.expressions.*;
+import frontend.abstractSyntaxTree.Node;
+import frontend.abstractSyntaxTree.statements.*;
+import frontend.abstractSyntaxTree.typeNodes.ArrayTypeNode;
+import frontend.abstractSyntaxTree.typeNodes.BaseTypesNode;
+import frontend.abstractSyntaxTree.typeNodes.PairTypeNode;
+import frontend.abstractSyntaxTree.typeNodes.TypeNode;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.RuleNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Visitor implements WACCParserVisitor<Node> {
 
@@ -117,27 +118,31 @@ public class Visitor implements WACCParserVisitor<Node> {
 
   @Override
   public Node visitReturnStat(WACCParser.ReturnStatContext ctx) {
-    return null;
+    ExpressionNode expression = (ExpressionNode) visit(ctx.expr());
+    return new ReturnStatementNode(expression);
   }
 
   @Override
   public Node visitExitStat(WACCParser.ExitStatContext ctx) {
-    return null;
+    ExpressionNode expression = (ExpressionNode) visit(ctx.expr());
+    return new ExitStatementNode(expression);
   }
 
   @Override
   public Node visitScopeStat(WACCParser.ScopeStatContext ctx) {
-    return null;
+    StatementNode stat = (StatementNode) visit(ctx.stat());
+    return new InnerScopeStatementNode(stat);
   }
 
   @Override
   public Node visitFreeStat(WACCParser.FreeStatContext ctx) {
-    return null;
+    ExpressionNode expression = (ExpressionNode) visit(ctx.expr());
+    return new FreeStatementNode(expression);
   }
 
   @Override
   public Node visitSkipStat(WACCParser.SkipStatContext ctx) {
-    return null;
+    return new SkipStatementNode();
   }
 
   @Override
@@ -151,17 +156,26 @@ public class Visitor implements WACCParserVisitor<Node> {
 
   @Override
   public Node visitWhileStat(WACCParser.WhileStatContext ctx) {
-    return null;
+    ExpressionNode cond = (ExpressionNode) visit(ctx.expr());
+    StatementNode stat = (StatementNode) visit(ctx.stat());
+    return new WhileStatementNode(cond, stat);
   }
 
   @Override
   public Node visitReadStat(WACCParser.ReadStatContext ctx) {
-    return null;
+    AssignLHS lhs = (AssignLHS) visit(ctx.assignLhs());
+    return new ReadStatementNode(lhs);
   }
 
   @Override
   public Node visitStatSeq(WACCParser.StatSeqContext ctx) {
-    return null;
+    List<WACCParser.StatContext> statements = ctx.stat();
+    List<StatementNode> nodes = new ArrayList<>();
+
+    for (WACCParser.StatContext statContext : statements) {
+      nodes.add((StatementNode) visit(statContext));
+    }
+    return new StatementListNode(nodes);
   }
 
   @Override
@@ -174,12 +188,16 @@ public class Visitor implements WACCParserVisitor<Node> {
   public Node visitAssignStat(WACCParser.AssignStatContext ctx) {
     AssignLHS lhs = (AssignLHS) visit(ctx.assignLhs());
     AssignRHS rhs = (AssignRHS) visit(ctx.assignRhs());
-    return null;
+    return new AssignVariableStatementNode(lhs, rhs);
   }
 
   @Override
   public Node visitCondStat(WACCParser.CondStatContext ctx) {
-    return null;
+    ExpressionNode cond = (ExpressionNode) visit(ctx.expr());
+    StatementNode tr = (StatementNode) visit(ctx.stat(0));
+    StatementNode fl = (StatementNode) visit(ctx.stat(1));
+
+    return new IfStatementNode(cond, tr, fl);
   }
 
   @Override
@@ -243,7 +261,12 @@ public class Visitor implements WACCParserVisitor<Node> {
 
   @Override
   public Node visitArrayElem(WACCParser.ArrayElemContext ctx) {
-    return null;
+    IdentifierNode ident = new IdentifierNode(ctx.IDENTIFIER().getText());
+    List<ExpressionNode> indices = new ArrayList<>();
+    for (WACCParser.ExprContext expr : ctx.expr()) {
+      indices.add((ExpressionNode) visit(expr));
+    }
+    return new ArrayElementNode(indices, ident);
   }
 
   @Override
