@@ -122,12 +122,12 @@ public class BinaryOpExpressionNode extends ExpressionNode {
   }
 
   public Type getType(SymbolTable symbolTable) {
-    Type leftType = left.getType(symbolTable);
-    Type rightType = right.getType(symbolTable);
-
-    if (leftType == null || rightType == null || !leftType.equals(rightType)) {
-      return null;
-    }
+//    Type leftType = left.getType(symbolTable);
+//    Type rightType = right.getType(symbolTable);
+//
+//    if (leftType == null || rightType == null || !leftType.equals(rightType)) {
+//      return null;
+//    }
 
     switch (operatorType) {
       case GREATER_THAN:
@@ -144,9 +144,10 @@ public class BinaryOpExpressionNode extends ExpressionNode {
       case MOD:
       case PLUS:
       case MINUS:
-        return new BaseTypes(BaseTypes.base_types.INT);
       default:
-        return null;
+        return new BaseTypes(BaseTypes.base_types.INT);
+//      default:
+//        return null;
     }
   }
 
