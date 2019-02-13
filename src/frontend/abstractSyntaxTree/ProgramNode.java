@@ -32,12 +32,12 @@ public class ProgramNode implements Node {
 
     // Semantic checks for functions
     for (FunctionDefinitionNode func : functions) {
-      SymbolTable funcTable = new SymbolTable(symbolTable);
+      SymbolTable funcTable = symbolTable.newChild();
       func.semanticCheck(funcTable, errorList);
     }
 
     // Semantic checks for program global statements
-    SymbolTable statTable = new SymbolTable(symbolTable);
+    SymbolTable statTable = symbolTable.newChild();
     stat.semanticCheck(statTable, errorList);
   }
 

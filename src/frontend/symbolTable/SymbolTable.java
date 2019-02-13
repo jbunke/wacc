@@ -38,4 +38,8 @@ public class SymbolTable {
     }
     return null;
   }
+
+  public SymbolTable newChild() {
+    return new SymbolTable(this);
+  }
 }
