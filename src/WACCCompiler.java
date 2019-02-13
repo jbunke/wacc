@@ -1,6 +1,3 @@
-import antlr.WACCLexer;
-import antlr.WACCParser;
-
 import frontend.Visitor;
 import frontend.abstractSyntaxTree.ProgramNode;
 import frontend.symbolTable.SemanticErrorList;
@@ -34,16 +31,19 @@ public class WACCCompiler {
     String file = args[0];
 
     try {
+
       CharStream input = CharStreams.fromFileName(file);
       WACCLexer lexer = new WACCLexer(input);
-      lexer.removeErrorListeners();
-      TokenStream tokens = new CommonTokenStream(lexer) {
-      };
-      WACCParser parser = new WACCParser(tokens);
-      parser.removeErrorListeners();
 
-      WACCParserErrorListener syntaxErrorListener =
-              new WACCParserErrorListener();
+      lexer.removeErrorListeners();                        // Remove the ANTLR
+      // default error
+      TokenStream tokens = new CommonTokenStream(lexer);   // listeners so that
+      WACCParser parser = new WACCParser(tokens);          // our own can be
+      // used without
+      parser.removeErrorListeners();                       // multiple errors
+      // being raised from
+      WACCParserErrorListener syntaxErrorListener =        // a single syntax
+              new WACCParserErrorListener();                   // error encounter.
       parser.addErrorListener(syntaxErrorListener);
 
       WACCParser.ProgContext parseTree = parser.prog();
@@ -84,9 +84,10 @@ public class WACCCompiler {
         System.exit(SEMANTIC_ERROR_EXIT);
       }
     } catch (IOException e) {
-      System.err.println("File at path (" + file + ") doesn't exist");
+      System.out.println("File at path (" + file + ") doesn't exist");
     } catch (RecognitionException e) {
-      System.err.println("Error with prediction, predicate failure or mismatched input occurred.");
+      System.out.println("Error with prediction, predicate failure or "
+              + "mismatched input occurred.");
     }
 
   }
