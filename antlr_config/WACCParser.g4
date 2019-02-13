@@ -5,19 +5,11 @@ options {
 }
 
 expr:
-  intLiteral {
-      try{
-        Integer.parseInt(_localctx.getText());
-      }
-      catch(NumberFormatException e) {
-        notifyErrorListeners("Integer formatting is invalid.");
-      }
-  }                                         # IntLitExp
-| boolLiteral                               # BoolLitExp
+  boolLiteral                               # BoolLitExp
 | charLiteral                               # CharLitExp
 | stringLiteral                             # StringLitExp
 | pairLiter                                 # PairLitExp
-| IDENTIFIER                                # IdentifierExp
+| ident                                     # IdentifierExp
 | arrayElem                                 # ArrayElemExp
 | UNARY expr                                # UnaryOperExp
 | expr MULTDIVMOD expr                      # MultDivModExp
@@ -27,6 +19,14 @@ expr:
 | expr AND expr                             # AndExp
 | expr OR expr                              # OrExp
 | OPEN_PARENTHESIS expr CLOSE_PARENTHESIS   # BracketedExpr
+| intLiteral {
+        try{
+          Integer.parseInt(_localctx.getText());
+        }
+        catch(NumberFormatException e) {
+          notifyErrorListeners("Integer formatting is invalid.");
+        }
+    }                                       # IntLitExp
 ;
 
 // statement
@@ -46,7 +46,8 @@ stat: SKP                                   # SkipStat
 ;
 // literals
 intLiteral: INT_LIT;
-boolLiteral: TRUE | FALSE;
+boolLiteral: BOOL_LITER;
+ident: IDENTIFIER;
 
 charLiteral: CHAR_LIT;
 stringLiteral: STRING_LITERAL;

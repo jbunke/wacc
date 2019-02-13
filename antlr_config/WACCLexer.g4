@@ -1,10 +1,10 @@
 lexer grammar WACCLexer;
 
-SEMI_COLON: ';';
+//ignore whitespace and line comment
+WS: [ \t\n]+ -> skip;
+LINE_COMMENT: '#' ~[\r\n]* -> skip;
 
-fragment UNDERSCORE: '_';
-fragment LOWERCASE: [a-z];
-fragment UPPERCASE: [A-Z];
+SEMI_COLON: ';';
 
 //assignment
 ASSIGN: '=';
@@ -17,7 +17,7 @@ COMP_LS_GR: GREATER_THAN | GREATER_THAN_OR_EQUAL
 COMP_EQ: EQUAL | NOT_EQUAL;
 
 // unary ops
-UNARY: PLUS | MINUS | NOT | LEN | ORD | CHR;
+UNARY: MINUS | NOT | LEN | ORD | CHR;
 
 // operators
 NOT: '!';
@@ -27,8 +27,8 @@ CHR: 'chr';
 TIMES: '*';
 DIVIDE: '/';
 MOD: '%';
-PLUS: '+' ;
-MINUS: '-' ;
+PLUS: '+';
+MINUS: '-';
 GREATER_THAN: '>';
 GREATER_THAN_OR_EQUAL: '>=';
 LESS_THAN: '<';
@@ -73,16 +73,7 @@ NEW_PAIR: 'newpair';
 
 // numbers
 fragment DIGIT: '0'..'9';
-INT_LIT: DIGIT+;
-
-// identifier
-fragment IDENTIFIER_INITIAL: UNDERSCORE | LOWERCASE | UPPERCASE;
-fragment IDENTIFIER_MAIN: IDENTIFIER_INITIAL | DIGIT;
-IDENTIFIER: IDENTIFIER_INITIAL IDENTIFIER_MAIN*;
-
-//ignore whitespace and line comment
-WS: [ \t\n]+ -> skip;
-LINE_COMMENT: '#' ~[\r\n]* -> skip;
+INT_LIT: (PLUS | MINUS)? DIGIT+;
 
 // brackets and quotes
 OPEN_PARENTHESIS: '(';
@@ -93,8 +84,7 @@ CHAR_QUOTE: '\'';
 STR_QUOTE: '"';
 
 // literals
-TRUE: 'true';
-FALSE: 'false';
+BOOL_LITER: 'true' | 'false';
 
 fragment RESTRICTED_ASCII: ~('\\' | '\'' | '"');
 
@@ -108,6 +98,5 @@ ESC_CHAR: '\\' ('0' | 'b' | 't' | 'n' | 'f' | 'r' | '"' | '\'' | '\\');
 
 COMMA: ',';
 
-
-
-
+// identifier
+IDENTIFIER: [_A-Za-z] [_A-Za-z0-9]*;

@@ -16,7 +16,7 @@ public class Visitor extends WACCParserBaseVisitor<Node> {
 
   @Override
   public Node visitIdentifierExp(WACCParser.IdentifierExpContext ctx) {
-    return new IdentifierNode(ctx.IDENTIFIER().getText());
+    return new IdentifierNode(ctx.ident().IDENTIFIER().getText());
   }
 
   @Override
@@ -107,7 +107,8 @@ public class Visitor extends WACCParserBaseVisitor<Node> {
 
   @Override
   public Node visitBoolLitExp(WACCParser.BoolLitExpContext ctx) {
-    return visitBoolLiteral(ctx.boolLiteral());
+    return new BooleanLiteralExpressionNode(
+            Boolean.parseBoolean(ctx.boolLiteral().BOOL_LITER().getText()));
   }
 
   @Override
@@ -204,11 +205,6 @@ public class Visitor extends WACCParserBaseVisitor<Node> {
   public Node visitPrintStat(WACCParser.PrintStatContext ctx) {
     ExpressionNode expression = (ExpressionNode) visit(ctx.expr());
     return new PrintStatementNode(expression);
-  }
-
-  @Override
-  public Node visitBoolLiteral(WACCParser.BoolLiteralContext ctx) {
-    return new BooleanLiteralExpressionNode(Boolean.parseBoolean(ctx.getText()));
   }
 
   @Override
