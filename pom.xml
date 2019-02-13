@@ -74,7 +74,7 @@
                 <version>3.0.0-M3</version>
                 <configuration>
                     <additionalClasspathElements>
-                        <additionalClasspathElement>/Users/bunemekyakilika/Documents/Java/wacc/lib/antlr-4.7-complete.jar</additionalClasspathElement>
+                        <additionalClasspathElement>lib/antlr-4.7-complete.jar</additionalClasspathElement>
                     </additionalClasspathElements>
                 </configuration>
             </plugin>
