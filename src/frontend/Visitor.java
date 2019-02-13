@@ -285,8 +285,18 @@ public class Visitor extends WACCParserBaseVisitor<Node> {
   }
 
   @Override
-  public Node visitPairElemType(WACCParser.PairElemTypeContext ctx) {
-    return null;
+  public Node visitPairElemTypeBase(WACCParser.PairElemTypeBaseContext ctx) {
+    return visitBaseType(ctx.baseType());
+  }
+
+  @Override
+  public Node visitPairElemTypeArray(WACCParser.PairElemTypeArrayContext ctx) {
+    return visit(ctx.type());
+  }
+
+  @Override
+  public Node visitPairElemTypePair(WACCParser.PairElemTypePairContext ctx) {
+    return new InnerPairTypeNode();
   }
 
   @Override

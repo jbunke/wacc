@@ -1,11 +1,11 @@
 package frontend.abstractSyntaxTree.expressions;
 
-import frontend.abstractSyntaxTree.Node;
+import frontend.abstractSyntaxTree.assignment.AssignRHS;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.Type;
 
-public abstract class ExpressionNode implements Node {
+public abstract class ExpressionNode implements AssignRHS {
 
   public abstract void semanticCheck(SymbolTable symbolTable, SemanticErrorList errorList);
 

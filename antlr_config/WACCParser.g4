@@ -62,9 +62,9 @@ pairElem: FST expr        # FstElem
 | SND expr                # SndElem
 ;
 
-pairElemType: baseType
-| type OPEN_BRACKET CLOSE_BRACKET
-| PAIR
+pairElemType: baseType                          # PairElemTypeBase
+| type OPEN_BRACKET CLOSE_BRACKET               # PairElemTypeArray
+| PAIR                                          # PairElemTypePair
 ;
 
 // function
