@@ -4,15 +4,13 @@ options {
   tokenVocab=WACCLexer;
 }
 
-identifier: IDENTIFIER;
-
 expr:
   intLiteral                                # IntLitExp
 | boolLiteral                               # BoolLitExp
 | charLiteral                               # CharLitExp
 | stringLiteral                             # StringLitExp
 | pairLiter                                 # PairLitExp
-| identifier                                # IdentifierExp
+| IDENTIFIER                                # IdentifierExp
 | arrayElem                                 # ArrayElemExp
 | UNARY expr                                # UnaryOperExp
 | expr MULTDIVMOD expr                      # MultDivModExp
@@ -71,18 +69,21 @@ pairElemType: baseType
 
 // function
 func: type IDENTIFIER OPEN_PARENTHESIS paramList? CLOSE_PARENTHESIS IS stat END;
-argList: expr (COMMA expr)*;
 paramList: type IDENTIFIER (COMMA type IDENTIFIER)*;
 
 
 // assign
-assignLhs: IDENTIFIER | arrayElem | pairElem;
+assignLhs: IDENTIFIER   # LHSIdent
+| arrayElem             # LHSArrayElem
+| pairElem              # LHSPairElem
+;
 
-assignRhs: expr
-| arrayLiteral
-| NEW_PAIR OPEN_PARENTHESIS expr COMMA expr CLOSE_PARENTHESIS
-| pairElem
-| CALL IDENTIFIER OPEN_PARENTHESIS argList? CLOSE_PARENTHESIS;
+assignRhs: expr                                                               # RHSExpr
+| arrayLiteral                                                                # RHSArrayLit
+| NEW_PAIR OPEN_PARENTHESIS expr COMMA expr CLOSE_PARENTHESIS                 # RHSNewPair
+| pairElem                                                                    # RHSPairElem
+| CALL IDENTIFIER OPEN_PARENTHESIS (expr (COMMA expr)*)? CLOSE_PARENTHESIS    # RHSFunctionCall
+;
 
 
 // EOF indicates that the program must consume to the end of the input.

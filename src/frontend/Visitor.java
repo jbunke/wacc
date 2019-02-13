@@ -1,25 +1,21 @@
 package frontend;
 
 import antlr.WACCParser;
-import antlr.WACCParserVisitor;
+import antlr.WACCParserBaseVisitor;
 import frontend.abstractSyntaxTree.assignment.*;
 import frontend.abstractSyntaxTree.expressions.*;
 import frontend.abstractSyntaxTree.Node;
 import frontend.abstractSyntaxTree.statements.*;
 import frontend.abstractSyntaxTree.typeNodes.*;
-import org.antlr.v4.runtime.tree.ErrorNode;
-import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.RuleNode;
-import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Visitor implements WACCParserVisitor<Node> {
+public class Visitor extends WACCParserBaseVisitor<Node> {
 
   @Override
   public Node visitIdentifierExp(WACCParser.IdentifierExpContext ctx) {
-    return visitIdentifier(ctx.identifier());
+    return new IdentifierNode(ctx.IDENTIFIER().getText());
   }
 
   @Override
@@ -203,11 +199,6 @@ public class Visitor implements WACCParserVisitor<Node> {
   }
 
   @Override
-  public Node visitIdentifier(WACCParser.IdentifierContext ctx) {
-    return new IdentifierNode(ctx.getText());
-  }
-
-  @Override
   public Node visitIntLiteral(WACCParser.IntLiteralContext ctx) {
     return new IntLiteralExpressionNode(Integer.parseInt(ctx.getText()));
   }
@@ -303,11 +294,6 @@ public class Visitor implements WACCParserVisitor<Node> {
   }
 
   @Override
-  public Node visitArgList(WACCParser.ArgListContext ctx) {
-    return null;
-  }
-
-  @Override
   public Node visitParamList(WACCParser.ParamListContext ctx) {
     List<IdentifierNode> paramNames = new ArrayList<>();
     List<TypeNode> paramTypes = new ArrayList<>();
@@ -322,37 +308,56 @@ public class Visitor implements WACCParserVisitor<Node> {
   }
 
   @Override
-  public Node visitAssignLhs(WACCParser.AssignLhsContext ctx) {
-    return null;
+  public Node visitLHSIdent(WACCParser.LHSIdentContext ctx) {
+    return new IdentifierNode(ctx.IDENTIFIER().getText());
   }
 
   @Override
-  public Node visitAssignRhs(WACCParser.AssignRhsContext ctx) {
-    return null;
+  public Node visitLHSArrayElem(WACCParser.LHSArrayElemContext ctx) {
+    return visitArrayElem(ctx.arrayElem());
+  }
+
+  @Override
+  public Node visitLHSPairElem(WACCParser.LHSPairElemContext ctx) {
+    return visit(ctx.pairElem());
+  }
+
+  @Override
+  public Node visitRHSExpr(WACCParser.RHSExprContext ctx) {
+    return visit(ctx.expr());
+  }
+
+  @Override
+  public Node visitRHSArrayLit(WACCParser.RHSArrayLitContext ctx) {
+    return visitArrayLiteral(ctx.arrayLiteral());
+  }
+
+  @Override
+  public Node visitRHSNewPair(WACCParser.RHSNewPairContext ctx) {
+    ExpressionNode left = (ExpressionNode) visit(ctx.expr(0));
+    ExpressionNode right = (ExpressionNode) visit(ctx.expr(1));
+    return new NewPairNode(left, right);
+  }
+
+  @Override
+  public Node visitRHSPairElem(WACCParser.RHSPairElemContext ctx) {
+    return visit(ctx.pairElem());
+  }
+
+  @Override
+  public Node visitRHSFunctionCall(WACCParser.RHSFunctionCallContext ctx) {
+    IdentifierNode functName = new IdentifierNode(ctx.IDENTIFIER().getText());
+    List<ExpressionNode> args = new ArrayList<>();
+
+    for (WACCParser.ExprContext arg : ctx.expr()) {
+      args.add((ExpressionNode) visit(arg));
+    }
+
+    return new FunctionCallNode(functName, args);
   }
 
   @Override
   public Node visitProg(WACCParser.ProgContext ctx) {
-    return null;
-  }
-
-  @Override
-  public Node visit(ParseTree tree) {
-    return null;
-  }
-
-  @Override
-  public Node visitChildren(RuleNode node) {
-    return null;
-  }
-
-  @Override
-  public Node visitTerminal(TerminalNode node) {
-    return null;
-  }
-
-  @Override
-  public Node visitErrorNode(ErrorNode node) {
     return null;
   }
 }
