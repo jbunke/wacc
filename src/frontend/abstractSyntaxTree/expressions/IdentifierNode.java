@@ -13,7 +13,7 @@ public class IdentifierNode extends ExpressionNode {
   @Override
   public void semanticCheck(SymbolTable symbolTable, SemanticErrorList errorList) {
 
-    Identifier id = symbolTable.fetchType(identifier);
+    SymbolCategory id = symbolTable.find(identifier);
     if (id == null) {
       errorList.addError(new SemanticError(
               "Identifier \"" + identifier + "\" is used before it is declared."
@@ -31,7 +31,7 @@ public class IdentifierNode extends ExpressionNode {
 
   @Override
   public Type getType(SymbolTable symbolTable) {
-    Identifier identifier = symbolTable.fetchType(this.identifier);
+    SymbolCategory identifier = symbolTable.find(this.identifier);
     if (identifier == null || !(identifier instanceof Variable)) {
       return null;
     }

@@ -2,6 +2,7 @@ package frontend;
 
 import antlr.WACCParser;
 import antlr.WACCParserBaseVisitor;
+import frontend.abstractSyntaxTree.ProgramNode;
 import frontend.abstractSyntaxTree.assignment.*;
 import frontend.abstractSyntaxTree.expressions.*;
 import frontend.abstractSyntaxTree.Node;
@@ -161,13 +162,19 @@ public class Visitor extends WACCParserBaseVisitor<Node> {
 
   @Override
   public Node visitStatSeq(WACCParser.StatSeqContext ctx) {
-    List<WACCParser.StatContext> statements = ctx.stat();
-    List<StatementNode> nodes = new ArrayList<>();
+    // TODO: Comment code
+    List<StatementNode> statements = new ArrayList<>();
+    StatementNode node1 = (StatementNode) visit(ctx.stat(0));
+    StatementNode node2 = (StatementNode) visit(ctx.stat(1));
 
-    for (WACCParser.StatContext statContext : statements) {
-      nodes.add((StatementNode) visit(statContext));
+    if (node1 instanceof StatementListNode) {
+      StatementListNode unfolded = (StatementListNode) node1;
+      statements.addAll(unfolded.getStatements());
+    } else {
+      statements.add(node1);
     }
-    return new StatementListNode(nodes);
+    statements.add(node2);
+    return new StatementListNode(statements);
   }
 
   @Override
@@ -358,6 +365,13 @@ public class Visitor extends WACCParserBaseVisitor<Node> {
 
   @Override
   public Node visitProg(WACCParser.ProgContext ctx) {
-    return null;
+    StatementNode stat = (StatementNode) visit(ctx.stat());
+
+    List<FunctionDefinitionNode> functions = new ArrayList<>();
+    for (WACCParser.FuncContext fctx : ctx.func()) {
+      functions.add((FunctionDefinitionNode) visitFunc(fctx));
+    }
+
+    return new ProgramNode(functions, stat);
   }
 }

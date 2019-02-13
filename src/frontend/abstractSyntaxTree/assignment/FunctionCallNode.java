@@ -3,7 +3,7 @@ package frontend.abstractSyntaxTree.assignment;
 import frontend.abstractSyntaxTree.expressions.ExpressionNode;
 import frontend.abstractSyntaxTree.expressions.IdentifierNode;
 import frontend.symbolTable.Function;
-import frontend.symbolTable.Identifier;
+import frontend.symbolTable.SymbolCategory;
 import frontend.symbolTable.SemanticError;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
@@ -24,14 +24,14 @@ public class FunctionCallNode implements AssignRHS {
 
   @Override
   public Type getType(SymbolTable symbolTable) {
-    Function function = (Function) symbolTable.fetchType(functionIdentifier.getName());
+    Function function = (Function) symbolTable.find(functionIdentifier.getName());
     this.function = function;
     return function.getReturnType();
   }
 
   @Override
   public void semanticCheck(SymbolTable symbolTable, SemanticErrorList errorList) {
-    Identifier function = symbolTable.fetchType(functionIdentifier.getName());
+    SymbolCategory function = symbolTable.find(functionIdentifier.getName());
     if (function == null) {
       errorList.addError(new SemanticError("This function does not exist"));
       return;

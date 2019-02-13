@@ -5,7 +5,7 @@ import frontend.symbolTable.types.Type;
 
 import java.util.List;
 
-public class Function extends Identifier {
+public class Function extends SymbolCategory {
 
   private final Type returnType;
   private final List<Type> parameters;

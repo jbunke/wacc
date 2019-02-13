@@ -21,7 +21,7 @@ public class SemanticErrorList {
     }
   }
 
-  public boolean hasSemanticErrors() {
+  public boolean errorsExist() {
     return !errorList.isEmpty();
   }
 }

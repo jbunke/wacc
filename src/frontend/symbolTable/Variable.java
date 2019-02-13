@@ -3,7 +3,7 @@ package frontend.symbolTable;
 
 import frontend.symbolTable.types.Type;
 
-public class Variable extends Identifier {
+public class Variable extends SymbolCategory {
   private final Type type;
 
   public Variable(Type type) {
