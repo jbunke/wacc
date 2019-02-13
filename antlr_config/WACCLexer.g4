@@ -9,6 +9,16 @@ fragment UPPERCASE: [A-Z];
 //assignment
 ASSIGN: '=';
 
+// precedence categories
+MULTDIVMOD: TIMES | DIVIDE | MOD;
+ADDSUB: PLUS | MINUS;
+COMP_LS_GR: GREATER_THAN | GREATER_THAN_OR_EQUAL
+| LESS_THAN | LESS_THAN_OR_EQUAL;
+COMP_EQ: EQUAL | NOT_EQUAL;
+
+// unary ops
+UNARY: NOT | LEN | ORD | CHR | MINUS;
+
 // operators
 NOT: '!';
 LEN: 'len';
@@ -75,8 +85,8 @@ WS: [ \t\n]+ -> skip;
 LINE_COMMENT: '#' ~[\r\n]* -> skip;
 
 // brackets and quotes
-OPEN_PARENTHESES: '(';
-CLOSE_PARENTHESES: ')';
+OPEN_PARENTHESIS: '(';
+CLOSE_PARENTHESIS: ')';
 OPEN_BRACKET: '[';
 CLOSE_BRACKET: ']';
 CHAR_QUOTE: '\'';

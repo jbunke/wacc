@@ -4,6 +4,7 @@ src/antlr
 out
 .idea/
 rules
+target/
 
 #ignore Java class files
 *.class

@@ -24,7 +24,7 @@ public class FunctionCallNode implements AssignRHS {
   @Override
   public Type getType(SymbolTable symbolTable) {
     Function function = (Function) symbolTable.fetchType(functionIdentifier.getName());
-    function = function;
+    this.function = function;
     return function.getReturnType();
   }
 
