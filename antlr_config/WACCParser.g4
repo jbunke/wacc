@@ -72,8 +72,7 @@ pairElemType: baseType
 // function
 func: type IDENTIFIER OPEN_PARENTHESIS paramList? CLOSE_PARENTHESIS IS stat END;
 argList: expr (COMMA expr)*;
-param: type IDENTIFIER;
-paramList: param (COMMA param)*;
+paramList: type IDENTIFIER (COMMA type IDENTIFIER)*;
 
 
 // assign

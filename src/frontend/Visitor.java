@@ -2,17 +2,11 @@ package frontend;
 
 import antlr.WACCParser;
 import antlr.WACCParserVisitor;
-import frontend.abstractSyntaxTree.assignment.ArrayLiteralNode;
-import frontend.abstractSyntaxTree.assignment.AssignLHS;
-import frontend.abstractSyntaxTree.assignment.AssignPairElementNode;
-import frontend.abstractSyntaxTree.assignment.AssignRHS;
+import frontend.abstractSyntaxTree.assignment.*;
 import frontend.abstractSyntaxTree.expressions.*;
 import frontend.abstractSyntaxTree.Node;
 import frontend.abstractSyntaxTree.statements.*;
-import frontend.abstractSyntaxTree.typeNodes.ArrayTypeNode;
-import frontend.abstractSyntaxTree.typeNodes.BaseTypesNode;
-import frontend.abstractSyntaxTree.typeNodes.PairTypeNode;
-import frontend.abstractSyntaxTree.typeNodes.TypeNode;
+import frontend.abstractSyntaxTree.typeNodes.*;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.RuleNode;
@@ -299,7 +293,13 @@ public class Visitor implements WACCParserVisitor<Node> {
 
   @Override
   public Node visitFunc(WACCParser.FuncContext ctx) {
-    return null;
+    TypeNode typeNode = (TypeNode) visit(ctx.type());
+    IdentifierNode ident = new IdentifierNode(ctx.IDENTIFIER().getText());
+    StatementNode stat = (StatementNode) visit(ctx.stat());
+
+    ParameterListNode params = (ParameterListNode) visitParamList(ctx.paramList());
+
+    return new FunctionDefinitionNode(typeNode, ident, params, stat);
   }
 
   @Override
@@ -308,13 +308,17 @@ public class Visitor implements WACCParserVisitor<Node> {
   }
 
   @Override
-  public Node visitParam(WACCParser.ParamContext ctx) {
-    return null;
-  }
-
-  @Override
   public Node visitParamList(WACCParser.ParamListContext ctx) {
-    return null;
+    List<IdentifierNode> paramNames = new ArrayList<>();
+    List<TypeNode> paramTypes = new ArrayList<>();
+
+    for (int i = 0; i < ctx.IDENTIFIER().size(); i++) {
+      paramNames.add(
+              new IdentifierNode(ctx.IDENTIFIER(i).getText()));
+      paramTypes.add((TypeNode) visit(ctx.type(i)));
+    }
+
+    return new ParameterListNode(paramNames, paramTypes);
   }
 
   @Override
