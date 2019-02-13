@@ -44,9 +44,9 @@ public class FunctionCallNode implements AssignRHS {
 
     Function f = (Function) function;
 
-    if (f.getParameters().size() >= arguments.size()) {
+    if (f.getParameters().size() > arguments.size()) {
       errorList.addError(new SemanticError("Too few arguments"));
-    } else if (f.getParameters().size() <= arguments.size()) {
+    } else if (f.getParameters().size() < arguments.size()) {
       errorList.addError(new SemanticError(("Too many arguments")));
     } else {
       List<Type> parameters = f.getParameters();
