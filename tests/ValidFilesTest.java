@@ -1,14 +1,18 @@
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.contrib.java.lang.system.ExpectedSystemExit;
 
-import java.util.Arrays;
 import java.util.Collections;
-
-import static org.junit.Assert.*;
 
 public class ValidFilesTest {
 
+    @Rule
+    public final ExpectedSystemExit exit = ExpectedSystemExit.none();
+
+
     private void doesCompileWithErrorCode0(String filepath){
-        // TODO: Compile and check error code
+        WACCCompiler.main(new String[]{filepath});
+        exit.expectSystemExitWithStatus(0);
     }
 
     //Example
