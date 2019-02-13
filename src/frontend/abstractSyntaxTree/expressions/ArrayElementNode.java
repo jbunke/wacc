@@ -57,7 +57,7 @@ public class ArrayElementNode extends ExpressionNode {
 
   @Override
   public Type getType(SymbolTable symbolTable) {
-    Variable array = (Variable) symbolTable.fetchType(identifier.getName());
+    Variable array = (Variable) symbolTable.find(identifier.getName());
     Array current = (Array) array.getType();
 
     for (int i = indices.size(); i > 1; i--) {

@@ -44,13 +44,13 @@ public class FunctionDefinitionNode implements Node {
 
   public String syntaxCheck() {
     if (!body.containsReturn() && !body.containsExit()) {
-      return "Function \"" + identifier.getName() + "\" has no return or exit statement.";
-
+      return "Function \"" + identifier.getName() +
+              "\" has no return or exit statement.";
     } else if (!body.endsWithReturn()) {
-      return "Function  \"" + identifier.getName() + "\" contains statements after return statement.";
+      return "Function  \"" + identifier.getName() +
+              "\" contains statements after return statement.";
     }
-
-    return "";
+    return null;
   }
 
 }

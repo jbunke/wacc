@@ -13,7 +13,7 @@ public class SymbolTable {
   };
 
   private final SymbolTable parent;
-  private final Map<String, Identifier> identifierMap;
+  private final Map<String, SymbolCategory> identifierMap;
 
   public SymbolTable(SymbolTable parent) {
     this.parent = parent;
@@ -26,21 +26,16 @@ public class SymbolTable {
     }
   }
 
-  public void add(String identifier, Identifier type) {
+  public void add(String identifier, SymbolCategory type) {
     identifierMap.put(identifier, type);
   }
 
-  public Identifier fetchType(String identifier) {
+  public SymbolCategory find(String identifier) {
     if (identifierMap.containsKey(identifier)) {
       return identifierMap.get(identifier);
     } else if (parent != null) {
-      return parent.fetchType(identifier);
+      return parent.find(identifier);
     }
     return null;
   }
-
-  public SymbolTable newChild() {
-    return new SymbolTable(this);
-  }
-
 }
