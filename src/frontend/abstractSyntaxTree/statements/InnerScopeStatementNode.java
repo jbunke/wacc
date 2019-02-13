@@ -15,7 +15,6 @@ public class InnerScopeStatementNode extends StatementNode {
   public void semanticCheck(SymbolTable symbolTable, SemanticErrorList errorList) {
     SymbolTable innerTable = symbolTable.newChild();
     innerStatement.semanticCheck(innerTable, errorList);
-    innerStatement.semanticCheck(innerTable, errorList);
   }
 
   @Override

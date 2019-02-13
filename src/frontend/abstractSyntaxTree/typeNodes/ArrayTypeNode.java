@@ -20,6 +20,7 @@ public class ArrayTypeNode extends TypeNode {
 
   @Override
   public Type getType() {
+    // System.out.println("Array type: " + arrayType.getType());
     return new Array(arrayType.getType());
   }
 }
