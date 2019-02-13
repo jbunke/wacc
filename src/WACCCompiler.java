@@ -89,7 +89,8 @@ public class WACCCompiler {
     } catch (IOException e) {
       System.out.println("File at path (" + file + ") doesn't exist");
     } catch (RecognitionException e) {
-      System.out.println("Error with prediction, predicate failure or mismatched input occurred.");
+      System.out.println("Error with prediction, predicate failure or "
+          + "mismatched input occurred.");
     }
 
   }
