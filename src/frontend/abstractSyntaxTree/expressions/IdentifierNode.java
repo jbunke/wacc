@@ -1,6 +1,7 @@
 package frontend.abstractSyntaxTree.expressions;
 
 import frontend.symbolTable.*;
+import frontend.symbolTable.types.BaseTypes;
 import frontend.symbolTable.types.Type;
 
 public class IdentifierNode extends ExpressionNode {
@@ -31,10 +32,13 @@ public class IdentifierNode extends ExpressionNode {
 
   @Override
   public Type getType(SymbolTable symbolTable) {
-    SymbolCategory identifier = symbolTable.find(this.identifier);
-    if (identifier == null || !(identifier instanceof Variable)) {
-      return null;
+    SymbolCategory symbolCategory = symbolTable.find(this.identifier);
+
+    if (symbolCategory instanceof Variable) {
+      return ((Variable) symbolCategory).getType();
+    } else if (symbolCategory instanceof Function) {
+      return ((Function) symbolCategory).getReturnType();
     }
-    return ((Variable) identifier).getType();
+    return new BaseTypes(BaseTypes.base_types.BOOL);
   }
 }
