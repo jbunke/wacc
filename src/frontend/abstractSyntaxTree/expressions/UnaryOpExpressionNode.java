@@ -54,6 +54,22 @@ public class UnaryOpExpressionNode extends ExpressionNode {
     return null;
   }
 
+  private Type getOperandType() {
+    switch (operatorType) {
+      case NOT:
+        return new BaseTypes(BaseTypes.base_types.BOOL);
+
+      case NEGATIVE:
+      case POSITIVE:
+      case CHR:
+        return new BaseTypes(BaseTypes.base_types.INT);
+
+      case ORD:
+      default:
+        return new BaseTypes(BaseTypes.base_types.CHAR);
+    }
+  }
+
   @Override
   public void semanticCheck(SymbolTable symbolTable, SemanticErrorList errorList) {
     Type operandType = operand.getType(symbolTable);
@@ -68,7 +84,7 @@ public class UnaryOpExpressionNode extends ExpressionNode {
       return;
     }
 
-    Type expected = getType(null);
+    Type expected = getOperandType();
 
     if (!operandType.equals(expected)) {
       errorList.addError(new SemanticError(

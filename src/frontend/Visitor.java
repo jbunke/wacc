@@ -163,7 +163,7 @@ public class Visitor extends WACCParserBaseVisitor<Node> {
 
   @Override
   public Node visitStatSeq(WACCParser.StatSeqContext ctx) {
-    // TODO: Comment code
+    // Forces left-recursion for sequential statements
     List<StatementNode> statements = new ArrayList<>();
     StatementNode node1 = (StatementNode) visit(ctx.stat(0));
     StatementNode node2 = (StatementNode) visit(ctx.stat(1));
@@ -302,6 +302,7 @@ public class Visitor extends WACCParserBaseVisitor<Node> {
     StatementNode stat = (StatementNode) visit(ctx.stat());
 
     if (ctx.paramList() != null) {
+      // Does not call visitParamList if there are no function parameters
       ParameterListNode params = (ParameterListNode) visitParamList(ctx.paramList());
       return new FunctionDefinitionNode(typeNode, ident, params, stat);
     }
