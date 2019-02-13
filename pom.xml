@@ -36,7 +36,6 @@
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
             <version>3.0.0-M3</version>
-
             <type>maven-plugin</type>
         </dependency>
 
@@ -73,9 +72,6 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0-M3</version>
                 <configuration>
-                    <additionalClasspathElements>
-                        <additionalClasspathElement>lib/antlr-4.7-complete.jar</additionalClasspathElement>
-                    </additionalClasspathElements>
                 </configuration>
             </plugin>
 
