@@ -3,22 +3,22 @@ package frontend.abstractSyntaxTree.expressions;
 
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
-import frontend.symbolTable.types.BaseTypes;
 import frontend.symbolTable.types.Type;
 
-public class BooleanLiteralExpressionNode extends ExpressionNode {
-  private final boolean value;
+public class ParenthesisExpressionNode extends ExpressionNode {
+  private final ExpressionNode containedExpression;
 
-  public BooleanLiteralExpressionNode(boolean v) {
-    value = v;
+  public ParenthesisExpressionNode(ExpressionNode i) {
+    containedExpression = i;
   }
 
   @Override
   public void semanticCheck(SymbolTable symbolTable, SemanticErrorList errorList) {
+    containedExpression.semanticCheck(symbolTable, errorList);
   }
 
   @Override
   public Type getType(SymbolTable symbolTable) {
-    return new BaseTypes(BaseTypes.base_types.BOOL);
+    return containedExpression.getType(symbolTable);
   }
 }

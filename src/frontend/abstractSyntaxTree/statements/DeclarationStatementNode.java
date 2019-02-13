@@ -34,10 +34,10 @@ public class DeclarationStatementNode extends StatementNode {
       errorList.addError(new SemanticError("RHS type cannot be resolved"));
     } else if (!lhsType.equals(rhsType)) {
       errorList.addError(new SemanticError("Declared type \""
-          + lhsType.toString()
-          + "\" does not match \""
-          + rhsType.toString()
-          + "\" on RHS."));
+              + lhsType.toString()
+              + "\" does not match \""
+              + rhsType.toString()
+              + "\" on RHS."));
     }
 
     Variable variable = new Variable(identifierType.getType());

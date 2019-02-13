@@ -4,6 +4,7 @@ import frontend.symbolTable.SemanticError;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.Type;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,8 +37,8 @@ public class StatementListNode extends StatementNode {
       for (int j = i + 1; j < identifierList.size(); j++) {
         if (identifierList.get(i).equals(identifierList.get(j))) {
           errorList.addError(new SemanticError("Variable already previously declared \""
-              + identifierList.get(i)
-              + "\" in this scope."));
+                  + identifierList.get(i)
+                  + "\" in this scope."));
         }
       }
     }

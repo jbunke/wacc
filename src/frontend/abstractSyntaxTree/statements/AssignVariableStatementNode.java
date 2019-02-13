@@ -30,10 +30,10 @@ public class AssignVariableStatementNode extends StatementNode {
       errorList.addError(new SemanticError("RHS type cannot be resolved"));
     } else if (!leftType.equals(rightType)) {
       errorList.addError(new SemanticError("Type on LHS \""
-          + leftType.toString()
-          + "\" does not match \""
-          + rightType.toString()
-          + "\" on RHS."));
+              + leftType.toString()
+              + "\" does not match \""
+              + rightType.toString()
+              + "\" on RHS."));
     }
   }
 }

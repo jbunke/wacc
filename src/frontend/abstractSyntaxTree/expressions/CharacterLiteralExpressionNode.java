@@ -6,18 +6,18 @@ import frontend.symbolTable.types.BaseTypes;
 import frontend.symbolTable.types.Type;
 
 public class CharacterLiteralExpressionNode extends ExpressionNode {
-    private final char value;
+  private final char value;
 
-    public CharacterLiteralExpressionNode(char v){
-        value = v;
-    }
+  public CharacterLiteralExpressionNode(char v) {
+    value = v;
+  }
 
-    @Override
-    public void semanticCheck(SymbolTable symbolTable, SemanticErrorList errorList) {
-    }
+  @Override
+  public void semanticCheck(SymbolTable symbolTable, SemanticErrorList errorList) {
+  }
 
-    @Override
-    public Type getType(SymbolTable symbolTable) {
-        return new BaseTypes(BaseTypes.base_types.CHAR);
-    }
+  @Override
+  public Type getType(SymbolTable symbolTable) {
+    return new BaseTypes(BaseTypes.base_types.CHAR);
+  }
 }

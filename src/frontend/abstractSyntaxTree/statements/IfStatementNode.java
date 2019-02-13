@@ -15,7 +15,7 @@ public class IfStatementNode extends StatementNode {
   private final StatementNode falseBranch;
 
   public IfStatementNode(ExpressionNode condition, StatementNode trueBranch,
-      StatementNode falseBranch) {
+                         StatementNode falseBranch) {
     this.condition = condition;
     this.trueBranch = trueBranch;
     this.falseBranch = falseBranch;

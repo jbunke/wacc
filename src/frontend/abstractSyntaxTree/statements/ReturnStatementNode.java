@@ -22,7 +22,7 @@ public class ReturnStatementNode extends StatementNode {
       Type resultType = result.getType(symbolTable);
       if (resultType == null || !returnType.equals(resultType)) {
         errorList.addError(new SemanticError(
-            "Return type does not match that specified in function declaration."));
+                "Return type does not match that specified in function declaration."));
       }
     }
   }

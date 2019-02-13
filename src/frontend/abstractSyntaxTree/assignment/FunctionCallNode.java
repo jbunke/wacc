@@ -8,6 +8,7 @@ import frontend.symbolTable.SemanticError;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.Type;
+
 import java.util.List;
 
 public class FunctionCallNode implements AssignRHS {
@@ -57,10 +58,10 @@ public class FunctionCallNode implements AssignRHS {
 
         if (!(funcArgType.equals(nodeType))) {
           errorList.addError(new SemanticError(
-              "Argument type was incorrect. Provided argument type was \"" +
-                  (nodeType == null ? "NULL" : nodeType.toString()) +
-                  "\" but expected type is \"" +
-                  funcArgType.toString() + "\"."
+                  "Argument type was incorrect. Provided argument type was \"" +
+                          (nodeType == null ? "NULL" : nodeType.toString()) +
+                          "\" but expected type is \"" +
+                          funcArgType.toString() + "\"."
           ));
         }
       }

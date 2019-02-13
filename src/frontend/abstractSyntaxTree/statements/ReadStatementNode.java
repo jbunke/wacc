@@ -16,13 +16,13 @@ public class ReadStatementNode extends StatementNode {
   @Override
   public void semanticCheck(SymbolTable symbolTable, SemanticErrorList errorList) {
     if (!lhs.getType(symbolTable).equals(new BaseTypes(BaseTypes.base_types.CHAR)) && !lhs.getType(symbolTable)
-        .equals(new BaseTypes(
-            BaseTypes
-                .base_types.INT))) {
+            .equals(new BaseTypes(
+                    BaseTypes
+                            .base_types.INT))) {
       errorList.addError(new SemanticError("Standard input only allows character or integer "
-          + "Variable given: \""
-          + lhs.getType(symbolTable).toString()
-          + "\"."));
+              + "Variable given: \""
+              + lhs.getType(symbolTable).toString()
+              + "\"."));
     }
     lhs.semanticCheck(symbolTable, errorList);
   }

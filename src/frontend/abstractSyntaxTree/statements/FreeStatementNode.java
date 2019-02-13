@@ -9,19 +9,19 @@ import frontend.symbolTable.types.Pair;
 import frontend.symbolTable.types.Type;
 
 public class FreeStatementNode extends StatementNode {
-    private final ExpressionNode expression;
+  private final ExpressionNode expression;
 
-    public FreeStatementNode(ExpressionNode expression) {
-        this.expression = expression;
+  public FreeStatementNode(ExpressionNode expression) {
+    this.expression = expression;
+  }
+
+  @Override
+  public void semanticCheck(SymbolTable symbolTable, SemanticErrorList errorList) {
+    expression.semanticCheck(symbolTable, errorList);
+
+    Type exprType = expression.getType(symbolTable);
+    if (exprType == null || (!(exprType instanceof Array) && !(exprType instanceof Pair))) {
+      errorList.addError(new SemanticError("'free' call expected type: Array or Pair, but given type: " + exprType.toString()));
     }
-
-    @Override
-    public void semanticCheck(SymbolTable symbolTable, SemanticErrorList errorList) {
-        expression.semanticCheck(symbolTable, errorList);
-
-        Type exprType = expression.getType(symbolTable);
-        if (exprType == null || (!(exprType instanceof Array) && !(exprType instanceof Pair))) {
-            errorList.addError(new SemanticError("'free' call expected type: Array or Pair, but given type: " + exprType.toString()));
-        }
-    }
+  }
 }

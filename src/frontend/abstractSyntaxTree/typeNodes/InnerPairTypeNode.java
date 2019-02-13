@@ -8,13 +8,13 @@ import frontend.symbolTable.types.Type;
 
 public class InnerPairTypeNode extends TypeNode {
 
-    @Override
-    public Type getType() {
-        return new InnerPair();
-    }
+  @Override
+  public Type getType() {
+    return new InnerPair();
+  }
 
 
-    @Override
-    public void semanticCheck(SymbolTable symbolTable, SemanticErrorList errorList) {
-    }
+  @Override
+  public void semanticCheck(SymbolTable symbolTable, SemanticErrorList errorList) {
+  }
 }

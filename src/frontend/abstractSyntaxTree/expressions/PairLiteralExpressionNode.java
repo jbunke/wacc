@@ -7,12 +7,12 @@ import frontend.symbolTable.types.Pair;
 import frontend.symbolTable.types.Type;
 
 public class PairLiteralExpressionNode extends ExpressionNode {
-    @Override
-    public void semanticCheck(SymbolTable symbolTable, SemanticErrorList errorList) {
-    }
+  @Override
+  public void semanticCheck(SymbolTable symbolTable, SemanticErrorList errorList) {
+  }
 
-    @Override
-    public Type getType(SymbolTable symbolTable) {
-        return new Pair(null, null);
-    }
+  @Override
+  public Type getType(SymbolTable symbolTable) {
+    return new Pair(null, null);
+  }
 }

@@ -2,6 +2,7 @@ package frontend.symbolTable;
 
 import frontend.abstractSyntaxTree.typeNodes.ParameterListNode;
 import frontend.symbolTable.types.Type;
+
 import java.util.List;
 
 public class Function extends Identifier {

@@ -7,7 +7,7 @@ import frontend.symbolTable.types.Type;
 
 public abstract class ExpressionNode implements Node {
 
-    public abstract void semanticCheck(SymbolTable symbolTable, SemanticErrorList errorList);
+  public abstract void semanticCheck(SymbolTable symbolTable, SemanticErrorList errorList);
 
-    public abstract Type getType(SymbolTable symbolTable);
+  public abstract Type getType(SymbolTable symbolTable);
 }

@@ -7,6 +7,7 @@ import static org.junit.Assert.*;
 
 public class ValidFilesTest {
 
+    @Test
     public void doesCompileWithErrorCode0(String filepath){
         // TODO: Compile and check error code
     }
