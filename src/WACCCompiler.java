@@ -37,8 +37,7 @@ public class WACCCompiler {
       CharStream input = CharStreams.fromFileName(file);
       WACCLexer lexer = new WACCLexer(input);
       lexer.removeErrorListeners();
-      TokenStream tokens = new CommonTokenStream(lexer) {
-      };
+      TokenStream tokens = new CommonTokenStream(lexer);
       WACCParser parser = new WACCParser(tokens);
       parser.removeErrorListeners();
 
