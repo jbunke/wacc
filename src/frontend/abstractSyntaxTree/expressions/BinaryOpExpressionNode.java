@@ -119,6 +119,9 @@ public class BinaryOpExpressionNode extends ExpressionNode {
         ));
       }
     }
+
+    left.semanticCheck(symbolTable, errorList);
+    right.semanticCheck(symbolTable, errorList);
   }
 
   public Type getType(SymbolTable symbolTable) {

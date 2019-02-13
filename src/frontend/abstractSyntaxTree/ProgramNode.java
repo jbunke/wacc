@@ -39,6 +39,11 @@ public class ProgramNode implements Node {
     // Semantic checks for program global statements
     SymbolTable statTable = symbolTable.newChild();
     stat.semanticCheck(statTable, errorList);
+
+    if (stat.containsReturn()) {
+      errorList.addError(new SemanticError(
+              "Global return outside of function body attempted."));
+    }
   }
 
   public List<String> syntaxCheck() {
