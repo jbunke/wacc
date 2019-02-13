@@ -5,7 +5,14 @@ options {
 }
 
 expr:
-  intLiteral                                # IntLitExp
+  intLiteral {
+      try{
+        Integer.parseInt(_localctx.getText());
+      }
+      catch(NumberFormatException e) {
+        notifyErrorListeners("Integer formatting is invalid.");
+      }
+  }                                         # IntLitExp
 | boolLiteral                               # BoolLitExp
 | charLiteral                               # CharLitExp
 | stringLiteral                             # StringLitExp
