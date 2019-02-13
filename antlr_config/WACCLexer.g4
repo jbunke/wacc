@@ -17,7 +17,7 @@ COMP_LS_GR: GREATER_THAN | GREATER_THAN_OR_EQUAL
 COMP_EQ: EQUAL | NOT_EQUAL;
 
 // unary ops
-UNARY: NOT | LEN | ORD | CHR | MINUS;
+UNARY: PLUS | MINUS | NOT | LEN | ORD | CHR;
 
 // operators
 NOT: '!';
@@ -73,7 +73,7 @@ NEW_PAIR: 'newpair';
 
 // numbers
 fragment DIGIT: '0'..'9';
-INT_LIT: ('+'|'-')? DIGIT+;
+INT_LIT: DIGIT+;
 
 // identifier
 fragment IDENTIFIER_INITIAL: UNDERSCORE | LOWERCASE | UPPERCASE;

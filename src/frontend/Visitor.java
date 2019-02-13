@@ -59,7 +59,8 @@ public class Visitor extends WACCParserBaseVisitor<Node> {
 
   @Override
   public Node visitIntLitExp(WACCParser.IntLitExpContext ctx) {
-    return visitIntLiteral(ctx.intLiteral());
+    int value = Integer.parseInt(ctx.intLiteral().INT_LIT().getText());
+    return new IntLiteralExpressionNode(value);
   }
 
   @Override
@@ -206,11 +207,6 @@ public class Visitor extends WACCParserBaseVisitor<Node> {
   }
 
   @Override
-  public Node visitIntLiteral(WACCParser.IntLiteralContext ctx) {
-    return new IntLiteralExpressionNode(Integer.parseInt(ctx.getText()));
-  }
-
-  @Override
   public Node visitBoolLiteral(WACCParser.BoolLiteralContext ctx) {
     return new BooleanLiteralExpressionNode(Boolean.parseBoolean(ctx.getText()));
   }
@@ -305,9 +301,13 @@ public class Visitor extends WACCParserBaseVisitor<Node> {
     IdentifierNode ident = new IdentifierNode(ctx.IDENTIFIER().getText());
     StatementNode stat = (StatementNode) visit(ctx.stat());
 
-    ParameterListNode params = (ParameterListNode) visitParamList(ctx.paramList());
+    if (ctx.paramList() != null) {
+      ParameterListNode params = (ParameterListNode) visitParamList(ctx.paramList());
+      return new FunctionDefinitionNode(typeNode, ident, params, stat);
+    }
 
-    return new FunctionDefinitionNode(typeNode, ident, params, stat);
+    return new FunctionDefinitionNode(typeNode, ident,
+            new ParameterListNode(new ArrayList<>(), new ArrayList<>()), stat);
   }
 
   @Override
@@ -315,10 +315,12 @@ public class Visitor extends WACCParserBaseVisitor<Node> {
     List<IdentifierNode> paramNames = new ArrayList<>();
     List<TypeNode> paramTypes = new ArrayList<>();
 
-    for (int i = 0; i < ctx.IDENTIFIER().size(); i++) {
-      paramNames.add(
-              new IdentifierNode(ctx.IDENTIFIER(i).getText()));
-      paramTypes.add((TypeNode) visit(ctx.type(i)));
+    if (ctx.IDENTIFIER() != null) {
+      for (int i = 0; i < ctx.IDENTIFIER().size(); i++) {
+        paramNames.add(
+                new IdentifierNode(ctx.IDENTIFIER(i).getText()));
+        paramTypes.add((TypeNode) visit(ctx.type(i)));
+      }
     }
 
     return new ParameterListNode(paramNames, paramTypes);
