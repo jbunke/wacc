@@ -1,0 +1,71 @@
+#!/bin/bash
+
+errOutput=""
+
+failed=0
+total=0
+
+verifyValidFile(){
+    ./compile "$1" >/dev/null
+    code=$?
+    (( total = total + 1 ))
+    if [[ $code -ne 0 ]]; then
+        (( failed = failed + 1 ))
+        echo "Error: Compiler returned $code instead of 0 for $1"
+    fi
+}
+
+verifySyntaxErrFile(){
+    ./compile "$1" >/dev/null
+    code=$?
+    (( total = total + 1 ))
+    if [[ $code -ne 100 ]]; then
+        (( failed = failed + 1 ))
+        echo "Error: Compiler returned $code instead of 100 for $1"
+    fi
+}
+
+
+verifySemanticErrFile(){
+    ./compile "$1" >/dev/null
+    code=$?
+    (( total = total + 1 ))
+    if [[ $code -ne 200 ]]; then
+        (( failed = failed + 1 ))
+        echo "Error: Compiler returned $code instead of 200 for $1"
+    fi
+}
+
+# Valid files
+echo "=============== Valid files ==============="
+echo "..."
+verifyValidFile res/valid/advanced/binarySortTree.wacc
+verifyValidFile res/valid/advanced/ticTacToe.wacc
+verifyValidFile res/valid/advanced/hashTable.wacc
+verifyValidFile res/valid/array/arrayLength.wacc
+verifyValidFile res/valid/array/arrayEmpty.wacc
+verifyValidFile res/valid/array/array.wacc
+verifyValidFile res/valid/array/arrayLookup.wacc
+verifyValidFile res/valid/array/modifyString.wacc
+verifyValidFile res/valid/array/printRef.wacc
+verifyValidFile res/valid/array/arraySimple.wacc
+verifyValidFile res/valid/array/arrayNested.wacc
+verifyValidFile res/valid/array/arrayPrint.wacc
+
+
+# Syntax errors
+echo "=============== Syntax Errors ==============="
+echo "..."
+
+
+# Semantic errors
+echo "=============== Semantic Errors ==============="
+echo "..."
+
+((passed = total - failed))
+
+echo "Passed $passed / $total"
+
+if [[ $passed -ne $total ]]; then
+    exit 1
+fi
