@@ -62,7 +62,7 @@ echo "..."
 echo "=============== Semantic Errors ==============="
 echo "..."
 
-((passed = total - failed))
+((passed=total-failed))
 
 echo "Passed $passed / $total"
 
