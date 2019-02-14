@@ -18,7 +18,7 @@ verifyValidFile(){
 verifySyntaxErrFile(){
     ./compile "$1" >/dev/null
     code=$?
-    (( total = total + 1 ))
+    ((total=total+1))
     if [ $code -ne 100 ]; then
         (( failed = failed + 1 ))
         echo "Error: Compiler returned $code instead of 100 for $1"
@@ -29,7 +29,7 @@ verifySyntaxErrFile(){
 verifySemanticErrFile(){
     ./compile "$1" >/dev/null
     code=$?
-    (( total = total + 1 ))
+    ((total=total+1))
     if [ $code -ne 200 ]; then
         (( failed = failed + 1 ))
         echo "Error: Compiler returned $code instead of 200 for $1"
