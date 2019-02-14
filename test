@@ -8,7 +8,7 @@ total=0
 verifyValidFile(){
     ./compile "$1" >/dev/null
     code=$?
-    (( total = total + 1 ))
+    ((total=total+1))
     if [ $code -ne 0 ]; then
         (( failed = failed + 1 ))
         echo "Error: Compiler returned $code instead of 0 for $1"
