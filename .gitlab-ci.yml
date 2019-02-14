@@ -12,4 +12,4 @@ build:
 
 test:
   stage: test
-  script: sh test
+  script: bash test
