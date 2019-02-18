@@ -1,0 +1,346 @@
+#!/bin/bash
+
+errOutput=""
+
+failed=0
+total=0
+
+verifyValidFile(){
+    ./compile "$1" >/dev/null
+    code=$?
+    ((total=total+1))
+    if [ $code -ne 0 ]; then
+        (( failed = failed + 1 ))
+        echo "Error: Compiler returned $code instead of 0 for $1"
+    fi
+}
+
+verifySyntaxErrFile(){
+    ./compile "$1" >/dev/null
+    code=$?
+    ((total=total+1))
+    if [ $code -ne 100 ]; then
+        (( failed = failed + 1 ))
+        echo "Error: Compiler returned $code instead of 100 for $1"
+    fi
+}
+
+
+verifySemanticErrFile(){
+    ./compile "$1" >/dev/null
+    code=$?
+    ((total=total+1))
+    if [ $code -ne 200 ]; then
+        (( failed = failed + 1 ))
+        echo "Error: Compiler returned $code instead of 200 for $1"
+    fi
+}
+
+# Valid files
+echo "=============== Valid files ==============="
+echo "..."
+verifyValidFile res/valid/advanced/binarySortTree.wacc
+verifyValidFile res/valid/advanced/ticTacToe.wacc
+verifyValidFile res/valid/advanced/hashTable.wacc
+verifyValidFile res/valid/array/arrayLength.wacc
+verifyValidFile res/valid/array/arrayEmpty.wacc
+verifyValidFile res/valid/array/array.wacc
+verifyValidFile res/valid/array/arrayLookup.wacc
+verifyValidFile res/valid/array/modifyString.wacc
+verifyValidFile res/valid/array/printRef.wacc
+verifyValidFile res/valid/array/arraySimple.wacc
+verifyValidFile res/valid/array/arrayNested.wacc
+verifyValidFile res/valid/array/arrayPrint.wacc
+verifyValidFile res/valid/array/arrayBasic.wacc
+verifyValidFile res/valid/pairs/printNull.wacc
+verifyValidFile res/valid/pairs/printNullPair.wacc
+verifyValidFile res/valid/pairs/printPair.wacc
+verifyValidFile res/valid/pairs/nestedPair.wacc
+verifyValidFile res/valid/pairs/createRefPair.wacc
+verifyValidFile res/valid/pairs/free.wacc
+verifyValidFile res/valid/pairs/writeSnd.wacc
+verifyValidFile res/valid/pairs/writeFst.wacc
+verifyValidFile res/valid/pairs/printPairOfNulls.wacc
+verifyValidFile res/valid/pairs/null.wacc
+verifyValidFile res/valid/pairs/createPair02.wacc
+verifyValidFile res/valid/pairs/createPair.wacc
+verifyValidFile res/valid/pairs/checkRefPair.wacc
+verifyValidFile res/valid/pairs/createPair03.wacc
+verifyValidFile res/valid/pairs/readPair.wacc
+verifyValidFile res/valid/pairs/linkedList.wacc
+verifyValidFile res/valid/if/if1.wacc
+verifyValidFile res/valid/if/whitespace.wacc
+verifyValidFile res/valid/if/ifFalse.wacc
+verifyValidFile res/valid/if/ifBasic.wacc
+verifyValidFile res/valid/if/if6.wacc
+verifyValidFile res/valid/if/ifTrue.wacc
+verifyValidFile res/valid/if/if5.wacc
+verifyValidFile res/valid/if/if4.wacc
+verifyValidFile res/valid/if/if3.wacc
+verifyValidFile res/valid/if/if2.wacc
+verifyValidFile res/valid/runtimeErr/integerOverflow/intJustOverflow.wacc
+verifyValidFile res/valid/runtimeErr/integerOverflow/intnegateOverflow.wacc
+verifyValidFile res/valid/runtimeErr/integerOverflow/intmultOverflow.wacc
+verifyValidFile res/valid/runtimeErr/integerOverflow/intnegateOverflow3.wacc
+verifyValidFile res/valid/runtimeErr/integerOverflow/intWayOverflow.wacc
+verifyValidFile res/valid/runtimeErr/integerOverflow/intnegateOverflow2.wacc
+verifyValidFile res/valid/runtimeErr/integerOverflow/intUnderflow.wacc
+verifyValidFile res/valid/runtimeErr/integerOverflow/intnegateOverflow4.wacc
+verifyValidFile res/valid/runtimeErr/nullDereference/readNull2.wacc
+verifyValidFile res/valid/runtimeErr/nullDereference/useNull2.wacc
+verifyValidFile res/valid/runtimeErr/nullDereference/setNull1.wacc
+verifyValidFile res/valid/runtimeErr/nullDereference/freeNull.wacc
+verifyValidFile res/valid/runtimeErr/nullDereference/setNull2.wacc
+verifyValidFile res/valid/runtimeErr/nullDereference/useNull1.wacc
+verifyValidFile res/valid/runtimeErr/nullDereference/readNull1.wacc
+verifyValidFile res/valid/runtimeErr/doubleFrees/doubleFree.wacc
+verifyValidFile res/valid/runtimeErr/doubleFrees/hiddenDoubleFree.wacc
+verifyValidFile res/valid/runtimeErr/divideByZero/divZero.wacc
+verifyValidFile res/valid/runtimeErr/divideByZero/divideByZero.wacc
+verifyValidFile res/valid/runtimeErr/divideByZero/modByZero.wacc
+verifyValidFile res/valid/runtimeErr/arrayOutOfBounds/arrayOutOfBoundsWrite.wacc
+verifyValidFile res/valid/runtimeErr/arrayOutOfBounds/arrayNegBounds.wacc
+verifyValidFile res/valid/runtimeErr/arrayOutOfBounds/arrayOutOfBounds.wacc
+verifyValidFile res/valid/IO/IOLoop.wacc
+verifyValidFile res/valid/IO/read/echoPuncChar.wacc
+verifyValidFile res/valid/IO/read/echoBigInt.wacc
+verifyValidFile res/valid/IO/read/echoInt.wacc
+verifyValidFile res/valid/IO/read/echoNegInt.wacc
+verifyValidFile res/valid/IO/read/echoChar.wacc
+verifyValidFile res/valid/IO/read/echoBigNegInt.wacc
+verifyValidFile res/valid/IO/read/read.wacc
+verifyValidFile res/valid/IO/IOSequence.wacc
+verifyValidFile res/valid/IO/print/println.wacc
+verifyValidFile res/valid/IO/print/stringAssignmentWithPrint.wacc
+verifyValidFile res/valid/IO/print/printEscChar.wacc
+verifyValidFile res/valid/IO/print/multipleStringsAssignment.wacc
+verifyValidFile res/valid/IO/print/print.wacc
+verifyValidFile res/valid/IO/print/hashInProgram.wacc
+verifyValidFile res/valid/IO/print/printBool.wacc
+verifyValidFile res/valid/IO/print/printInt.wacc
+verifyValidFile res/valid/IO/print/printChar.wacc
+verifyValidFile res/valid/basic/skip/skip.wacc
+verifyValidFile res/valid/basic/skip/comment.wacc
+verifyValidFile res/valid/basic/skip/commentInLine.wacc
+verifyValidFile res/valid/basic/exit/exit-1.wacc
+verifyValidFile res/valid/basic/exit/exitBasic.wacc
+verifyValidFile res/valid/basic/exit/exitBasic2.wacc
+verifyValidFile res/valid/basic/exit/exitWrap.wacc
+verifyValidFile res/valid/scope/printAllTypes.wacc
+verifyValidFile res/valid/scope/scopeSimpleRedefine.wacc
+verifyValidFile res/valid/scope/scopeRedefine.wacc
+verifyValidFile res/valid/scope/indentationNotImportant.wacc
+verifyValidFile res/valid/scope/scope.wacc
+verifyValidFile res/valid/scope/scopeBasic.wacc
+verifyValidFile res/valid/scope/ifNested2.wacc
+verifyValidFile res/valid/scope/ifNested1.wacc
+verifyValidFile res/valid/scope/scopeVars.wacc
+verifyValidFile res/valid/scope/intsAndKeywords.wacc
+verifyValidFile res/valid/function/nested_functions/fixedPointRealArithmetic.wacc
+verifyValidFile res/valid/function/nested_functions/printTriangle.wacc
+verifyValidFile res/valid/function/nested_functions/printInputTriangle.wacc
+verifyValidFile res/valid/function/nested_functions/mutualRecursion.wacc
+verifyValidFile res/valid/function/nested_functions/fibonacciFullRec.wacc
+verifyValidFile res/valid/function/nested_functions/functionConditionalReturn.wacc
+verifyValidFile res/valid/function/nested_functions/simpleRecursion.wacc
+verifyValidFile res/valid/function/nested_functions/fibonacciRecursive.wacc
+verifyValidFile res/valid/function/simple_functions/functionDeclaration.wacc
+verifyValidFile res/valid/function/simple_functions/sameArgName2.wacc
+verifyValidFile res/valid/function/simple_functions/functionManyArguments.wacc
+verifyValidFile res/valid/function/simple_functions/asciiTable.wacc
+verifyValidFile res/valid/function/simple_functions/functionSimple.wacc
+verifyValidFile res/valid/function/simple_functions/incFunction.wacc
+verifyValidFile res/valid/function/simple_functions/sameArgName.wacc
+verifyValidFile res/valid/function/simple_functions/negFunction.wacc
+verifyValidFile res/valid/function/simple_functions/functionUpdateParameter.wacc
+verifyValidFile res/valid/function/simple_functions/functionReturnPair.wacc
+verifyValidFile res/valid/variables/capCharDeclaration.wacc
+verifyValidFile res/valid/variables/negIntDeclaration.wacc
+verifyValidFile res/valid/variables/charDeclaration.wacc
+verifyValidFile res/valid/variables/emptyStringDeclaration.wacc
+verifyValidFile res/valid/variables/stringDeclaration.wacc
+verifyValidFile res/valid/variables/longVarNames.wacc
+verifyValidFile res/valid/variables/boolDeclaration.wacc
+verifyValidFile res/valid/variables/_VarNames.wacc
+verifyValidFile res/valid/variables/charDeclaration2.wacc
+verifyValidFile res/valid/variables/manyVariables.wacc
+verifyValidFile res/valid/variables/intDeclaration.wacc
+verifyValidFile res/valid/variables/boolDeclaration2.wacc
+verifyValidFile res/valid/variables/zeroIntDeclaration.wacc
+verifyValidFile res/valid/variables/puncCharDeclaration.wacc
+verifyValidFile res/valid/expressions/intCalc.wacc
+verifyValidFile res/valid/expressions/multNoWhitespaceExpr.wacc
+verifyValidFile res/valid/expressions/andExpr.wacc
+verifyValidFile res/valid/expressions/divExpr.wacc
+verifyValidFile res/valid/expressions/negBothMod.wacc
+verifyValidFile res/valid/expressions/longSplitExpr.wacc
+verifyValidFile res/valid/expressions/negDivisorDiv.wacc
+verifyValidFile res/valid/expressions/ordAndchrExpr.wacc
+verifyValidFile res/valid/expressions/lessExpr.wacc
+verifyValidFile res/valid/expressions/lessCharExpr.wacc
+verifyValidFile res/valid/expressions/negDividendDiv.wacc
+verifyValidFile res/valid/expressions/longExpr2.wacc
+verifyValidFile res/valid/expressions/longSplitExpr2.wacc
+verifyValidFile res/valid/expressions/minusExpr.wacc
+verifyValidFile res/valid/expressions/intExpr1.wacc
+verifyValidFile res/valid/expressions/greaterEqExpr.wacc
+verifyValidFile res/valid/expressions/plusPlusExpr.wacc
+verifyValidFile res/valid/expressions/lessEqExpr.wacc
+verifyValidFile res/valid/expressions/multExpr.wacc
+verifyValidFile res/valid/expressions/longExpr3.wacc
+verifyValidFile res/valid/expressions/plusNoWhitespaceExpr.wacc
+verifyValidFile res/valid/expressions/plusMinusExpr.wacc
+verifyValidFile res/valid/expressions/negDividendMod.wacc
+verifyValidFile res/valid/expressions/longExpr.wacc
+verifyValidFile res/valid/expressions/boolExpr1.wacc
+verifyValidFile res/valid/expressions/equalsExpr.wacc
+verifyValidFile res/valid/expressions/negDivisorMod.wacc
+verifyValidFile res/valid/expressions/negBothDiv.wacc
+verifyValidFile res/valid/expressions/orExpr.wacc
+verifyValidFile res/valid/expressions/sequentialCount.wacc
+verifyValidFile res/valid/expressions/notequalsExpr.wacc
+verifyValidFile res/valid/expressions/negExpr.wacc
+verifyValidFile res/valid/expressions/stringEqualsExpr.wacc
+verifyValidFile res/valid/expressions/notExpr.wacc
+verifyValidFile res/valid/expressions/greaterExpr.wacc
+verifyValidFile res/valid/expressions/plusExpr.wacc
+verifyValidFile res/valid/expressions/charComparisonExpr.wacc
+verifyValidFile res/valid/expressions/modExpr.wacc
+verifyValidFile res/valid/expressions/minusPlusExpr.wacc
+verifyValidFile res/valid/expressions/minusMinusExpr.wacc
+verifyValidFile res/valid/expressions/boolCalc.wacc
+verifyValidFile res/valid/expressions/minusNoWhitespaceExpr.wacc
+verifyValidFile res/valid/sequence/stringAssignment.wacc
+verifyValidFile res/valid/sequence/charAssignment.wacc
+verifyValidFile res/valid/sequence/intLeadingZeros.wacc
+verifyValidFile res/valid/sequence/boolAssignment.wacc
+verifyValidFile res/valid/sequence/intAssignment.wacc
+verifyValidFile res/valid/sequence/basicSeq.wacc
+verifyValidFile res/valid/sequence/basicSeq2.wacc
+verifyValidFile res/valid/sequence/exitSimple.wacc
+verifyValidFile res/valid/while/whileBasic.wacc
+verifyValidFile res/valid/while/loopIntCondition.wacc
+verifyValidFile res/valid/while/rmStyleAddIO.wacc
+verifyValidFile res/valid/while/whileFalse.wacc
+verifyValidFile res/valid/while/fibonacciFullIt.wacc
+verifyValidFile res/valid/while/whileCount.wacc
+verifyValidFile res/valid/while/min.wacc
+verifyValidFile res/valid/while/max.wacc
+verifyValidFile res/valid/while/whileBoolFlip.wacc
+verifyValidFile res/valid/while/fibonacciIterative.wacc
+verifyValidFile res/valid/while/loopCharCondition.wacc
+verifyValidFile res/valid/while/rmStyleAdd.wacc
+
+# Syntax errors
+echo "=============== Syntax Errors ==============="
+echo "..."
+verifySyntaxErrFile res/invalid/syntaxErr/array/arrayExpr.wacc
+verifySyntaxErrFile res/invalid/syntaxErr/pairs/badLookup01.wacc
+verifySyntaxErrFile res/invalid/syntaxErr/pairs/badLookup02.wacc
+verifySyntaxErrFile res/invalid/syntaxErr/if/ifNoelse.wacc
+verifySyntaxErrFile res/invalid/syntaxErr/if/ifNofi.wacc
+verifySyntaxErrFile res/invalid/syntaxErr/if/ifNothen.wacc
+verifySyntaxErrFile res/invalid/syntaxErr/if/ifiErr.wacc
+verifySyntaxErrFile res/invalid/syntaxErr/basic/bgnErr.wacc
+verifySyntaxErrFile res/invalid/syntaxErr/basic/badEscape.wacc
+verifySyntaxErrFile res/invalid/syntaxErr/basic/beginNoend.wacc
+verifySyntaxErrFile res/invalid/syntaxErr/basic/noBody.wacc
+verifySyntaxErrFile res/invalid/syntaxErr/basic/badComment.wacc
+verifySyntaxErrFile res/invalid/syntaxErr/basic/badComment2.wacc
+verifySyntaxErrFile res/invalid/syntaxErr/basic/multipleBegins.wacc
+verifySyntaxErrFile res/invalid/syntaxErr/basic/skpErr.wacc
+verifySyntaxErrFile res/invalid/syntaxErr/basic/unescapedChar.wacc
+verifySyntaxErrFile res/invalid/syntaxErr/function/functionJunkAfterReturn.wacc
+verifySyntaxErrFile res/invalid/syntaxErr/function/badlyNamed.wacc
+verifySyntaxErrFile res/invalid/syntaxErr/function/mutualRecursionNoReturn.wacc
+verifySyntaxErrFile res/invalid/syntaxErr/function/functionConditionalNoReturn.wacc
+verifySyntaxErrFile res/invalid/syntaxErr/function/functionLateDefine.wacc
+verifySyntaxErrFile res/invalid/syntaxErr/function/functionMissingPType.wacc
+verifySyntaxErrFile res/invalid/syntaxErr/function/functionMissingCall.wacc
+verifySyntaxErrFile res/invalid/syntaxErr/function/functionNoReturn.wacc
+verifySyntaxErrFile res/invalid/syntaxErr/function/functionScopeDef.wacc
+verifySyntaxErrFile res/invalid/syntaxErr/function/noBodyAfterFuncs.wacc
+verifySyntaxErrFile res/invalid/syntaxErr/function/funcExpr2.wacc
+verifySyntaxErrFile res/invalid/syntaxErr/function/funcExpr.wacc
+verifySyntaxErrFile res/invalid/syntaxErr/function/badlyPlaced.wacc
+verifySyntaxErrFile res/invalid/syntaxErr/function/functionMissingParam.wacc
+verifySyntaxErrFile res/invalid/syntaxErr/function/functionMissingType.wacc
+verifySyntaxErrFile res/invalid/syntaxErr/function/thisIsNotC.wacc
+verifySyntaxErrFile res/invalid/syntaxErr/variables/varNoName.wacc
+verifySyntaxErrFile res/invalid/syntaxErr/variables/badintAssignments.wacc
+verifySyntaxErrFile res/invalid/syntaxErr/variables/bigIntAssignment.wacc
+verifySyntaxErrFile res/invalid/syntaxErr/expressions/missingOperand2.wacc
+verifySyntaxErrFile res/invalid/syntaxErr/expressions/printlnConcat.wacc
+verifySyntaxErrFile res/invalid/syntaxErr/expressions/missingOperand1.wacc
+verifySyntaxErrFile res/invalid/syntaxErr/sequence/missingSeq.wacc
+verifySyntaxErrFile res/invalid/syntaxErr/sequence/emptySeq.wacc
+verifySyntaxErrFile res/invalid/syntaxErr/sequence/endSeq.wacc
+verifySyntaxErrFile res/invalid/syntaxErr/sequence/extraSeq.wacc
+verifySyntaxErrFile res/invalid/syntaxErr/sequence/doubleSeq.wacc
+verifySyntaxErrFile res/invalid/syntaxErr/while/whileNodo.wacc
+verifySyntaxErrFile res/invalid/syntaxErr/while/whilErr.wacc
+verifySyntaxErrFile res/invalid/syntaxErr/while/dooErr.wacc
+verifySyntaxErrFile res/invalid/syntaxErr/while/donoErr.wacc
+verifySyntaxErrFile res/invalid/syntaxErr/while/whileNodone.wacc
+
+# Semantic errors
+echo "=============== Semantic Errors ==============="
+echo "..."
+verifySemanticErrFile res/invalid/semanticErr/multiple/funcMess.wacc
+verifySemanticErrFile res/invalid/semanticErr/multiple/ifAndWhileErrs.wacc
+verifySemanticErrFile res/invalid/semanticErr/multiple/multiTypeErrs.wacc
+verifySemanticErrFile res/invalid/semanticErr/multiple/messyExpr.wacc
+verifySemanticErrFile res/invalid/semanticErr/multiple/multiCaseSensitivity.wacc
+verifySemanticErrFile res/invalid/semanticErr/pairs/freeNonPair.wacc
+verifySemanticErrFile res/invalid/semanticErr/read/readTypeErr01.wacc
+verifySemanticErrFile res/invalid/semanticErr/if/ifIntCondition.wacc
+verifySemanticErrFile res/invalid/semanticErr/IO/readTypeErr.wacc
+verifySemanticErrFile res/invalid/semanticErr/scope/badScopeRedefine.wacc
+verifySemanticErrFile res/invalid/semanticErr/function/functionOverArgs.wacc
+verifySemanticErrFile res/invalid/semanticErr/function/funcVarAccess.wacc
+verifySemanticErrFile res/invalid/semanticErr/function/functionAssign.wacc
+verifySemanticErrFile res/invalid/semanticErr/function/functionBadArgUse.wacc
+verifySemanticErrFile res/invalid/semanticErr/function/functionBadReturn.wacc
+verifySemanticErrFile res/invalid/semanticErr/function/functionUnderArgs.wacc
+verifySemanticErrFile res/invalid/semanticErr/function/functionRedefine.wacc
+verifySemanticErrFile res/invalid/semanticErr/function/functionBadCall.wacc
+verifySemanticErrFile res/invalid/semanticErr/function/functionBadParam.wacc
+verifySemanticErrFile res/invalid/semanticErr/function/functionSwapArgs.wacc
+verifySemanticErrFile res/invalid/semanticErr/print/printTypeErr01.wacc
+verifySemanticErrFile res/invalid/semanticErr/variables/basicTypeErr12.wacc
+verifySemanticErrFile res/invalid/semanticErr/variables/basicTypeErr04.wacc
+verifySemanticErrFile res/invalid/semanticErr/variables/doubleDeclare.wacc
+verifySemanticErrFile res/invalid/semanticErr/variables/basicTypeErr08.wacc
+verifySemanticErrFile res/invalid/semanticErr/variables/basicTypeErr09.wacc
+verifySemanticErrFile res/invalid/semanticErr/variables/basicTypeErr05.wacc
+verifySemanticErrFile res/invalid/semanticErr/variables/basicTypeErr02.wacc
+verifySemanticErrFile res/invalid/semanticErr/variables/basicTypeErr03.wacc
+verifySemanticErrFile res/invalid/semanticErr/variables/undeclaredScopeVar.wacc
+verifySemanticErrFile res/invalid/semanticErr/variables/undeclaredVar.wacc
+verifySemanticErrFile res/invalid/semanticErr/variables/undeclaredVarAccess.wacc
+verifySemanticErrFile res/invalid/semanticErr/variables/basicTypeErr01.wacc
+verifySemanticErrFile res/invalid/semanticErr/variables/basicTypeErr06.wacc
+verifySemanticErrFile res/invalid/semanticErr/variables/basicTypeErr10.wacc
+verifySemanticErrFile res/invalid/semanticErr/variables/caseMatters.wacc
+verifySemanticErrFile res/invalid/semanticErr/variables/basicTypeErr11.wacc
+verifySemanticErrFile res/invalid/semanticErr/variables/basicTypeErr07.wacc
+verifySemanticErrFile res/invalid/semanticErr/expressions/mixedOpTypeErr.wacc
+verifySemanticErrFile res/invalid/semanticErr/expressions/boolOpTypeErr.wacc
+verifySemanticErrFile res/invalid/semanticErr/expressions/intOpTypeErr.wacc
+verifySemanticErrFile res/invalid/semanticErr/expressions/exprTypeErr.wacc
+verifySemanticErrFile res/invalid/semanticErr/expressions/lessPairExpr.wacc
+verifySemanticErrFile res/invalid/semanticErr/expressions/moreArrExpr.wacc
+verifySemanticErrFile res/invalid/semanticErr/exit/badCharExit.wacc
+verifySemanticErrFile res/invalid/semanticErr/exit/exitNonInt.wacc
+verifySemanticErrFile res/invalid/semanticErr/exit/globalReturn.wacc
+verifySemanticErrFile res/invalid/semanticErr/while/truErr.wacc
+verifySemanticErrFile res/invalid/semanticErr/while/falsErr.wacc
+verifySemanticErrFile res/invalid/semanticErr/while/whileIntCondition.wacc
+
+((passed=total-failed))
+
+echo "Passed $passed / $total"
+
+if [ "$passed" -ne "$total" ]; then
+    exit 1
+fi

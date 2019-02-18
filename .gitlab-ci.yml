@@ -5,7 +5,11 @@ stages:
 build:
   stage: build
   script: make
+  artifacts:
+    paths:
+      - src/
+      - bin/
 
 test:
   stage: test
-  script: echo "Test"
+  script: bash test

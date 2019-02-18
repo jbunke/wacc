@@ -9,16 +9,6 @@ SEMI_COLON: ';';
 //assignment
 ASSIGN: '=';
 
-// precedence categories
-MULTDIVMOD: TIMES | DIVIDE | MOD;
-ADDSUB: PLUS | MINUS;
-COMP_LS_GR: GREATER_THAN | GREATER_THAN_OR_EQUAL
-| LESS_THAN | LESS_THAN_OR_EQUAL;
-COMP_EQ: EQUAL | NOT_EQUAL;
-
-// unary ops
-UNARY: MINUS | NOT | LEN | ORD | CHR;
-
 // operators
 NOT: '!';
 LEN: 'len';
@@ -73,7 +63,7 @@ NEW_PAIR: 'newpair';
 
 // numbers
 fragment DIGIT: '0'..'9';
-INT_LIT: (PLUS | MINUS)? DIGIT+;
+INT_LIT: DIGIT+;
 
 // brackets and quotes
 OPEN_PARENTHESIS: '(';
