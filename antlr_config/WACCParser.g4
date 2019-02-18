@@ -5,29 +5,32 @@ options {
 }
 
 expr:
-  boolLiteral                               # BoolLitExp
-| charLiteral                               # CharLitExp
-| stringLiteral                             # StringLitExp
-| pairLiter                                 # PairLitExp
-| ident                                     # IdentifierExp
-| arrayElem                                 # ArrayElemExp
-| UNARY expr                                # UnaryOperExp
-| expr MULTDIVMOD expr                      # MultDivModExp
-| expr ADDSUB expr                          # AddSubExp
-| expr COMP_LS_GR expr                      # CompLsGrExp
-| expr COMP_EQ expr                         # CompEqExp
-| expr AND expr                             # AndExp
-| expr OR expr                              # OrExp
-| OPEN_PARENTHESIS expr CLOSE_PARENTHESIS   # BracketedExpr
-| intLiteral {
+intLiteral {
         try{
           Integer.parseInt(_localctx.getText());
         }
         catch(NumberFormatException e) {
           notifyErrorListeners("Integer formatting is invalid.");
         }
-    }                                       # IntLitExp
+    }                                             # IntLitExp
+| boolLiteral                                     # BoolLitExp
+| charLiteral                                     # CharLitExp
+| stringLiteral                                   # StringLitExp
+| pairLiter                                       # PairLitExp
+| ident                                           # IdentifierExp
+| arrayElem                                       # ArrayElemExp
+| op=(MINUS | NOT | LEN | CHR | ORD) expr         # UnaryOperExp
+| expr op=(TIMES | DIVIDE | MOD) expr             # MultDivModExp
+| expr op=(PLUS | MINUS) expr                     # AddSubExp
+| expr op=comparison expr                         # CompLsGrExp
+| expr op=(EQUAL | NOT_EQUAL) expr                # CompEqExp
+| expr AND expr                                   # AndExp
+| expr OR expr                                    # OrExp
+| OPEN_PARENTHESIS expr CLOSE_PARENTHESIS         # BracketedExpr
 ;
+
+comparison: GREATER_THAN | GREATER_THAN_OR_EQUAL | LESS_THAN | LESS_THAN_OR_EQUAL;
+
 
 // statement
 stat: SKP                                   # SkipStat
@@ -45,7 +48,7 @@ stat: SKP                                   # SkipStat
 | BEGIN stat END                            # ScopeStat
 ;
 // literals
-intLiteral: INT_LIT;
+intLiteral: (PLUS|MINUS)?INT_LIT;
 boolLiteral: BOOL_LITER;
 ident: IDENTIFIER;
 
