@@ -34,7 +34,7 @@ public class Visitor extends WACCParserBaseVisitor<Node> {
 
   @Override
   public Node visitMultDivModExp(WACCParser.MultDivModExpContext ctx) {
-    String operator = ctx.MULTDIVMOD().getText();
+    String operator = ctx.op.getText();
     ExpressionNode left = (ExpressionNode) visit(ctx.expr(0));
     ExpressionNode right = (ExpressionNode) visit(ctx.expr(1));
     return new BinaryOpExpressionNode(left, operator, right);
@@ -47,7 +47,7 @@ public class Visitor extends WACCParserBaseVisitor<Node> {
 
   @Override
   public Node visitUnaryOperExp(WACCParser.UnaryOperExpContext ctx) {
-    String operator = ctx.UNARY().getText();
+    String operator = ctx.op.getText();
     ExpressionNode expression = (ExpressionNode) visit(ctx.expr());
     return new UnaryOpExpressionNode(operator, expression);
   }
@@ -70,7 +70,7 @@ public class Visitor extends WACCParserBaseVisitor<Node> {
 
   @Override
   public Node visitCompEqExp(WACCParser.CompEqExpContext ctx) {
-    String operator = ctx.COMP_EQ().getText();
+    String operator = ctx.op.getText();
     ExpressionNode left = (ExpressionNode) visit(ctx.expr(0));
     ExpressionNode right = (ExpressionNode) visit(ctx.expr(1));
     return new BinaryOpExpressionNode(left, operator, right);
@@ -78,7 +78,7 @@ public class Visitor extends WACCParserBaseVisitor<Node> {
 
   @Override
   public Node visitCompLsGrExp(WACCParser.CompLsGrExpContext ctx) {
-    String operator = ctx.COMP_LS_GR().getText();
+    String operator = ctx.op.getText();
     ExpressionNode left = (ExpressionNode) visit(ctx.expr(0));
     ExpressionNode right = (ExpressionNode) visit(ctx.expr(1));
     return new BinaryOpExpressionNode(left, operator, right);
@@ -99,7 +99,7 @@ public class Visitor extends WACCParserBaseVisitor<Node> {
 
   @Override
   public Node visitAddSubExp(WACCParser.AddSubExpContext ctx) {
-    String operator = ctx.ADDSUB().getText();
+    String operator = ctx.op.getText();
     ExpressionNode left = (ExpressionNode) visit(ctx.expr(0));
     ExpressionNode right = (ExpressionNode) visit(ctx.expr(1));
     return new BinaryOpExpressionNode(left, operator, right);
@@ -384,4 +384,5 @@ public class Visitor extends WACCParserBaseVisitor<Node> {
 
     return new ProgramNode(functions, stat);
   }
+
 }
