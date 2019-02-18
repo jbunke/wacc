@@ -59,7 +59,7 @@ public class Visitor extends WACCParserBaseVisitor<Node> {
 
   @Override
   public Node visitIntLitExp(WACCParser.IntLitExpContext ctx) {
-    int value = Integer.parseInt(ctx.intLiteral().INT_LIT().getText());
+    int value = Integer.parseInt(ctx.intLiteral().getText());
     return new IntLiteralExpressionNode(value);
   }
 

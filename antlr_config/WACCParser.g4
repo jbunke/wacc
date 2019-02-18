@@ -5,13 +5,21 @@ options {
 }
 
 expr:
-  boolLiteral                                     # BoolLitExp
+intLiteral {
+        try{
+          Integer.parseInt(_localctx.getText());
+        }
+        catch(NumberFormatException e) {
+          notifyErrorListeners("Integer formatting is invalid.");
+        }
+    }                                             # IntLitExp
+| boolLiteral                                     # BoolLitExp
 | charLiteral                                     # CharLitExp
 | stringLiteral                                   # StringLitExp
 | pairLiter                                       # PairLitExp
 | ident                                           # IdentifierExp
 | arrayElem                                       # ArrayElemExp
-| op=(PLUS | MINUS | NOT | LEN | CHR | ORD) expr  # UnaryOperExp
+| op=(MINUS | NOT | LEN | CHR | ORD) expr         # UnaryOperExp
 | expr op=(TIMES | DIVIDE | MOD) expr             # MultDivModExp
 | expr op=(PLUS | MINUS) expr                     # AddSubExp
 | expr op=comparison expr                         # CompLsGrExp
@@ -19,14 +27,6 @@ expr:
 | expr AND expr                                   # AndExp
 | expr OR expr                                    # OrExp
 | OPEN_PARENTHESIS expr CLOSE_PARENTHESIS         # BracketedExpr
-| intLiteral {
-        try{
-          Integer.parseInt(_localctx.getText());
-        }
-        catch(NumberFormatException e) {
-          notifyErrorListeners("Integer formatting is invalid.");
-        }
-    }                                       # IntLitExp
 ;
 
 comparison: GREATER_THAN | GREATER_THAN_OR_EQUAL | LESS_THAN | LESS_THAN_OR_EQUAL;
@@ -48,7 +48,7 @@ stat: SKP                                   # SkipStat
 | BEGIN stat END                            # ScopeStat
 ;
 // literals
-intLiteral: INT_LIT;
+intLiteral: (PLUS|MINUS)?INT_LIT;
 boolLiteral: BOOL_LITER;
 ident: IDENTIFIER;
 
