@@ -16,6 +16,9 @@ public class AssignPairElementNode implements AssignRHS {
     this.position = position;
   }
 
+  public IdentifierNode getIdentifier() {
+    return identifier;
+  }
 
   @Override
   public void semanticCheck(SymbolTable symbolTable, SemanticErrorList errorList) {
