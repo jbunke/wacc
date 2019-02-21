@@ -1,9 +1,9 @@
 package backend.instructions;
 
-public class GlobalMainDirectiveInstruction extends Instruction{
+public class GlobalMainDirectiveInstruction extends Instruction {
 
-    @Override
-    public String asString() {
-        return ".global main";
-    }
+  @Override
+  public String asString() {
+    return ".global main";
+  }
 }

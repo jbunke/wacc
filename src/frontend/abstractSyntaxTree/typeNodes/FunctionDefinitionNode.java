@@ -54,7 +54,7 @@ public class FunctionDefinitionNode implements Node {
   @Override
   public List<Instruction> generateAssembly(Map<Register.ID, Register> registers,
                                             SymbolTable symbolTable) {
-    
+
     return null;
   }
 

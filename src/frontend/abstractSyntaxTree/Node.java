@@ -10,6 +10,7 @@ import java.util.Map;
 
 public interface Node {
   void semanticCheck(SymbolTable symbolTable, SemanticErrorList errorList);
+
   List<Instruction> generateAssembly(Map<Register.ID, Register> registers,
                                      SymbolTable symbolTable);
 }

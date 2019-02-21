@@ -1,9 +1,9 @@
 package backend.instructions;
 
-public class TextDirectiveInstruction extends Instruction{
+public class TextDirectiveInstruction extends Instruction {
 
-    @Override
-    public String asString() {
-        return ".text";
-    }
+  @Override
+  public String asString() {
+    return ".text";
+  }
 }

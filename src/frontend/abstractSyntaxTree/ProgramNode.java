@@ -40,7 +40,7 @@ public class ProgramNode implements Node {
     for (FunctionDefinitionNode func : functions) {
       if (symbolTable.find(func.getIdentifier()) != null) {
         errorList.addError(new SemanticError("Attempted to redeclare" +
-        " an existing function: \"" + func.getIdentifier() + ".\""));
+                " an existing function: \"" + func.getIdentifier() + ".\""));
       }
       symbolTable.add(func.getIdentifier(),
               new Function(func.getReturnType(), func.getParameterList()));
