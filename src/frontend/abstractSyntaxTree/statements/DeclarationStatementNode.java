@@ -12,6 +12,7 @@ import frontend.symbolTable.types.Type;
 import frontend.symbolTable.Variable;
 
 import java.util.List;
+import java.util.Map;
 
 public class DeclarationStatementNode extends StatementNode {
 

@@ -10,6 +10,7 @@ import frontend.symbolTable.types.Pair;
 import frontend.symbolTable.types.Type;
 
 import java.util.List;
+import java.util.Map;
 
 public class AssignPairElementNode implements AssignRHS {
   private final IdentifierNode identifier;

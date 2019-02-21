@@ -10,6 +10,7 @@ import frontend.symbolTable.types.BaseTypes;
 import frontend.symbolTable.types.Type;
 
 import java.util.List;
+import java.util.Map;
 
 public class WhileStatementNode extends StatementNode {
 

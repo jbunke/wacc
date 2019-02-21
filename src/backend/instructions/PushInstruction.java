@@ -13,4 +13,9 @@ public class PushInstruction extends Instruction{
     public Register getRegister() {
         return register;
     }
+
+    @Override
+    public String asString() {
+        return "PUSH {" + register.toString() + "}";
+    }
 }

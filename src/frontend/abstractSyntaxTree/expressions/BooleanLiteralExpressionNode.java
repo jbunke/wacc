@@ -9,6 +9,7 @@ import frontend.symbolTable.types.BaseTypes;
 import frontend.symbolTable.types.Type;
 
 import java.util.List;
+import java.util.Map;
 
 public class BooleanLiteralExpressionNode extends ExpressionNode {
   private final boolean value;

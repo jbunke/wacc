@@ -8,6 +8,7 @@ import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.Type;
 
 import java.util.List;
+import java.util.Map;
 
 public class ParenthesisExpressionNode extends ExpressionNode {
   private final ExpressionNode containedExpression;

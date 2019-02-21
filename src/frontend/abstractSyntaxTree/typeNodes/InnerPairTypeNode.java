@@ -9,6 +9,7 @@ import frontend.symbolTable.types.InnerPair;
 import frontend.symbolTable.types.Type;
 
 import java.util.List;
+import java.util.Map;
 
 public class InnerPairTypeNode extends TypeNode {
 

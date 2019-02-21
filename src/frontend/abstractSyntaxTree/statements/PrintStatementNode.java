@@ -9,6 +9,7 @@ import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
 
 import java.util.List;
+import java.util.Map;
 
 public class PrintStatementNode extends StatementNode {
   private final ExpressionNode expression;

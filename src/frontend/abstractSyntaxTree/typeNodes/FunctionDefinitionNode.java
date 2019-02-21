@@ -12,6 +12,7 @@ import frontend.symbolTable.types.Type;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class FunctionDefinitionNode implements Node {
   private final IdentifierNode identifier;

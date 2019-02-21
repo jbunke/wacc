@@ -9,6 +9,7 @@ import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.BaseTypes;
 
 import java.util.List;
+import java.util.Map;
 
 public class ReadStatementNode extends StatementNode {
   private final AssignLHS lhs;

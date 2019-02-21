@@ -8,6 +8,7 @@ import frontend.symbolTable.types.Array;
 import frontend.symbolTable.types.Type;
 
 import java.util.List;
+import java.util.Map;
 
 public class ArrayTypeNode extends TypeNode {
   private final TypeNode arrayType;
