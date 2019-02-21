@@ -17,10 +17,6 @@ public class ArrayLiteralNode implements AssignRHS {
     this.arrayElements = arrayElements;
   }
 
-  public List<ExpressionNode> getArrayElements() {
-    return arrayElements;
-  }
-
   @Override
   public void semanticCheck(SymbolTable symbolTable, SemanticErrorList errorList) {
     if (arrayElements.size() > 1) {

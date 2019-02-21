@@ -19,14 +19,6 @@ public class ProgramNode implements Node {
     this.stat = stat;
   }
 
-  public StatementNode getStat() {
-    return stat;
-  }
-
-  public List<FunctionDefinitionNode> getFunctions() {
-    return functions;
-  }
-
   @Override
   public void semanticCheck(SymbolTable symbolTable, SemanticErrorList errorList) {
     for (FunctionDefinitionNode func : functions) {

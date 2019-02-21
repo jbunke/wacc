@@ -12,7 +12,6 @@ import frontend.symbolTable.types.Type;
 import java.util.List;
 
 public class FunctionCallNode implements AssignRHS {
-
   private final IdentifierNode functionIdentifier;
   private final List<ExpressionNode> arguments;
   private Function function;
