@@ -2,7 +2,7 @@ package backend.instructions;
 
 import backend.Register;
 
-public class PopInstruction extends Instruction{
+public class PopInstruction extends Instruction {
 
     private Register register;
 
@@ -12,5 +12,10 @@ public class PopInstruction extends Instruction{
 
     public Register getRegister() {
         return register;
+    }
+
+    @Override
+    public String asString() {
+        return "POP {" + register.toString() + "}";
     }
 }
