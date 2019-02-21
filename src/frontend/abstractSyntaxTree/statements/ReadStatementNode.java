@@ -1,10 +1,14 @@
 package frontend.abstractSyntaxTree.statements;
 
+import backend.Register;
+import backend.instructions.Instruction;
 import frontend.abstractSyntaxTree.assignment.AssignLHS;
 import frontend.symbolTable.SemanticError;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.BaseTypes;
+
+import java.util.List;
 
 public class ReadStatementNode extends StatementNode {
   private final AssignLHS lhs;
@@ -25,5 +29,10 @@ public class ReadStatementNode extends StatementNode {
               + "\"."));
     }
     lhs.semanticCheck(symbolTable, errorList);
+  }
+
+  @Override
+  public List<Instruction> generateAssembly(List<Register> registers, SymbolTable symbolTable) {
+    return null;
   }
 }

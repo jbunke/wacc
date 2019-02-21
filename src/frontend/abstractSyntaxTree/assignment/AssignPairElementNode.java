@@ -1,11 +1,15 @@
 package frontend.abstractSyntaxTree.assignment;
 
+import backend.Register;
+import backend.instructions.Instruction;
 import frontend.abstractSyntaxTree.expressions.IdentifierNode;
 import frontend.symbolTable.SemanticError;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.Pair;
 import frontend.symbolTable.types.Type;
+
+import java.util.List;
 
 public class AssignPairElementNode implements AssignRHS {
   private final IdentifierNode identifier;
@@ -22,6 +26,11 @@ public class AssignPairElementNode implements AssignRHS {
     if (!(type instanceof Pair)) {
       errorList.addError(new SemanticError("Not a pair type"));
     }
+  }
+
+  @Override
+  public List<Instruction> generateAssembly(List<Register> registers, SymbolTable symbolTable) {
+    return null;
   }
 
   @Override

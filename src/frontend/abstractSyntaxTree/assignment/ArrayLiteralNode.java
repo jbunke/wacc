@@ -1,6 +1,8 @@
 package frontend.abstractSyntaxTree.assignment;
 
 
+import backend.Register;
+import backend.instructions.Instruction;
 import frontend.abstractSyntaxTree.expressions.ExpressionNode;
 import frontend.symbolTable.SemanticError;
 import frontend.symbolTable.SemanticErrorList;
@@ -33,6 +35,11 @@ public class ArrayLiteralNode implements AssignRHS {
     for (ExpressionNode expr : arrayElements) {
       expr.semanticCheck(symbolTable, errorList);
     }
+  }
+
+  @Override
+  public List<Instruction> generateAssembly(List<Register> registers, SymbolTable symbolTable) {
+    return null;
   }
 
   @Override

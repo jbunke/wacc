@@ -1,12 +1,16 @@
 package frontend.abstractSyntaxTree.typeNodes;
 
 
+import backend.Register;
+import backend.instructions.Instruction;
 import frontend.abstractSyntaxTree.Node;
 import frontend.abstractSyntaxTree.expressions.IdentifierNode;
 import frontend.abstractSyntaxTree.statements.StatementNode;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.Type;
+
+import java.util.List;
 
 public class FunctionDefinitionNode implements Node {
   private final IdentifierNode identifier;
@@ -40,6 +44,11 @@ public class FunctionDefinitionNode implements Node {
     body.matchReturnType(getReturnType());
     parameters.semanticCheck(symbolTable, errorList);
     body.semanticCheck(symbolTable, errorList);
+  }
+
+  @Override
+  public List<Instruction> generateAssembly(List<Register> registers, SymbolTable symbolTable) {
+    return null;
   }
 
   public String syntaxCheck() {

@@ -1,5 +1,7 @@
 package frontend.abstractSyntaxTree.typeNodes;
 
+import backend.Register;
+import backend.instructions.Instruction;
 import frontend.abstractSyntaxTree.Node;
 import frontend.abstractSyntaxTree.expressions.IdentifierNode;
 import frontend.symbolTable.SemanticErrorList;
@@ -43,6 +45,11 @@ public class ParameterListNode implements Node {
       symbolTable.add(id.getName(), new Variable(fromParameters(id).getType()));
       fromParameters(id).semanticCheck(symbolTable, errorList);
     }
+  }
+
+  @Override
+  public List<Instruction> generateAssembly(List<Register> registers, SymbolTable symbolTable) {
+    return null;
   }
 
 

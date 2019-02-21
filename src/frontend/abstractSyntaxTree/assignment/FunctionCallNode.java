@@ -1,5 +1,7 @@
 package frontend.abstractSyntaxTree.assignment;
 
+import backend.Register;
+import backend.instructions.Instruction;
 import frontend.abstractSyntaxTree.expressions.ExpressionNode;
 import frontend.abstractSyntaxTree.expressions.IdentifierNode;
 import frontend.symbolTable.Function;
@@ -67,5 +69,10 @@ public class FunctionCallNode implements AssignRHS {
       this.function = (Function) function;
     }
 
+  }
+
+  @Override
+  public List<Instruction> generateAssembly(List<Register> registers, SymbolTable symbolTable) {
+    return null;
   }
 }
