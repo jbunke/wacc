@@ -5,6 +5,7 @@ import frontend.Visitor;
 import frontend.abstractSyntaxTree.ProgramNode;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
+import java.io.File;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -19,8 +20,17 @@ public class WACCCompiler {
   private static final int EXPECTED_NUM_ARGS = 1;
 
   private static final int INCORRECT_ARGS_EXIT = 1;
+  private static final int FILE_ERROR_EXIT = 1;
   private static final int SYNTAX_ERROR_EXIT = 100;
   private static final int SEMANTIC_ERROR_EXIT = 200;
+
+  private static String getAssemblyFile(String file) throws IOException {
+    String name = file.substring(0, file.lastIndexOf(".wacc")) + ".s";
+    File assembly = new File(name);
+    if (assembly.createNewFile()) {
+
+    }
+  }
 
   public static void main(String[] args) {
     // Test arguments are correct
@@ -32,6 +42,11 @@ public class WACCCompiler {
     }
 
     String file = args[0];
+
+    if (!file.endsWith(".wacc")) {
+      System.out.println("File provided is not of type .wacc");
+      System.exit(FILE_ERROR_EXIT);
+    }
 
     try {
 
@@ -86,12 +101,20 @@ public class WACCCompiler {
         // Semantic error exit code as per WACC specification is 200
         System.exit(SEMANTIC_ERROR_EXIT);
       }
+
+      String assFileName = file.substring(0, file.lastIndexOf(".wacc")) + ".s";
+      File assFile = new File(assFileName);
+      if (!assFile.createNewFile()) {
+        System.out.println("File: " + assFileName + " already exists");
+        System.exit(FILE_ERROR_EXIT);
+      }
+
     } catch (IOException e) {
       System.out.println("File at path (" + file + ") doesn't exist");
+      System.exit(FILE_ERROR_EXIT);
     } catch (RecognitionException e) {
       System.out.println("Error with prediction, predicate failure or "
           + "mismatched input occurred.");
     }
-
   }
 }
