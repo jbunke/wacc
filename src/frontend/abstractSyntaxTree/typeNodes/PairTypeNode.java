@@ -1,9 +1,13 @@
 package frontend.abstractSyntaxTree.typeNodes;
 
+import backend.Register;
+import backend.instructions.Instruction;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.Pair;
 import frontend.symbolTable.types.Type;
+
+import java.util.List;
 
 public class PairTypeNode extends TypeNode {
   private final TypeNode firstType;
@@ -18,6 +22,11 @@ public class PairTypeNode extends TypeNode {
   public void semanticCheck(SymbolTable symbolTable, SemanticErrorList errorList) {
     firstType.semanticCheck(symbolTable, errorList);
     secondType.semanticCheck(symbolTable, errorList);
+  }
+
+  @Override
+  public List<Instruction> generateAssembly(List<Register> registers, SymbolTable symbolTable) {
+    return null;
   }
 
   @Override

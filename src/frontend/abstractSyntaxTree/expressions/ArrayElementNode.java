@@ -1,6 +1,8 @@
 package frontend.abstractSyntaxTree.expressions;
 
 
+import backend.Register;
+import backend.instructions.Instruction;
 import frontend.symbolTable.SemanticError;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
@@ -53,6 +55,11 @@ public class ArrayElementNode extends ExpressionNode {
                       "but has been supplied" + indices.size() + " indices."
       ));
     }
+  }
+
+  @Override
+  public List<Instruction> generateAssembly(List<Register> registers, SymbolTable symbolTable) {
+    return null;
   }
 
   @Override

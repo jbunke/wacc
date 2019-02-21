@@ -1,10 +1,14 @@
 package frontend.abstractSyntaxTree.assignment;
 
+import backend.Register;
+import backend.instructions.Instruction;
 import frontend.abstractSyntaxTree.expressions.ExpressionNode;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.Pair;
 import frontend.symbolTable.types.Type;
+
+import java.util.List;
 
 public class NewPairNode implements AssignRHS {
   private final ExpressionNode leftExpression;
@@ -17,6 +21,11 @@ public class NewPairNode implements AssignRHS {
 
   @Override
   public void semanticCheck(SymbolTable symbolTable, SemanticErrorList errorList) {
+  }
+
+  @Override
+  public List<Instruction> generateAssembly(List<Register> registers, SymbolTable symbolTable) {
+    return null;
   }
 
   @Override

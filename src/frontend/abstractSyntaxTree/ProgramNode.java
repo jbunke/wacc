@@ -1,5 +1,7 @@
 package frontend.abstractSyntaxTree;
 
+import backend.Register;
+import backend.instructions.Instruction;
 import frontend.abstractSyntaxTree.statements.StatementNode;
 import frontend.abstractSyntaxTree.typeNodes.FunctionDefinitionNode;
 import frontend.symbolTable.Function;
@@ -17,6 +19,11 @@ public class ProgramNode implements Node {
   public ProgramNode(List<FunctionDefinitionNode> functions, StatementNode stat) {
     this.functions = functions;
     this.stat = stat;
+  }
+
+  @Override
+  public List<Instruction> generateAssembly(List<Register> registers, SymbolTable symbolTable) {
+    return null;
   }
 
   @Override

@@ -1,11 +1,15 @@
 package frontend.abstractSyntaxTree.statements;
 
+import backend.Register;
+import backend.instructions.Instruction;
 import frontend.abstractSyntaxTree.assignment.AssignLHS;
 import frontend.abstractSyntaxTree.assignment.AssignRHS;
 import frontend.symbolTable.SemanticError;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.Type;
+
+import java.util.List;
 
 public class AssignVariableStatementNode extends StatementNode {
 
@@ -35,5 +39,10 @@ public class AssignVariableStatementNode extends StatementNode {
               + rightType.toString()
               + "\" on RHS."));
     }
+  }
+
+  @Override
+  public List<Instruction> generateAssembly(List<Register> registers, SymbolTable symbolTable) {
+    return null;
   }
 }
