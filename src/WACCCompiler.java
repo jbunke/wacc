@@ -24,14 +24,6 @@ public class WACCCompiler {
   private static final int SYNTAX_ERROR_EXIT = 100;
   private static final int SEMANTIC_ERROR_EXIT = 200;
 
-  private static String getAssemblyFile(String file) throws IOException {
-    String name = file.substring(0, file.lastIndexOf(".wacc")) + ".s";
-    File assembly = new File(name);
-    if (assembly.createNewFile()) {
-
-    }
-  }
-
   public static void main(String[] args) {
     // Test arguments are correct
 
