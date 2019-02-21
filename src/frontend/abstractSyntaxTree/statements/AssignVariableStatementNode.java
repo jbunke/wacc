@@ -42,7 +42,7 @@ public class AssignVariableStatementNode extends StatementNode {
   }
 
   @Override
-  public List<Instruction> generateAssembly(List<Register> registers, SymbolTable symbolTable) {
+  public List<Instruction> generateAssembly(Map<Register.ID, Register> registers, SymbolTable symbolTable) {
     return null;
   }
 }

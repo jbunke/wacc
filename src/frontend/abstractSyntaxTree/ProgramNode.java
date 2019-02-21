@@ -1,7 +1,7 @@
 package frontend.abstractSyntaxTree;
 
 import backend.Register;
-import backend.instructions.Instruction;
+import backend.instructions.*;
 import frontend.abstractSyntaxTree.statements.StatementNode;
 import frontend.abstractSyntaxTree.typeNodes.FunctionDefinitionNode;
 import frontend.symbolTable.Function;
@@ -11,6 +11,7 @@ import frontend.symbolTable.SymbolTable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ProgramNode implements Node {
   private final StatementNode stat;
@@ -22,7 +23,15 @@ public class ProgramNode implements Node {
   }
 
   @Override
-  public List<Instruction> generateAssembly(List<Register> registers, SymbolTable symbolTable) {
+  public List<Instruction> generateAssembly(Map<Register.ID, Register> registers, SymbolTable symbolTable) {
+
+    List<Instruction> instructions = new ArrayList<>();
+    instructions.add(new LabelInstruction("main"));
+    instructions.add(new PushInstruction(registers.get(Register.ID.LR)));
+
+    instructions.add(new PopInstruction(registers.get(Register.ID.PC)));
+    instructions.add(new LTORGDirectiveInstruction());
+
     return null;
   }
 

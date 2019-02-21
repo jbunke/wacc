@@ -1,47 +1,52 @@
 package backend;
 
-import backend.instructions.Instruction;
-import backend.instructions.PopInstruction;
-import backend.instructions.PushInstruction;
+import backend.instructions.*;
 import frontend.abstractSyntaxTree.ProgramNode;
-import frontend.abstractSyntaxTree.statements.StatementListNode;
-import jdk.nashorn.internal.ir.FunctionNode;
+import frontend.symbolTable.SymbolTable;
 
-import java.util.List;
+import java.io.*;
+import java.util.*;
 
 public class AssemblyGeneratorVisitor {
-    Register lrRegister, pcRegister;
-
-    public AssemblyGeneratorVisitor(ProgramNode programNode) {
-        pcRegister = new Register(Register.ID.PC);
-        lrRegister = new Register(Register.ID.LR);
-    }
-
+    private ProgramNode programNode;
+    private SymbolTable symbolTable;
     private List<Instruction> globalMainInstructions;
 
-    private void generateCode() {
-        // TODO
+    public AssemblyGeneratorVisitor(ProgramNode programNode,
+                                    SymbolTable symbolTable) {
+        this.programNode = programNode;
+        this.symbolTable = symbolTable;
     }
 
-    public String getGeneratedCode() {
+    public void writeGeneratedCode(File file) throws IOException {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append(new TextDirectiveInstruction());
+        stringBuilder.append(new GlobalMainDirectiveInstruction());
+
         generateCode();
 
-        StringBuilder stringBuilder = new StringBuilder();
         for (Instruction instr : globalMainInstructions) {
             stringBuilder.append(instr);
         }
-        return stringBuilder.toString();
+        String code = stringBuilder.toString();
+
+        FileWriter fileWriter = new FileWriter(file);
+        BufferedWriter br = new BufferedWriter(fileWriter);
+        br.write(code);
+        br.close();
+        fileWriter.close();
     }
 
-    public void generateCode(FunctionNode functionNode) {
-        globalMainInstructions.add(new PushInstruction(lrRegister));
+    private void generateCode() {
+        Map<Register.ID, Register> registers = new HashMap<>();
 
-        globalMainInstructions.add(new PopInstruction(pcRegister));
+        for (Register.ID id : Register.ID.values()) {
+            registers.put(id, new Register(id));
+        }
+
+        globalMainInstructions.addAll(
+                programNode.generateAssembly(registers, symbolTable));
     }
-
-    private void generateCode(StatementListNode statementListNode) {
-
-    }
-
 
 }

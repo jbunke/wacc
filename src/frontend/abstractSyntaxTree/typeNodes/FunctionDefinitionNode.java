@@ -1,8 +1,8 @@
 package frontend.abstractSyntaxTree.typeNodes;
 
-
 import backend.Register;
 import backend.instructions.Instruction;
+import backend.instructions.LabelInstruction;
 import frontend.abstractSyntaxTree.Node;
 import frontend.abstractSyntaxTree.expressions.IdentifierNode;
 import frontend.abstractSyntaxTree.statements.StatementNode;
@@ -10,6 +10,7 @@ import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.Type;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FunctionDefinitionNode implements Node {
@@ -18,7 +19,9 @@ public class FunctionDefinitionNode implements Node {
   private final ParameterListNode parameters;
   private final TypeNode returnType;
 
-  public FunctionDefinitionNode(TypeNode type, IdentifierNode identifier, ParameterListNode parameters, StatementNode stat) {
+  public FunctionDefinitionNode(TypeNode type, IdentifierNode identifier,
+                                ParameterListNode parameters,
+                                StatementNode stat) {
     this.returnType = type;
     this.identifier = identifier;
     this.parameters = parameters;
@@ -40,14 +43,17 @@ public class FunctionDefinitionNode implements Node {
 
 
   @Override
-  public void semanticCheck(SymbolTable symbolTable, SemanticErrorList errorList) {
+  public void semanticCheck(SymbolTable symbolTable,
+                            SemanticErrorList errorList) {
     body.matchReturnType(getReturnType());
     parameters.semanticCheck(symbolTable, errorList);
     body.semanticCheck(symbolTable, errorList);
   }
 
   @Override
-  public List<Instruction> generateAssembly(List<Register> registers, SymbolTable symbolTable) {
+  public List<Instruction> generateAssembly(Map<Register.ID, Register> registers,
+                                            SymbolTable symbolTable) {
+    
     return null;
   }
 
