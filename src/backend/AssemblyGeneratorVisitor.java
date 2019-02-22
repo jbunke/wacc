@@ -22,8 +22,8 @@ public class AssemblyGeneratorVisitor {
     public void writeGeneratedCode(File file) throws IOException {
         StringBuilder stringBuilder = new StringBuilder();
 
-        stringBuilder.append(new TextDirectiveInstruction());
-        stringBuilder.append(new GlobalMainDirectiveInstruction());
+        stringBuilder.append(new Directive(Directive.ID.TEXT));
+        stringBuilder.append(new Directive(Directive.ID.GLOBAL, "main"));
 
         generateCode();
 
@@ -50,13 +50,12 @@ public class AssemblyGeneratorVisitor {
                 programNode.generateAssembly(this, symbolTable));
     }
 
-    private Map<Register.ID, Register> setupRegisters() {
+    private void setupRegisters() {
         registers = new HashMap<>();
 
         for (Register.ID id : Register.ID.values()) {
             registers.put(id, new Register(id));
         }
-        return registers;
     }
 
 }
