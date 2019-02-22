@@ -1,5 +1,8 @@
 package frontend.abstractSyntaxTree;
 
+import backend.AssemblyGeneratorVisitor;
+import backend.Register;
+import backend.instructions.*;
 import frontend.abstractSyntaxTree.statements.StatementNode;
 import frontend.abstractSyntaxTree.typeNodes.FunctionDefinitionNode;
 import frontend.symbolTable.Function;
@@ -20,11 +23,24 @@ public class ProgramNode implements Node {
   }
 
   @Override
+  public List<Instruction> generateAssembly(AssemblyGeneratorVisitor assemblyGeneratorVisitor, SymbolTable symbolTable) {
+    List<Instruction> instructions = new ArrayList<>();
+    instructions.add(new PushInstruction(assemblyGeneratorVisitor.getRegister(Register.ID.LR)));
+
+    instructions.add(new LDRInstruction(assemblyGeneratorVisitor
+            .getRegister(Register.ID.R0), 0));
+    instructions.add(new PopInstruction(assemblyGeneratorVisitor.getRegister(Register.ID.PC)));
+    instructions.add(new Directive(Directive.ID.LTORG));
+
+    return instructions;
+  }
+
+  @Override
   public void semanticCheck(SymbolTable symbolTable, SemanticErrorList errorList) {
     for (FunctionDefinitionNode func : functions) {
       if (symbolTable.find(func.getIdentifier()) != null) {
         errorList.addError(new SemanticError("Attempted to redeclare" +
-        " an existing function: \"" + func.getIdentifier() + ".\""));
+                " an existing function: \"" + func.getIdentifier() + ".\""));
       }
       symbolTable.add(func.getIdentifier(),
               new Function(func.getReturnType(), func.getParameterList()));

@@ -1,12 +1,18 @@
 package frontend.abstractSyntaxTree.statements;
 
 
+import backend.AssemblyGeneratorVisitor;
+import backend.Register;
+import backend.instructions.Instruction;
 import frontend.abstractSyntaxTree.expressions.ExpressionNode;
 import frontend.symbolTable.SemanticError;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.BaseTypes;
 import frontend.symbolTable.types.Type;
+
+import java.util.List;
+import java.util.Map;
 
 public class ExitStatementNode extends StatementNode {
   private final ExpressionNode exitCode;
@@ -24,6 +30,11 @@ public class ExitStatementNode extends StatementNode {
     if (resultType == null || !resultType.equals(new BaseTypes(BaseTypes.base_types.INT))) {
       errorList.addError(new SemanticError("Can't exit program with non-integer value."));
     }
+  }
+
+  @Override
+  public List<Instruction> generateAssembly(AssemblyGeneratorVisitor assemblyGeneratorVisitor, SymbolTable symbolTable) {
+    return null;
   }
 
   @Override
