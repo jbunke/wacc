@@ -6,7 +6,7 @@ failed=0
 total=0
 
 verifyValidFile(){
-    ./compile "$1"
+    ./compile "$1" >/dev/null
     code=$?
     ((total=total+1))
     if [ $code -ne 0 ]; then
