@@ -60,10 +60,13 @@ public class FunctionDefinitionNode implements Node {
 
         List<Instruction> instructions = new ArrayList<>();
 
-        // PUSH {lr}
+        // Push instruction
         instructions.add(new PushInstruction(assemblyGeneratorVisitor
                 .getRegister(Register.ID.LR)));
 
+        // Add all instructions from function body
+        instructions.addAll(body.generateAssembly(assemblyGeneratorVisitor,
+                symbolTable));
 
         return instructions;
     }

@@ -1,6 +1,7 @@
 import antlr.WACCLexer;
 import antlr.WACCParser;
 
+import backend.AssemblyGeneratorVisitor;
 import frontend.Visitor;
 import frontend.abstractSyntaxTree.ProgramNode;
 import frontend.symbolTable.SemanticErrorList;
@@ -11,6 +12,7 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.TokenStream;
 import org.antlr.v4.runtime.RecognitionException;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -86,6 +88,13 @@ public class WACCCompiler {
         // Semantic error exit code as per WACC specification is 200
         System.exit(SEMANTIC_ERROR_EXIT);
       }
+
+      // Generate .s file
+      String assemblyFileName = file.replace(".wacc",".s");
+      File assemblyFile = new File(assemblyFileName);
+      AssemblyGeneratorVisitor assemblyGen = new AssemblyGeneratorVisitor(AST, topLevelSymbolTable);
+      assemblyGen.writeGeneratedCode(assemblyFile);
+
     } catch (IOException e) {
       System.out.println("File at path (" + file + ") doesn't exist");
     } catch (RecognitionException e) {

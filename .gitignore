@@ -7,6 +7,8 @@ rules
 target/
 antlr_config/WACCLexer.tokens
 
+#ignore generated assembly files
+*.s
 
 #ignore Java class files
 *.class

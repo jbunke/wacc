@@ -17,6 +17,7 @@ public class AssemblyGeneratorVisitor {
                                     SymbolTable symbolTable) {
         this.programNode = programNode;
         this.symbolTable = symbolTable;
+        globalMainInstructions = new ArrayList<>();
     }
 
     public void writeGeneratedCode(File file) throws IOException {
@@ -28,7 +29,7 @@ public class AssemblyGeneratorVisitor {
         generateCode();
 
         for (Instruction instr : globalMainInstructions) {
-            stringBuilder.append(instr);
+            stringBuilder.append(instr.asString());
             stringBuilder.append("\n");
         }
         String code = stringBuilder.toString();
