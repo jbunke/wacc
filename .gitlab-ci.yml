@@ -1,6 +1,7 @@
 stages:
 - build
-- test
+- frontend_tests
+- backend_tests
 
 build:
   stage: build
@@ -10,6 +11,10 @@ build:
       - src/
       - bin/
 
-test:
-  stage: test
-  script: bash test
+frontend_tests:
+  stage: frontend_tests
+  script: bash frontend_test
+
+backend_tests:
+  stage: backend_tests
+  script: bash backend_test
