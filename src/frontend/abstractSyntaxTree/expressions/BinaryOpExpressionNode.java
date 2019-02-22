@@ -1,5 +1,8 @@
 package frontend.abstractSyntaxTree.expressions;
 
+import backend.AssemblyGeneratorVisitor;
+import backend.Register;
+import backend.instructions.Instruction;
 import frontend.symbolTable.SemanticError;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
@@ -122,6 +125,11 @@ public class BinaryOpExpressionNode extends ExpressionNode {
 
     left.semanticCheck(symbolTable, errorList);
     right.semanticCheck(symbolTable, errorList);
+  }
+
+  @Override
+  public List<Instruction> generateAssembly(AssemblyGeneratorVisitor assemblyGeneratorVisitor, SymbolTable symbolTable) {
+    return null;
   }
 
   public Type getType(SymbolTable symbolTable) {

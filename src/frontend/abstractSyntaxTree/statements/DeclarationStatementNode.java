@@ -1,5 +1,8 @@
 package frontend.abstractSyntaxTree.statements;
 
+import backend.AssemblyGeneratorVisitor;
+import backend.Register;
+import backend.instructions.Instruction;
 import frontend.abstractSyntaxTree.assignment.AssignRHS;
 import frontend.abstractSyntaxTree.expressions.IdentifierNode;
 import frontend.abstractSyntaxTree.typeNodes.TypeNode;
@@ -8,6 +11,9 @@ import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.Type;
 import frontend.symbolTable.Variable;
+
+import java.util.List;
+import java.util.Map;
 
 public class DeclarationStatementNode extends StatementNode {
 
@@ -42,6 +48,11 @@ public class DeclarationStatementNode extends StatementNode {
 
     Variable variable = new Variable(identifierType.getType());
     symbolTable.add(identifier.getName(), variable);
+  }
+
+  @Override
+  public List<Instruction> generateAssembly(AssemblyGeneratorVisitor assemblyGeneratorVisitor, SymbolTable symbolTable) {
+    return null;
   }
 
   IdentifierNode getIdentifier() {

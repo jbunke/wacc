@@ -1,5 +1,8 @@
 package frontend.abstractSyntaxTree.typeNodes;
 
+import backend.AssemblyGeneratorVisitor;
+import backend.Register;
+import backend.instructions.Instruction;
 import frontend.abstractSyntaxTree.Node;
 import frontend.abstractSyntaxTree.expressions.IdentifierNode;
 import frontend.symbolTable.SemanticErrorList;
@@ -9,6 +12,7 @@ import frontend.symbolTable.types.Type;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ParameterListNode implements Node {
   private final List<IdentifierNode> identifierList;
@@ -43,6 +47,11 @@ public class ParameterListNode implements Node {
       symbolTable.add(id.getName(), new Variable(fromParameters(id).getType()));
       fromParameters(id).semanticCheck(symbolTable, errorList);
     }
+  }
+
+  @Override
+  public List<Instruction> generateAssembly(AssemblyGeneratorVisitor assemblyGeneratorVisitor, SymbolTable symbolTable) {
+    return null;
   }
 
 

@@ -1,10 +1,16 @@
 package frontend.abstractSyntaxTree.typeNodes;
 
+import backend.AssemblyGeneratorVisitor;
+import backend.Register;
+import backend.instructions.Instruction;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.Array;
 import frontend.symbolTable.types.BaseTypes;
 import frontend.symbolTable.types.Type;
+
+import java.util.List;
+import java.util.Map;
 
 public class BaseTypesNode extends TypeNode {
   private final Type type;
@@ -35,5 +41,10 @@ public class BaseTypesNode extends TypeNode {
 
   @Override
   public void semanticCheck(SymbolTable symbolTable, SemanticErrorList errorList) {
+  }
+
+  @Override
+  public List<Instruction> generateAssembly(AssemblyGeneratorVisitor assemblyGeneratorVisitor, SymbolTable symbolTable) {
+    return null;
   }
 }

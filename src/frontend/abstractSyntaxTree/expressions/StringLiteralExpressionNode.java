@@ -1,10 +1,16 @@
 package frontend.abstractSyntaxTree.expressions;
 
+import backend.AssemblyGeneratorVisitor;
+import backend.Register;
+import backend.instructions.Instruction;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.Array;
 import frontend.symbolTable.types.BaseTypes;
 import frontend.symbolTable.types.Type;
+
+import java.util.List;
+import java.util.Map;
 
 public class StringLiteralExpressionNode extends ExpressionNode {
   private final String value;
@@ -15,6 +21,11 @@ public class StringLiteralExpressionNode extends ExpressionNode {
 
   @Override
   public void semanticCheck(SymbolTable symbolTable, SemanticErrorList errorList) {
+  }
+
+  @Override
+  public List<Instruction> generateAssembly(AssemblyGeneratorVisitor assemblyGeneratorVisitor, SymbolTable symbolTable) {
+    return null;
   }
 
   @Override

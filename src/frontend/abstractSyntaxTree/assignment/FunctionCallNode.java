@@ -1,5 +1,8 @@
 package frontend.abstractSyntaxTree.assignment;
 
+import backend.AssemblyGeneratorVisitor;
+import backend.Register;
+import backend.instructions.Instruction;
 import frontend.abstractSyntaxTree.expressions.ExpressionNode;
 import frontend.abstractSyntaxTree.expressions.IdentifierNode;
 import frontend.symbolTable.Function;
@@ -10,9 +13,9 @@ import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.Type;
 
 import java.util.List;
+import java.util.Map;
 
 public class FunctionCallNode implements AssignRHS {
-
   private final IdentifierNode functionIdentifier;
   private final List<ExpressionNode> arguments;
   private Function function;
@@ -68,5 +71,10 @@ public class FunctionCallNode implements AssignRHS {
       this.function = (Function) function;
     }
 
+  }
+
+  @Override
+  public List<Instruction> generateAssembly(AssemblyGeneratorVisitor assemblyGeneratorVisitor, SymbolTable symbolTable) {
+    return null;
   }
 }
