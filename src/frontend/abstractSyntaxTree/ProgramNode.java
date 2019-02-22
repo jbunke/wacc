@@ -27,9 +27,9 @@ public class ProgramNode implements Node {
   public List<Instruction> generateAssembly(AssemblyGeneratorVisitor assemblyGeneratorVisitor, SymbolTable symbolTable) {
     List<Instruction> instructions = new ArrayList<>();
     instructions.add(new LabelInstruction("main"));
-    instructions.add(new PushInstruction(registers.get(Register.ID.LR)));
+    instructions.add(new PushInstruction(assemblyGeneratorVisitor.getRegister(Register.ID.LR)));
 
-    instructions.add(new PopInstruction(registers.get(Register.ID.PC)));
+    instructions.add(new PopInstruction(assemblyGeneratorVisitor.getRegister(Register.ID.PC)));
     instructions.add(new LTORGDirectiveInstruction());
 
     return instructions;

@@ -1,5 +1,6 @@
 package frontend.abstractSyntaxTree.expressions;
 
+import backend.AssemblyGeneratorVisitor;
 import backend.Register;
 import backend.instructions.Instruction;
 import frontend.symbolTable.SemanticError;
