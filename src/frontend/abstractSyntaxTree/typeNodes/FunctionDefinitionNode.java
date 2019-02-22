@@ -2,9 +2,7 @@ package frontend.abstractSyntaxTree.typeNodes;
 
 import backend.AssemblyGeneratorVisitor;
 import backend.Register;
-import backend.instructions.Instruction;
-import backend.instructions.LabelInstruction;
-import backend.instructions.PushInstruction;
+import backend.instructions.*;
 import frontend.abstractSyntaxTree.Node;
 import frontend.abstractSyntaxTree.expressions.IdentifierNode;
 import frontend.abstractSyntaxTree.statements.StatementNode;
@@ -67,6 +65,17 @@ public class FunctionDefinitionNode implements Node {
         // Add all instructions from function body
         instructions.addAll(body.generateAssembly(assemblyGeneratorVisitor,
                 symbolTable));
+
+        // LDR instruction
+        instructions.add(new LDRInstruction(assemblyGeneratorVisitor
+                .getRegister(Register.ID.R0), 0));
+
+        // Pop instruction
+        instructions.add(new PopInstruction(assemblyGeneratorVisitor
+                .getRegister(Register.ID.PC)));
+
+        // Add LTORG directive
+        instructions.add(new Directive(Directive.ID.LTORG));
 
         return instructions;
     }

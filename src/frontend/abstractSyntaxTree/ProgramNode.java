@@ -29,6 +29,8 @@ public class ProgramNode implements Node {
     instructions.add(new LabelInstruction("main"));
     instructions.add(new PushInstruction(assemblyGeneratorVisitor.getRegister(Register.ID.LR)));
 
+    instructions.add(new LDRInstruction(assemblyGeneratorVisitor
+            .getRegister(Register.ID.R0), 0));
     instructions.add(new PopInstruction(assemblyGeneratorVisitor.getRegister(Register.ID.PC)));
     instructions.add(new Directive(Directive.ID.LTORG));
 
