@@ -27,6 +27,8 @@ public class ProgramNode implements Node {
     List<Instruction> instructions = new ArrayList<>();
     instructions.add(new PushInstruction(assemblyGeneratorVisitor.getRegister(Register.ID.LR)));
 
+    // LDR r0, =0 is for successful program termination
+    // TODO: only add instruction in case of successful termination
     instructions.add(new LDRInstruction(assemblyGeneratorVisitor
             .getRegister(Register.ID.R0), 0));
     instructions.add(new PopInstruction(assemblyGeneratorVisitor.getRegister(Register.ID.PC)));
