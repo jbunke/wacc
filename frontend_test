@@ -6,7 +6,7 @@ failed=0
 total=0
 
 verifyValidFile(){
-    ./compile "$1" >/dev/null
+    ./compile "$1"
     code=$?
     ((total=total+1))
     if [ $code -ne 0 ]; then
@@ -35,6 +35,8 @@ verifySemanticErrFile(){
         echo "Error: Compiler returned $code instead of 200 for $1"
     fi
 }
+
+rm -fr *.s
 
 # Valid files
 echo "=============== Valid files ==============="
