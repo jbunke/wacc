@@ -5,6 +5,8 @@ out
 .idea/
 rules
 target/
+antlr_config/WACCLexer.tokens
+
 
 #ignore Java class files
 *.class

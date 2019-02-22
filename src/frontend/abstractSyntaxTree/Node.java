@@ -1,5 +1,6 @@
 package frontend.abstractSyntaxTree;
 
+import backend.AssemblyGeneratorVisitor;
 import backend.Register;
 import backend.instructions.Instruction;
 import frontend.symbolTable.SemanticErrorList;
@@ -11,6 +12,6 @@ import java.util.Map;
 public interface Node {
   void semanticCheck(SymbolTable symbolTable, SemanticErrorList errorList);
 
-  List<Instruction> generateAssembly(Map<Register.ID, Register> registers,
+  List<Instruction> generateAssembly(AssemblyGeneratorVisitor assemblyGeneratorVisitor,
                                      SymbolTable symbolTable);
 }

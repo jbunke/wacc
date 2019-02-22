@@ -1,5 +1,6 @@
 package frontend.abstractSyntaxTree;
 
+import backend.AssemblyGeneratorVisitor;
 import backend.Register;
 import backend.instructions.*;
 import frontend.abstractSyntaxTree.statements.StatementNode;
@@ -23,8 +24,7 @@ public class ProgramNode implements Node {
   }
 
   @Override
-  public List<Instruction> generateAssembly(Map<Register.ID, Register> registers, SymbolTable symbolTable) {
-
+  public List<Instruction> generateAssembly(AssemblyGeneratorVisitor assemblyGeneratorVisitor, SymbolTable symbolTable) {
     List<Instruction> instructions = new ArrayList<>();
     instructions.add(new LabelInstruction("main"));
     instructions.add(new PushInstruction(registers.get(Register.ID.LR)));
@@ -32,7 +32,7 @@ public class ProgramNode implements Node {
     instructions.add(new PopInstruction(registers.get(Register.ID.PC)));
     instructions.add(new LTORGDirectiveInstruction());
 
-    return null;
+    return instructions;
   }
 
   @Override

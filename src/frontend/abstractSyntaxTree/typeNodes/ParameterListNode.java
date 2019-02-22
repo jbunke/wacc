@@ -1,5 +1,6 @@
 package frontend.abstractSyntaxTree.typeNodes;
 
+import backend.AssemblyGeneratorVisitor;
 import backend.Register;
 import backend.instructions.Instruction;
 import frontend.abstractSyntaxTree.Node;
@@ -49,7 +50,7 @@ public class ParameterListNode implements Node {
   }
 
   @Override
-  public List<Instruction> generateAssembly(Map<Register.ID, Register> registers, SymbolTable symbolTable) {
+  public List<Instruction> generateAssembly(AssemblyGeneratorVisitor assemblyGeneratorVisitor, SymbolTable symbolTable) {
     return null;
   }
 
