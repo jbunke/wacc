@@ -30,7 +30,7 @@ public class ProgramNode implements Node {
     instructions.add(new PushInstruction(assemblyGeneratorVisitor.getRegister(Register.ID.LR)));
 
     instructions.add(new PopInstruction(assemblyGeneratorVisitor.getRegister(Register.ID.PC)));
-    instructions.add(new LTORGDirectiveInstruction());
+    instructions.add(new Directive(Directive.ID.LTORG));
 
     return instructions;
   }
