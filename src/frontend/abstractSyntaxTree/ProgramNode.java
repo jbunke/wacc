@@ -12,7 +12,6 @@ import frontend.symbolTable.SymbolTable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class ProgramNode implements Node {
   private final StatementNode stat;
@@ -26,7 +25,6 @@ public class ProgramNode implements Node {
   @Override
   public List<Instruction> generateAssembly(AssemblyGeneratorVisitor assemblyGeneratorVisitor, SymbolTable symbolTable) {
     List<Instruction> instructions = new ArrayList<>();
-    instructions.add(new LabelInstruction("main"));
     instructions.add(new PushInstruction(assemblyGeneratorVisitor.getRegister(Register.ID.LR)));
 
     instructions.add(new LDRInstruction(assemblyGeneratorVisitor
