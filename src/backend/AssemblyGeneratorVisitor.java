@@ -47,7 +47,7 @@ public class AssemblyGeneratorVisitor {
     private void generateCode() {
         setupRegisters();
         globalMainInstructions.addAll(
-                programNode.generateAssembly(registers, symbolTable));
+                programNode.generateAssembly(this, symbolTable));
     }
 
     private Map<Register.ID, Register> setupRegisters() {
