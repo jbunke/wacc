@@ -1,6 +1,7 @@
 import antlr.WACCLexer;
 import antlr.WACCParser;
 
+import backend.AssemblyGeneratorVisitor;
 import frontend.Visitor;
 import frontend.abstractSyntaxTree.ProgramNode;
 import frontend.symbolTable.SemanticErrorList;
@@ -103,6 +104,9 @@ public class WACCCompiler {
         System.exit(FILE_ERROR_EXIT);
       }
 
+      AssemblyGeneratorVisitor programGenerator =
+              new AssemblyGeneratorVisitor(AST, topLevelSymbolTable);
+      programGenerator.generateAssembly(assFile);
     } catch (IOException e) {
       System.out.println("File at path (" + file + ") doesn't exist");
       System.exit(FILE_ERROR_EXIT);
