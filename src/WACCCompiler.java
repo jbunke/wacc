@@ -94,7 +94,8 @@ public class WACCCompiler {
         System.exit(SEMANTIC_ERROR_EXIT);
       }
 
-      String assFileName = file.substring(file.lastIndexOf("/") + 1, file.lastIndexOf(".wacc")) + ".s";
+      String assFileName = file.substring(file.lastIndexOf("/") + 1,
+                           file.lastIndexOf(".wacc")) + ".s";
       File assFile = new File(assFileName);
       if (!assFile.createNewFile()) {
         System.out.println("File: " + assFileName + " already exists");
