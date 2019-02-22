@@ -8,55 +8,65 @@ import java.io.*;
 import java.util.*;
 
 public class AssemblyGeneratorVisitor {
-    private ProgramNode programNode;
-    private SymbolTable symbolTable;
-    private List<Instruction> globalMainInstructions;
-    private Map<Register.ID, Register> registers;
+  private ProgramNode programNode;
+  private SymbolTable symbolTable;
+  private List<Instruction> instructions;
+  private Map<Register.ID, Register> registers;
+  private Set<String> labels;
 
-    public AssemblyGeneratorVisitor(ProgramNode programNode,
-                                    SymbolTable symbolTable) {
-        this.programNode = programNode;
-        this.symbolTable = symbolTable;
-        globalMainInstructions = new ArrayList<>();
+  public AssemblyGeneratorVisitor(ProgramNode programNode,
+                                  SymbolTable symbolTable) {
+    this.programNode = programNode;
+    this.symbolTable = symbolTable;
+
+    setupRegisters();
+    this.labels = Set.of("main");
+  }
+
+  public void generateAssembly(File file) throws IOException {
+    generateAssembly();
+    writeToFile(file);
+  }
+
+  private void generateAssembly() {
+    instructions = new ArrayList<>();
+
+    // Pre-main assembly code:
+    instructions.add(new Directive(Directive.ID.TEXT));
+    instructions.add(new Directive(Directive.ID.GLOBAL, "main"));
+    instructions.add(new LabelInstruction("main"));
+
+    List<Instruction> mainInstr =
+            programNode.generateAssembly(this, symbolTable);
+
+    instructions.addAll(mainInstr);
+  }
+
+  private void writeToFile(File file) throws IOException {
+    StringBuilder sbProg = new StringBuilder();
+
+    for (Instruction instruction : instructions) {
+      sbProg.append(instruction.asString());
+      sbProg.append("\n");
     }
 
-    public void writeGeneratedCode(File file) throws IOException {
-        StringBuilder stringBuilder = new StringBuilder();
+    String program = sbProg.toString();
 
-        stringBuilder.append(new Directive(Directive.ID.TEXT));
-        stringBuilder.append(new Directive(Directive.ID.GLOBAL, "main"));
+    BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+    writer.write(program);
+    writer.close();
+  }
 
-        generateCode();
+  public Register getRegister(Register.ID registerId) {
+    return registers.get(registerId);
+  }
 
-        for (Instruction instr : globalMainInstructions) {
-            stringBuilder.append(instr.asString());
-            stringBuilder.append("\n");
-        }
-        String code = stringBuilder.toString();
+  private void setupRegisters() {
+    registers = new HashMap<>();
 
-        FileWriter fileWriter = new FileWriter(file);
-        BufferedWriter br = new BufferedWriter(fileWriter);
-        br.write(code);
-        br.close();
-        fileWriter.close();
+    for (Register.ID id : Register.ID.values()) {
+      registers.put(id, new Register(id));
     }
-
-    public Register getRegister(Register.ID registerId){
-        return registers.get(registerId);
-    }
-
-    private void generateCode() {
-        setupRegisters();
-        globalMainInstructions.addAll(
-                programNode.generateAssembly(this, symbolTable));
-    }
-
-    private void setupRegisters() {
-        registers = new HashMap<>();
-
-        for (Register.ID id : Register.ID.values()) {
-            registers.put(id, new Register(id));
-        }
-    }
+  }
 
 }
