@@ -14,6 +14,6 @@ public class LDRInstruction extends Instruction{
 
     @Override
     public String asString() {
-        return "LDR " + destRegister.getRegID() +", =" + constant;
+        return "LDR " + destRegister.toString() +", =" + constant;
     }
 }

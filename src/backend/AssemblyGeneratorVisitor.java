@@ -33,6 +33,7 @@ public class AssemblyGeneratorVisitor {
 
     // Pre-main assembly code:
     instructions.add(new Directive(Directive.ID.TEXT));
+    instructions.add(new EmptyLine());
     instructions.add(new Directive(Directive.ID.GLOBAL, "main"));
     instructions.add(new LabelInstruction("main"));
 
@@ -47,6 +48,7 @@ public class AssemblyGeneratorVisitor {
     StringBuilder sbProg = new StringBuilder();
 
     for (Instruction instruction : instructions) {
+      sbProg.append(instruction.getIndent());
       sbProg.append(instruction.asString());
       sbProg.append("\n");
     }
