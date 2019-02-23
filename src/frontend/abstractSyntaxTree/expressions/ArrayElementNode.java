@@ -14,6 +14,7 @@ import frontend.symbolTable.Variable;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 
 public class ArrayElementNode extends ExpressionNode {
   private final IdentifierNode identifier;
@@ -60,7 +61,8 @@ public class ArrayElementNode extends ExpressionNode {
   }
 
   @Override
-  public List<Instruction> generateAssembly(AssemblyGeneratorVisitor assemblyGeneratorVisitor, SymbolTable symbolTable) {
+  public List<Instruction> generateAssembly(AssemblyGeneratorVisitor generator,
+          SymbolTable symbolTable, Stack<Register.ID> available) {
     return null;
   }
 

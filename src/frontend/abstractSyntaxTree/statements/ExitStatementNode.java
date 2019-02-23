@@ -16,6 +16,7 @@ import frontend.symbolTable.types.Type;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 public class ExitStatementNode extends StatementNode {
   private final ExpressionNode exitCode;
@@ -36,20 +37,22 @@ public class ExitStatementNode extends StatementNode {
   }
 
   @Override
-  public List<Instruction> generateAssembly(AssemblyGeneratorVisitor assemblyGeneratorVisitor, SymbolTable symbolTable) {
+  public List<Instruction> generateAssembly(
+          AssemblyGeneratorVisitor generator,
+          SymbolTable symbolTable, Stack<Register.ID> available) {
     List<Instruction> instructions = new ArrayList<>();
 
-    Register R0 = assemblyGeneratorVisitor.getRegister(Register.ID.R0);
-    Register R4 = assemblyGeneratorVisitor.getRegister(Register.ID.R4);
+    Register R0 = generator.getRegister(Register.ID.R0);
+    Register nextAvail = generator.getRegister(available.peek());
 
     // {reg} is first available gp reg (for now using r4)
     // LDR {reg}, -1
     instructions.addAll(
-            exitCode.generateAssembly(assemblyGeneratorVisitor, symbolTable));
+            exitCode.generateAssembly(generator, symbolTable, available));
     instructions.add(new BranchInstruction(Condition.L, "exit"));
 
     // MOV r0, {reg}
-    instructions.add(new MovInstruction(R0, R4));
+    instructions.add(new MovInstruction(R0, nextAvail));
 
     return instructions;
   }

@@ -12,6 +12,7 @@ import frontend.symbolTable.SymbolTable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 public class ProgramNode implements Node {
   private final StatementNode stat;
@@ -23,15 +24,15 @@ public class ProgramNode implements Node {
   }
 
   @Override
-  public List<Instruction> generateAssembly(AssemblyGeneratorVisitor assemblyGeneratorVisitor, SymbolTable symbolTable) {
+  public List<Instruction> generateAssembly(AssemblyGeneratorVisitor generator, SymbolTable symbolTable, Stack<Register.ID> available) {
     List<Instruction> instructions = new ArrayList<>();
-    instructions.add(new PushInstruction(assemblyGeneratorVisitor.getRegister(Register.ID.LR)));
+    instructions.add(new PushInstruction(generator.getRegister(Register.ID.LR)));
 
     // LDR r0, =0 is for successful program termination
     // TODO: only add instruction in case of successful termination
-    instructions.add(new LDRInstruction(assemblyGeneratorVisitor
+    instructions.add(new LDRInstruction(generator
             .getRegister(Register.ID.R0), 0));
-    instructions.add(new PopInstruction(assemblyGeneratorVisitor.getRegister(Register.ID.PC)));
+    instructions.add(new PopInstruction(generator.getRegister(Register.ID.PC)));
     instructions.add(new Directive(Directive.ID.LTORG));
 
     return instructions;

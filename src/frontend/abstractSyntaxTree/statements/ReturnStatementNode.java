@@ -11,6 +11,7 @@ import frontend.symbolTable.types.Type;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 
 public class ReturnStatementNode extends StatementNode {
   private final ExpressionNode result;
@@ -34,7 +35,9 @@ public class ReturnStatementNode extends StatementNode {
   }
 
   @Override
-  public List<Instruction> generateAssembly(AssemblyGeneratorVisitor assemblyGeneratorVisitor, SymbolTable symbolTable) {
+  public List<Instruction> generateAssembly(AssemblyGeneratorVisitor generator,
+                                            SymbolTable symbolTable,
+                                            Stack<Register.ID> available) {
     return null;
   }
 

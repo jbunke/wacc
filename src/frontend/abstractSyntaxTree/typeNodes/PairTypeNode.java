@@ -10,6 +10,7 @@ import frontend.symbolTable.types.Type;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 
 public class PairTypeNode extends TypeNode {
   private final TypeNode firstType;
@@ -27,7 +28,9 @@ public class PairTypeNode extends TypeNode {
   }
 
   @Override
-  public List<Instruction> generateAssembly(AssemblyGeneratorVisitor assemblyGeneratorVisitor, SymbolTable symbolTable) {
+  public List<Instruction> generateAssembly(AssemblyGeneratorVisitor generator,
+                                            SymbolTable symbolTable,
+                                            Stack<Register.ID> available) {
     return null;
   }
 
