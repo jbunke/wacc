@@ -4,4 +4,7 @@ public abstract class Instruction {
 
   abstract public String asString();
 
+  public String getIndent() {
+    return "\t\t";
+  }
 }
