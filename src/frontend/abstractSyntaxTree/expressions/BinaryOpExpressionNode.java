@@ -12,6 +12,7 @@ import frontend.symbolTable.types.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 
 public class BinaryOpExpressionNode extends ExpressionNode {
   private final static Map<String, OperatorType> stringOpMap = Map.ofEntries(
@@ -128,8 +129,10 @@ public class BinaryOpExpressionNode extends ExpressionNode {
   }
 
   @Override
-  public List<Instruction> generateAssembly(AssemblyGeneratorVisitor assemblyGeneratorVisitor, SymbolTable symbolTable) {
-    return null;
+  public List<Instruction> generateAssembly(AssemblyGeneratorVisitor generator,
+                                            SymbolTable symbolTable,
+                                            Stack<Register.ID> available) {
+    return new ArrayList<>();
   }
 
   public Type getType(SymbolTable symbolTable) {
@@ -137,7 +140,7 @@ public class BinaryOpExpressionNode extends ExpressionNode {
 //    Type rightType = right.getType(symbolTable);
 //
 //    if (leftType == null || rightType == null || !leftType.equals(rightType)) {
-//      return null;
+//      return new ArrayList<>();
 //    }
 
     switch (operatorType) {
@@ -158,7 +161,7 @@ public class BinaryOpExpressionNode extends ExpressionNode {
       default:
         return new BaseTypes(BaseTypes.base_types.INT);
 //      default:
-//        return null;
+//        return new ArrayList<>();
     }
   }
 

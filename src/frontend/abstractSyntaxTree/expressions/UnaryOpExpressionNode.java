@@ -10,8 +10,10 @@ import frontend.symbolTable.types.Array;
 import frontend.symbolTable.types.BaseTypes;
 import frontend.symbolTable.types.Type;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 
 public class UnaryOpExpressionNode extends ExpressionNode {
   private final static Map<String, OperatorType> stringOpMap = Map.ofEntries(
@@ -100,8 +102,10 @@ public class UnaryOpExpressionNode extends ExpressionNode {
   }
 
   @Override
-  public List<Instruction> generateAssembly(AssemblyGeneratorVisitor assemblyGeneratorVisitor, SymbolTable symbolTable) {
-    return null;
+  public List<Instruction> generateAssembly(AssemblyGeneratorVisitor generator,
+                                            SymbolTable symbolTable,
+                                            Stack<Register.ID> available) {
+    return new ArrayList<>();
   }
 
   private OperatorType stringToType(String operator) {

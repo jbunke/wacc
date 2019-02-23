@@ -1,5 +1,7 @@
 package backend;
 
+import java.util.Stack;
+
 public class Register {
 
   private ID regID;
@@ -19,5 +21,21 @@ public class Register {
   @Override
   public String toString() {
     return regID.name().toLowerCase();
+  }
+
+  public static Stack<Register.ID> generalPurposeRegisters() {
+    Stack<Register.ID> genRegs = new Stack<>();
+
+    genRegs.push(ID.R12);
+    genRegs.push(ID.R11);
+    genRegs.push(ID.R10);
+    genRegs.push(ID.R9);
+    genRegs.push(ID.R8);
+    genRegs.push(ID.R7);
+    genRegs.push(ID.R6);
+    genRegs.push(ID.R5);
+    genRegs.push(ID.R4);
+
+    return genRegs;
   }
 }

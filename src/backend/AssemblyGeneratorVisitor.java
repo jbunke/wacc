@@ -37,7 +37,8 @@ public class AssemblyGeneratorVisitor {
     instructions.add(new LabelInstruction("main"));
 
     List<Instruction> mainInstr =
-            programNode.generateAssembly(this, symbolTable);
+            programNode.generateAssembly(this, symbolTable,
+                    Register.generalPurposeRegisters());
 
     instructions.addAll(mainInstr);
   }
