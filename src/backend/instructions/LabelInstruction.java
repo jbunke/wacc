@@ -12,4 +12,9 @@ public class LabelInstruction extends Instruction {
   public String asString() {
     return label + ":";
   }
+
+  @Override
+  public String getIndent() {
+    return "";
+  }
 }

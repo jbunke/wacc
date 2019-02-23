@@ -24,4 +24,14 @@ public class Directive extends Instruction {
     if (argument.equals("")) return "." + did.name().toLowerCase();
     return "." + did.name().toLowerCase() + " " + argument;
   }
+
+  @Override
+  public String getIndent() {
+    switch (did) {
+      case LTORG:
+        return "\t\t";
+      default:
+        return "";
+    }
+  }
 }
