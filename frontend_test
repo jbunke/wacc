@@ -36,6 +36,8 @@ verifySemanticErrFile(){
     fi
 }
 
+rm -fr *.s
+
 # Valid files
 echo "=============== Valid files ==============="
 echo "..."

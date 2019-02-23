@@ -1,6 +1,9 @@
 package frontend.abstractSyntaxTree.expressions;
 
 
+import backend.AssemblyGeneratorVisitor;
+import backend.Register;
+import backend.instructions.Instruction;
 import frontend.symbolTable.SemanticError;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
@@ -10,6 +13,7 @@ import frontend.symbolTable.types.Type;
 import frontend.symbolTable.Variable;
 
 import java.util.List;
+import java.util.Map;
 
 public class ArrayElementNode extends ExpressionNode {
   private final IdentifierNode identifier;
@@ -53,6 +57,11 @@ public class ArrayElementNode extends ExpressionNode {
                       "but has been supplied" + indices.size() + " indices."
       ));
     }
+  }
+
+  @Override
+  public List<Instruction> generateAssembly(AssemblyGeneratorVisitor assemblyGeneratorVisitor, SymbolTable symbolTable) {
+    return null;
   }
 
   @Override

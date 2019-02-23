@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+
 import org.antlr.v4.runtime.BaseErrorListener;
 import org.antlr.v4.runtime.Recognizer;
 import org.antlr.v4.runtime.RecognitionException;
@@ -19,10 +20,9 @@ public class WACCParserErrorListener extends BaseErrorListener {
   @Override
   public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol,
                           int line, int charPositionInLine, String msg,
-                          RecognitionException e)
-  {
+                          RecognitionException e) {
     syntaxErrors.add("Syntax Error: line " + line + ":"
-                     + charPositionInLine + " -> " + msg);
+            + charPositionInLine + " -> " + msg);
   }
 
   public boolean hasError() {

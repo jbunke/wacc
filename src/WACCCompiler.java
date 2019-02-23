@@ -1,6 +1,7 @@
 import antlr.WACCLexer;
 import antlr.WACCParser;
 
+import backend.AssemblyGeneratorVisitor;
 import frontend.Visitor;
 import frontend.abstractSyntaxTree.ProgramNode;
 import frontend.symbolTable.SemanticErrorList;
@@ -46,14 +47,14 @@ public class WACCCompiler {
       WACCLexer lexer = new WACCLexer(input);
 
       lexer.removeErrorListeners();                        // Remove the ANTLR
-                                                           // default error
+      // default error
       TokenStream tokens = new CommonTokenStream(lexer);   // listeners so that
       WACCParser parser = new WACCParser(tokens);          // our own can be
-                                                           // used without
+      // used without
       parser.removeErrorListeners();                       // multiple errors
-                                                           // being raised from
+      // being raised from
       WACCParserErrorListener syntaxErrorListener =        // a single syntax
-          new WACCParserErrorListener();                   // error encounter.
+              new WACCParserErrorListener();                   // error encounter.
       parser.addErrorListener(syntaxErrorListener);
 
       WACCParser.ProgContext parseTree = parser.prog();
@@ -97,17 +98,21 @@ public class WACCCompiler {
       String assFileName = file.substring(file.lastIndexOf("/") + 1,
                            file.lastIndexOf(".wacc")) + ".s";
       File assFile = new File(assFileName);
+
       if (!assFile.createNewFile()) {
         System.out.println("File: " + assFileName + " already exists");
         System.exit(FILE_ERROR_EXIT);
       }
 
+      AssemblyGeneratorVisitor programGenerator =
+              new AssemblyGeneratorVisitor(AST, topLevelSymbolTable);
+      programGenerator.generateAssembly(assFile);
     } catch (IOException e) {
       System.out.println("File at path (" + file + ") doesn't exist");
       System.exit(FILE_ERROR_EXIT);
     } catch (RecognitionException e) {
       System.out.println("Error with prediction, predicate failure or "
-          + "mismatched input occurred.");
+              + "mismatched input occurred.");
     }
   }
 }

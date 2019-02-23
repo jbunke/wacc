@@ -1,12 +1,18 @@
 package frontend.abstractSyntaxTree.statements;
 
 
+import backend.AssemblyGeneratorVisitor;
+import backend.Register;
+import backend.instructions.Instruction;
 import frontend.abstractSyntaxTree.expressions.ExpressionNode;
 import frontend.symbolTable.SemanticError;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.BaseTypes;
 import frontend.symbolTable.types.Type;
+
+import java.util.List;
+import java.util.Map;
 
 public class IfStatementNode extends StatementNode {
 
@@ -37,6 +43,11 @@ public class IfStatementNode extends StatementNode {
 
     SymbolTable falseBranchTable = symbolTable.newChild();
     falseBranch.semanticCheck(falseBranchTable, errorList);
+  }
+
+  @Override
+  public List<Instruction> generateAssembly(AssemblyGeneratorVisitor assemblyGeneratorVisitor, SymbolTable symbolTable) {
+    return null;
   }
 
   @Override
