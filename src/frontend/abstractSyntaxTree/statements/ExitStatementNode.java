@@ -49,10 +49,10 @@ public class ExitStatementNode extends StatementNode {
     // LDR {reg}, -1
     instructions.addAll(
             exitCode.generateAssembly(generator, symbolTable, available));
-    instructions.add(new BranchInstruction(Condition.L, "exit"));
 
     // MOV r0, {reg}
     instructions.add(new MovInstruction(R0, nextAvail));
+    instructions.add(new BranchInstruction(Condition.L, "exit"));
 
     return instructions;
   }

@@ -62,14 +62,9 @@ public class FunctionDefinitionNode implements Node {
         // Push instruction
         instructions.add(new PushInstruction(generator
                 .getRegister(Register.ID.LR)));
-
         // Add all instructions from function body
         instructions.addAll(body.generateAssembly(generator,
                 symbolTable, available));
-
-        // LDR instruction
-        instructions.add(new LDRInstruction(generator
-                .getRegister(Register.ID.R0), 0));
 
         // Pop instruction
         instructions.add(new PopInstruction(generator

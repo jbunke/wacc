@@ -28,7 +28,7 @@ public class ParenthesisExpressionNode extends ExpressionNode {
   public List<Instruction> generateAssembly(AssemblyGeneratorVisitor generator,
                                             SymbolTable symbolTable,
                                             Stack<Register.ID> available) {
-    return null;
+    return containedExpression.generateAssembly(generator, symbolTable, available);
   }
 
   @Override

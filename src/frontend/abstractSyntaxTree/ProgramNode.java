@@ -24,10 +24,13 @@ public class ProgramNode implements Node {
   }
 
   @Override
-  public List<Instruction> generateAssembly(AssemblyGeneratorVisitor generator, SymbolTable symbolTable, Stack<Register.ID> available) {
+  public List<Instruction> generateAssembly(AssemblyGeneratorVisitor generator,
+                                            SymbolTable symbolTable,
+                                            Stack<Register.ID> available) {
     List<Instruction> instructions = new ArrayList<>();
     instructions.add(new PushInstruction(generator.getRegister(Register.ID.LR)));
 
+    instructions.addAll(stat.generateAssembly(generator, symbolTable, available));
     // LDR r0, =0 is for successful program termination
     // TODO: only add instruction in case of successful termination
     instructions.add(new LDRInstruction(generator
