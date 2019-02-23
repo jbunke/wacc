@@ -53,7 +53,14 @@ public class StatementListNode extends StatementNode {
   public List<Instruction> generateAssembly(AssemblyGeneratorVisitor generator,
                                             SymbolTable symbolTable,
                                             Stack<Register.ID> available) {
-    return new ArrayList<>();
+    List<Instruction> instructions = new ArrayList<>();
+
+    for (StatementNode statement : statements) {
+      instructions.addAll(statement.generateAssembly(
+              generator, symbolTable, available));
+    }
+
+    return instructions;
   }
 
 
