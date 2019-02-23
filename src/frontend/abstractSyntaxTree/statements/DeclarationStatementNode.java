@@ -12,6 +12,7 @@ import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.Type;
 import frontend.symbolTable.Variable;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
@@ -55,7 +56,7 @@ public class DeclarationStatementNode extends StatementNode {
   public List<Instruction> generateAssembly(AssemblyGeneratorVisitor generator,
                                             SymbolTable symbolTable,
                                             Stack<Register.ID> available) {
-    return null;
+    return new ArrayList<>();
   }
 
   IdentifierNode getIdentifier() {

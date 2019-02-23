@@ -8,6 +8,7 @@ import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.Array;
 import frontend.symbolTable.types.Type;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
@@ -29,7 +30,7 @@ public class ArrayTypeNode extends TypeNode {
   public List<Instruction> generateAssembly(AssemblyGeneratorVisitor generator,
                                             SymbolTable symbolTable,
                                             Stack<Register.ID> available) {
-    return null;
+    return new ArrayList<>();
   }
 
   @Override

@@ -36,7 +36,7 @@ public class SymbolTable {
     } else if (parent != null) {
       return parent.find(identifier);
     }
-    return null;
+    return new ArrayList<>();
   }
 
   public SymbolTable newChild() {
