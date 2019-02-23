@@ -1,5 +1,6 @@
 package frontend.symbolTable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,7 +37,7 @@ public class SymbolTable {
     } else if (parent != null) {
       return parent.find(identifier);
     }
-    return new ArrayList<>();
+    return null;
   }
 
   public SymbolTable newChild() {
