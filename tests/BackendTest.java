@@ -1,6 +1,8 @@
 import java.lang.Runtime;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.IOException;
+
 
 public class BackendTest {
 
@@ -24,30 +26,30 @@ public class BackendTest {
     // Get the output from the reference compiler
     String refCompilerOut = getRefCompilerOutput(filename);
 
-    if (!emulatorOut.equals(refCompilerOut)) {
-      System.out.println("Mismatched output between reference compiler and "
-          + "your wacc compiler");
+//    if (!emulatorOut.equals(refCompilerOut)) {
+    System.out.println("Mismatched output between reference compiler and "
+        + "your wacc compiler");
 
-      System.out.println("\n\n\n");
+    System.out.println("\n\n\n");
 
-      System.out.println("Your compiler output:\n");
-      System.out.println(emulatorOut);
+    System.out.println("Your compiler output:\n");
+    System.out.println(emulatorOut);
 
-      System.out.println("\n\n\n");
+    System.out.println("\n\n\n");
 
-      System.out.println("Reference compiler output:\n");
-      System.out.println(refCompilerOut);
+    System.out.println("Reference compiler output:\n");
+    System.out.println(refCompilerOut);
 
-      System.exit(TEST_FAILURE_EXIT);
-    }
+    System.exit(TEST_FAILURE_EXIT);
+//    }
 
     System.exit(TEST_SUCCESS_EXIT);
   }
 
   private static String getRefCompilerOutput(String filename) {
-    String command = "ruby refCompile -x "+filename;
+    String command = "ruby refCompile -x " + filename;
 
-    try{
+    try {
       Process process = Runtime.getRuntime().exec(command.toString());
       process.waitFor();
 
@@ -59,9 +61,13 @@ public class BackendTest {
       while ((line = reader.readLine()) != null) {
         output.append(line + "\n");
       }
+      return output.toString();
+    } catch (IOException e) {
+      return "Failed to run command on command line";
+    } catch (InterruptedException e1) {
+      return "Failed to run command on command line";
     }
   }
-
   private static String getEmulatorOutput(String filename) {
     return "";
   }

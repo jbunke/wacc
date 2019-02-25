@@ -13,8 +13,8 @@ build:
 
 frontend_tests:
   stage: frontend_tests
-  script: bash tests/frontend_test
+  script: cd tests; bash frontend_test
 
 backend_tests:
   stage: backend_tests
-  script: bash tests/backend_test
+  script: cd tests; bash backend_test
