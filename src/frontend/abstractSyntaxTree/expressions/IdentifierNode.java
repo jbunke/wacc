@@ -3,6 +3,8 @@ package frontend.abstractSyntaxTree.expressions;
 import backend.AssemblyGeneratorVisitor;
 import backend.Register;
 import backend.instructions.Instruction;
+import backend.instructions.LDRInstruction;
+import backend.instructions.MovInstruction;
 import frontend.symbolTable.*;
 import frontend.symbolTable.types.BaseTypes;
 import frontend.symbolTable.types.Type;
@@ -38,7 +40,28 @@ public class IdentifierNode extends ExpressionNode {
   public List<Instruction> generateAssembly(AssemblyGeneratorVisitor generator,
                                             SymbolTable symbolTable,
                                             Stack<Register.ID> available) {
-    return new ArrayList<>();
+    SymbolCategory var = symbolTable.find(identifier);
+    Variable identVariable = (Variable) var;
+    Object value = identVariable.getValue();
+
+    List<Instruction> instructions = new ArrayList<>();
+    Register first = generator.getRegister(available.peek());
+
+    if (value instanceof Integer) {
+      // TODO: Involves other instructions including SUB and ADD for SP with size of type
+      instructions.add(new LDRInstruction(first, (Integer) value));
+    } else if (value instanceof Character) {
+      // TODO: Ditto
+      instructions.add(new MovInstruction(first, (Character) value));
+    } else if (value instanceof Boolean) {
+      // TODO: Ditto
+      instructions.add(new MovInstruction(first, (Boolean) value));
+    } else if (value instanceof String) {
+      // TODO: Ditto
+      instructions.add(new MovInstruction(first, (String) value));
+    }
+
+    return instructions;
   }
 
   public String getName() {
