@@ -1,7 +1,8 @@
 package backend.instructions;
 
 public class EmptyLine extends Instruction {
-  public EmptyLine() {}
+  public EmptyLine() {
+  }
 
   @Override
   public String asString() {

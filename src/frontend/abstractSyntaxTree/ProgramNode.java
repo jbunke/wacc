@@ -30,7 +30,8 @@ public class ProgramNode implements Node {
     List<Instruction> instructions = new ArrayList<>();
     instructions.add(new PushInstruction(generator.getRegister(Register.ID.LR)));
 
-    instructions.addAll(stat.generateAssembly(generator, symbolTable, available));
+    instructions.addAll(stat.generateAssembly(generator,
+            symbolTable.newChild(), available));
     // LDR r0, =0 is for successful program termination
     // TODO: only add instruction in case of successful termination
     instructions.add(new LDRInstruction(generator

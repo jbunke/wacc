@@ -3,13 +3,14 @@ package frontend.abstractSyntaxTree.expressions;
 import backend.AssemblyGeneratorVisitor;
 import backend.Register;
 import backend.instructions.Instruction;
+import backend.instructions.LDRInstruction;
+import backend.instructions.MovInstruction;
 import frontend.symbolTable.*;
 import frontend.symbolTable.types.BaseTypes;
 import frontend.symbolTable.types.Type;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Stack;
 
 public class IdentifierNode extends ExpressionNode {
@@ -38,7 +39,13 @@ public class IdentifierNode extends ExpressionNode {
   public List<Instruction> generateAssembly(AssemblyGeneratorVisitor generator,
                                             SymbolTable symbolTable,
                                             Stack<Register.ID> available) {
-    return new ArrayList<>();
+    List<Instruction> instructions = new ArrayList<>();
+
+    Register first = generator.getRegister(available.peek());
+    instructions.add(new LDRInstruction(first,
+            generator.getRegister(Register.ID.SP)));
+
+    return instructions;
   }
 
   public String getName() {

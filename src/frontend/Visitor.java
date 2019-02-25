@@ -209,7 +209,7 @@ public class Visitor extends WACCParserBaseVisitor<Node> {
 
   @Override
   public Node visitCharLiteral(WACCParser.CharLiteralContext ctx) {
-    return new CharacterLiteralExpressionNode(ctx.CHAR_LIT().getText().charAt(0));
+    return new CharacterLiteralExpressionNode(ctx.CHAR_LIT().getText().charAt(1));
   }
 
   @Override

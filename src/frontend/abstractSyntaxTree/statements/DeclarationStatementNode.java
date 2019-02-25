@@ -3,18 +3,20 @@ package frontend.abstractSyntaxTree.statements;
 import backend.AssemblyGeneratorVisitor;
 import backend.Register;
 import backend.instructions.Instruction;
+import backend.instructions.STRInstruction;
 import frontend.abstractSyntaxTree.assignment.AssignRHS;
 import frontend.abstractSyntaxTree.expressions.IdentifierNode;
+import frontend.abstractSyntaxTree.typeNodes.BaseTypesNode;
 import frontend.abstractSyntaxTree.typeNodes.TypeNode;
 import frontend.symbolTable.SemanticError;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
+import frontend.symbolTable.types.BaseTypes;
 import frontend.symbolTable.types.Type;
 import frontend.symbolTable.Variable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Stack;
 
 public class DeclarationStatementNode extends StatementNode {
@@ -56,7 +58,15 @@ public class DeclarationStatementNode extends StatementNode {
   public List<Instruction> generateAssembly(AssemblyGeneratorVisitor generator,
                                             SymbolTable symbolTable,
                                             Stack<Register.ID> available) {
-    return new ArrayList<>();
+    List<Instruction> instructions = new ArrayList<>();
+
+    instructions.addAll(rhs.generateAssembly(generator,
+            symbolTable, available));
+    instructions.add(new STRInstruction(
+            generator.getRegister(available.peek()),
+            generator.getRegister(Register.ID.SP)));
+
+    return instructions;
   }
 
   IdentifierNode getIdentifier() {
