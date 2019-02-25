@@ -1,3 +1,7 @@
+import java.lang.Runtime;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
 public class BackendTest {
 
   private static final int FILENAME_ARG_INDEX = 0;
@@ -41,7 +45,21 @@ public class BackendTest {
   }
 
   private static String getRefCompilerOutput(String filename) {
-    return "";
+    String command = "ruby refCompile -x "+filename;
+
+    try{
+      Process process = Runtime.getRuntime().exec(command.toString());
+      process.waitFor();
+
+      StringBuilder output = new StringBuilder();
+
+      BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+
+      String line;
+      while ((line = reader.readLine()) != null) {
+        output.append(line + "\n");
+      }
+    }
   }
 
   private static String getEmulatorOutput(String filename) {

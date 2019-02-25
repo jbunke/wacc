@@ -1,7 +1,5 @@
 #!/bin/bash
 
-errOutput=""
-
 failed=0
 total=0
 
