@@ -44,7 +44,7 @@ public class PrintStatementNode extends StatementNode {
     if (!generator.containsLabel("p_print_string")) {
       String code = generator.addMsg(TERMIN_STRING);
       generator.addAdditional("p_print_string",
-              print_string(generator, code, available));
+              print_string(generator, code));
     }
 
     instructions.add(new BranchInstruction(Condition.L, "p_print_string"));
@@ -52,8 +52,7 @@ public class PrintStatementNode extends StatementNode {
   }
 
   private static List<Instruction> print_string(AssemblyGenerator generator,
-                                                String code,
-                                                Stack<Register.ID> available) {
+                                                String code) {
     List<Instruction> instructions = new ArrayList<>();
     instructions.add(new PushInstruction(generator.getRegister(Register.ID.LR)));
     instructions.add(new LDRInstruction(generator.getRegister(Register.ID.R1),
