@@ -34,6 +34,7 @@ public class PrintLineStatementNode extends StatementNode {
   public List<Instruction> generateAssembly(AssemblyGeneratorVisitor generator,
                                             SymbolTable symbolTable,
                                             Stack<Register.ID> available) {
-    return new ArrayList<>();
+    return (new PrintStatementNode(expression).generateAssembly(
+            generator, symbolTable, available));
   }
 }

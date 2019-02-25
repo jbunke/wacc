@@ -5,12 +5,18 @@ import backend.Register;
 public class LDRInstruction extends Instruction {
 
   private Register destRegister;
-  private int constant;
+  private String constant;
   private Register indexRegister;
   private int offset;
   private boolean isConstant;
 
   public LDRInstruction(Register destRegister, int constant) {
+    this.destRegister = destRegister;
+    this.constant = Integer.toString(constant);
+    this.isConstant = true;
+  }
+
+  public LDRInstruction(Register destRegister, String constant) {
     this.destRegister = destRegister;
     this.constant = constant;
     this.isConstant = true;

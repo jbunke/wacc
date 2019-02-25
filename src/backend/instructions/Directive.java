@@ -13,6 +13,7 @@ public class Directive extends Instruction {
   public Directive(ID did, String argument) {
     this.did = did;
     this.argument = argument;
+    if (did == ID.ASCII) { this.argument = "\"" + argument + "\""; }
   }
 
   public enum ID {
@@ -29,6 +30,8 @@ public class Directive extends Instruction {
   public String getIndent() {
     switch (did) {
       case LTORG:
+      case WORD:
+      case ASCII:
         return "\t\t";
       default:
         return "";

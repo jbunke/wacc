@@ -3,6 +3,7 @@ package frontend.abstractSyntaxTree.expressions;
 import backend.AssemblyGeneratorVisitor;
 import backend.Register;
 import backend.instructions.Instruction;
+import backend.instructions.LDRInstruction;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.Array;
@@ -18,7 +19,7 @@ public class StringLiteralExpressionNode extends ExpressionNode {
   private final String value;
 
   public StringLiteralExpressionNode(String v) {
-    value = v;
+    value = v.substring(1, v.length() - 1);
   }
 
   @Override
@@ -29,7 +30,12 @@ public class StringLiteralExpressionNode extends ExpressionNode {
   public List<Instruction> generateAssembly(AssemblyGeneratorVisitor generator,
                                             SymbolTable symbolTable,
                                             Stack<Register.ID> available) {
-    return new ArrayList<>();
+    List<Instruction> instructions = new ArrayList<>();
+    Register first = new Register(available.peek());
+
+    instructions.add(new LDRInstruction(first, generator.addMsg(value)));
+
+    return instructions;
   }
 
   @Override
