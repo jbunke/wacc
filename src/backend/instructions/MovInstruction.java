@@ -14,7 +14,7 @@ public class MovInstruction extends Instruction {
 
   public MovInstruction(Register dest, char immediate) {
     this.dest = dest;
-    this.op = "#" + immediate;
+    this.op = "#'" + immediate + "'";
   }
 
   public MovInstruction(Register dest, boolean immediate) {
@@ -24,7 +24,7 @@ public class MovInstruction extends Instruction {
 
   public MovInstruction(Register dest, String immediate) {
     this.dest = dest;
-    this.op = "#" + immediate;
+    this.op = "#\"" + immediate + "\"";
   }
 
   public MovInstruction(Register dest, Register src) {

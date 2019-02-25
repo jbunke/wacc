@@ -8,6 +8,10 @@ public class BaseTypes extends Type {
 
   private final base_types baseType;
 
+  public base_types getBaseType() {
+    return baseType;
+  }
+
   public BaseTypes(base_types base_type) {
     this.baseType = base_type;
   }
