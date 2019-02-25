@@ -1,7 +1,7 @@
 package frontend.abstractSyntaxTree.statements;
 
 
-import backend.AssemblyGeneratorVisitor;
+import backend.AssemblyGenerator;
 import backend.Condition;
 import backend.Register;
 import backend.instructions.BranchInstruction;
@@ -38,7 +38,7 @@ public class ExitStatementNode extends StatementNode {
 
   @Override
   public List<Instruction> generateAssembly(
-          AssemblyGeneratorVisitor generator,
+          AssemblyGenerator generator,
           SymbolTable symbolTable, Stack<Register.ID> available) {
     List<Instruction> instructions = new ArrayList<>();
 

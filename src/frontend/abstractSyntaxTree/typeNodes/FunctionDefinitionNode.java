@@ -1,6 +1,6 @@
 package frontend.abstractSyntaxTree.typeNodes;
 
-import backend.AssemblyGeneratorVisitor;
+import backend.AssemblyGenerator;
 import backend.Register;
 import backend.instructions.*;
 import frontend.abstractSyntaxTree.Node;
@@ -12,7 +12,6 @@ import frontend.symbolTable.types.Type;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Stack;
 
 public class FunctionDefinitionNode implements Node {
@@ -54,7 +53,7 @@ public class FunctionDefinitionNode implements Node {
 
     @Override
     public List<Instruction> generateAssembly(
-            AssemblyGeneratorVisitor generator,
+            AssemblyGenerator generator,
             SymbolTable symbolTable, Stack<Register.ID> available) {
 
         List<Instruction> instructions = new ArrayList<>();

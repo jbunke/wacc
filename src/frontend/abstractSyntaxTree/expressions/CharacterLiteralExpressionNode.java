@@ -1,6 +1,6 @@
 package frontend.abstractSyntaxTree.expressions;
 
-import backend.AssemblyGeneratorVisitor;
+import backend.AssemblyGenerator;
 import backend.Register;
 import backend.instructions.Instruction;
 import backend.instructions.MovInstruction;
@@ -11,7 +11,6 @@ import frontend.symbolTable.types.Type;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Stack;
 
 public class CharacterLiteralExpressionNode extends ExpressionNode {
@@ -26,7 +25,7 @@ public class CharacterLiteralExpressionNode extends ExpressionNode {
   }
 
   @Override
-  public List<Instruction> generateAssembly(AssemblyGeneratorVisitor generator,
+  public List<Instruction> generateAssembly(AssemblyGenerator generator,
                                             SymbolTable symbolTable,
                                             Stack<Register.ID> available) {
     List<Instruction> instructions = new ArrayList<>();

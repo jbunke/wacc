@@ -1,10 +1,9 @@
 package frontend.abstractSyntaxTree.expressions;
 
-import backend.AssemblyGeneratorVisitor;
+import backend.AssemblyGenerator;
 import backend.Register;
 import backend.instructions.Instruction;
 import backend.instructions.LDRInstruction;
-import backend.instructions.MovInstruction;
 import frontend.symbolTable.*;
 import frontend.symbolTable.types.BaseTypes;
 import frontend.symbolTable.types.Type;
@@ -36,7 +35,7 @@ public class IdentifierNode extends ExpressionNode {
   }
 
   @Override
-  public List<Instruction> generateAssembly(AssemblyGeneratorVisitor generator,
+  public List<Instruction> generateAssembly(AssemblyGenerator generator,
                                             SymbolTable symbolTable,
                                             Stack<Register.ID> available) {
     List<Instruction> instructions = new ArrayList<>();

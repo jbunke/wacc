@@ -1,9 +1,10 @@
 package frontend.abstractSyntaxTree.statements;
 
 
-import backend.AssemblyGeneratorVisitor;
+import backend.AssemblyGenerator;
+import backend.Condition;
 import backend.Register;
-import backend.instructions.Instruction;
+import backend.instructions.*;
 import frontend.abstractSyntaxTree.expressions.ExpressionNode;
 import frontend.symbolTable.SemanticError;
 import frontend.symbolTable.SemanticErrorList;
@@ -11,10 +12,11 @@ import frontend.symbolTable.SymbolTable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Stack;
 
 public class PrintStatementNode extends StatementNode {
+  private static final String TERMIN_STRING = "%.*s\\0";
+
   private final ExpressionNode expression;
 
   public PrintStatementNode(ExpressionNode expr) {
@@ -31,12 +33,42 @@ public class PrintStatementNode extends StatementNode {
   }
 
   @Override
-  public List<Instruction> generateAssembly(AssemblyGeneratorVisitor generator,
+  public List<Instruction> generateAssembly(AssemblyGenerator generator,
                                             SymbolTable symbolTable,
                                             Stack<Register.ID> available) {
+    List<Instruction> instructions = expression.generateAssembly(generator,
+            symbolTable, available);
+    Register first = generator.getRegister(available.peek());
+    instructions.add(new MovInstruction(generator.getRegister(Register.ID.R0),
+            first));
+    if (!generator.containsLabel("p_print_string")) {
+      String code = generator.addMsg(TERMIN_STRING);
+      generator.addAdditional("p_print_string",
+              print_string(generator, code, available));
+    }
+
+    instructions.add(new BranchInstruction(Condition.L, "p_print_string"));
+    return instructions;
+  }
+
+  private static List<Instruction> print_string(AssemblyGenerator generator,
+                                                String code,
+                                                Stack<Register.ID> available) {
     List<Instruction> instructions = new ArrayList<>();
-    instructions.addAll(expression.generateAssembly(generator,
-            symbolTable, available));
+    instructions.add(new PushInstruction(generator.getRegister(Register.ID.LR)));
+    instructions.add(new LDRInstruction(generator.getRegister(Register.ID.R1),
+            generator.getRegister(Register.ID.R0)));
+    instructions.add(new AddInstruction(generator.getRegister(Register.ID.R2),
+            generator.getRegister(Register.ID.R0), 4));
+    instructions.add(new LDRInstruction(generator.getRegister(Register.ID.R0),
+            code));
+    instructions.add(new AddInstruction(generator.getRegister(Register.ID.R0),
+            generator.getRegister(Register.ID.R0), 4));
+    instructions.add(new BranchInstruction(Condition.L, "printf"));
+    instructions.add(new MovInstruction(
+            generator.getRegister(Register.ID.R0), 0));
+    instructions.add(new BranchInstruction(Condition.L, "fflush"));
+    instructions.add(new PopInstruction(generator.getRegister(Register.ID.PC)));
     return instructions;
   }
 }

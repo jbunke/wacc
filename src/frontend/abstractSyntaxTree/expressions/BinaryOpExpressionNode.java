@@ -1,6 +1,6 @@
 package frontend.abstractSyntaxTree.expressions;
 
-import backend.AssemblyGeneratorVisitor;
+import backend.AssemblyGenerator;
 import backend.Register;
 import backend.instructions.Instruction;
 import frontend.symbolTable.SemanticError;
@@ -129,7 +129,7 @@ public class BinaryOpExpressionNode extends ExpressionNode {
   }
 
   @Override
-  public List<Instruction> generateAssembly(AssemblyGeneratorVisitor generator,
+  public List<Instruction> generateAssembly(AssemblyGenerator generator,
                                             SymbolTable symbolTable,
                                             Stack<Register.ID> available) {
     return new ArrayList<>();

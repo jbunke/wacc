@@ -1,6 +1,6 @@
 package frontend.abstractSyntaxTree;
 
-import backend.AssemblyGeneratorVisitor;
+import backend.AssemblyGenerator;
 import backend.Register;
 import backend.instructions.*;
 import frontend.abstractSyntaxTree.statements.StatementNode;
@@ -24,7 +24,7 @@ public class ProgramNode implements Node {
   }
 
   @Override
-  public List<Instruction> generateAssembly(AssemblyGeneratorVisitor generator,
+  public List<Instruction> generateAssembly(AssemblyGenerator generator,
                                             SymbolTable symbolTable,
                                             Stack<Register.ID> available) {
     List<Instruction> instructions = new ArrayList<>();

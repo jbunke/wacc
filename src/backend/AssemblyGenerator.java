@@ -7,24 +7,25 @@ import frontend.symbolTable.SymbolTable;
 import java.io.*;
 import java.util.*;
 
-public class AssemblyGeneratorVisitor {
-  private static final String TERMIN_STRING = "%.*s\\0";
-
+public class AssemblyGenerator {
   private ProgramNode programNode;
   private SymbolTable symbolTable;
   private List<Instruction> instructions;
+  private List<Instruction> additionals;
   private Map<Register.ID, Register> registers;
   private Set<String> labels;
   private List<Instruction> dataDirectives;
 
-  public AssemblyGeneratorVisitor(ProgramNode programNode,
-                                  SymbolTable symbolTable) {
+  public AssemblyGenerator(ProgramNode programNode,
+                           SymbolTable symbolTable) {
     this.programNode = programNode;
     this.symbolTable = symbolTable;
 
     setupRegisters();
-    this.labels = Set.of("main");
+    this.labels = new HashSet<>();
+    labels.add("main");
     this.dataDirectives = new ArrayList<>();
+    this.additionals = new ArrayList<>();
   }
 
   public void generateAssembly(File file) throws IOException {
@@ -46,15 +47,12 @@ public class AssemblyGeneratorVisitor {
                     Register.generalPurposeRegisters());
 
     if (!dataDirectives.isEmpty()) {
-      String label = "msg_" + (dataDirectives.size() / 3);
-      dataDirectives.add(new LabelInstruction(label));
-      dataDirectives.add(new Directive(Directive.ID.WORD,
-              Integer.toString(realStringLength(TERMIN_STRING))));
-      dataDirectives.add(new Directive(Directive.ID.ASCII, TERMIN_STRING));
       dataDirectives.add(new EmptyLine());
     }
 
     instructions.addAll(mainInstr);
+
+    instructions.addAll(additionals);
   }
 
   private void writeToFile(File file) throws IOException {
@@ -104,6 +102,16 @@ public class AssemblyGeneratorVisitor {
     dataDirectives.add(new Directive(Directive.ID.ASCII, toAdd));
 
     return label;
+  }
+
+  public void addAdditional(String label, List<Instruction> additionals) {
+    this.labels.add(label);
+    this.additionals.add(new LabelInstruction(label));
+    this.additionals.addAll(additionals);
+  }
+
+  public boolean containsLabel(String label) {
+    return labels.contains(label);
   }
 
   /* Checks for escaped characters and counts them as having a
