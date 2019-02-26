@@ -1,4 +1,5 @@
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.lang.Runtime;
 import java.io.BufferedReader;
@@ -57,11 +58,24 @@ public class BackendTest {
 
     String outputFile = filename.replaceFirst(".*/(\\w+).*", "$1") + ".out";
     String outputString = "";
-
-    //TODO: Read from outputFile and extract the Compiler Output, and return it as outputString
-
+    {
+      File file = new File(outputFile);
+      BufferedReader br = null;
+      try {
+        br = new BufferedReader(new FileReader(file));
+        String line;
+        while ((line = br.readLine()) != null) {
+          if(line == "==========================================================="){
+            //TODO save lines into a String until next "===" is found
+          }
+        }
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
     return outputString;
   }
+
   private static String getEmulatorOutput(String filename) {
     return "";
   }
