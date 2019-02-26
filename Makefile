@@ -31,5 +31,6 @@ rules:
 clean:
 	$(RM) rules $(OUTPUT_DIR) $(SOURCE_DIR)/antlr
 	rm -fr *.s
+	rm -fr *.out
 
 .PHONY: all rules clean

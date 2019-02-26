@@ -1,7 +1,15 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.lang.Runtime;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 public class BackendTest {
@@ -47,27 +55,27 @@ public class BackendTest {
   }
 
   private static String getRefCompilerOutput(String filename) {
-    String command = "ruby refCompile -x " + filename;
 
-    try {
-      Process process = Runtime.getRuntime().exec(command.toString());
-      process.waitFor();
-
-      StringBuilder output = new StringBuilder();
-
-      BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-
-      String line;
-      while ((line = reader.readLine()) != null) {
-        output.append(line + "\n");
+    String outputFile = filename.replaceFirst(".*/(\\w+).*", "$1") + ".out";
+    String outputString = "";
+    {
+      File file = new File(outputFile);
+      BufferedReader br = null;
+      try {
+        br = new BufferedReader(new FileReader(file));
+        String line;
+        while ((line = br.readLine()) != null) {
+          if(line == "==========================================================="){
+            //TODO save lines into a String until next "===" is found
+          }
+        }
+      } catch (IOException e) {
+        e.printStackTrace();
       }
-      return output.toString();
-    } catch (IOException e) {
-      return "Failed to run command on command line";
-    } catch (InterruptedException e1) {
-      return "Failed to run command on command line";
     }
+    return outputString;
   }
+
   private static String getEmulatorOutput(String filename) {
     return "";
   }

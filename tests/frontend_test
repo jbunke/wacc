@@ -10,6 +10,8 @@ verifyValidFile(){
     if [ $code -ne 0 ]; then
         (( failed = failed + 1 ))
         echo "Error: Compiler returned $code instead of 0 for $1"
+    else
+    echo "Valid Test Passed: $1"
     fi
 }
 
@@ -20,6 +22,8 @@ verifySyntaxErrFile(){
     if [ $code -ne 100 ]; then
         (( failed = failed + 1 ))
         echo "Error: Compiler returned $code instead of 100 for $1"
+    else
+    echo "Syntax Error Test Passed: $1"
     fi
 }
 
@@ -31,6 +35,8 @@ verifySemanticErrFile(){
     if [ $code -ne 200 ]; then
         (( failed = failed + 1 ))
         echo "Error: Compiler returned $code instead of 200 for $1"
+    else
+    echo "Semantic Error Test Passed: $1"
     fi
 }
 
@@ -38,7 +44,6 @@ rm -fr *.s
 
 # Valid files
 echo "=============== Valid files ==============="
-echo "..."
 verifyValidFile tests/examples/valid/advanced/binarySortTree.wacc
 verifyValidFile tests/examples/valid/advanced/ticTacToe.wacc
 verifyValidFile tests/examples/valid/advanced/hashTable.wacc
