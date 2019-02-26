@@ -28,7 +28,8 @@ public class InnerScopeStatementNode extends StatementNode {
   public List<Instruction> generateAssembly(AssemblyGenerator generator,
                                             SymbolTable symbolTable,
                                             Stack<Register.ID> available) {
-    return new ArrayList<>();
+    return innerStatement.generateAssembly(generator,
+            symbolTable.getChild(innerStatement), available);
   }
 
   @Override
