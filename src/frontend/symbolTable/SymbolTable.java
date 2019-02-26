@@ -4,6 +4,7 @@ import frontend.abstractSyntaxTree.Node;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class SymbolTable {
 
@@ -41,6 +42,21 @@ public class SymbolTable {
       return parent.find(identifier);
     }
     return null;
+  }
+
+  public int getSize() {
+    int size = 0;
+
+    Set<String> keys = identifierMap.keySet();
+    for (String key : keys) {
+      SymbolCategory symbol = identifierMap.get(key);
+      if (symbol instanceof Variable) {
+        Variable variable = (Variable) symbol;
+        size += variable.getType().size();
+      }
+    }
+
+    return size;
   }
 
   public SymbolTable getChild(Node scope) {

@@ -27,6 +27,19 @@ public class BaseTypes extends Type {
   }
 
   @Override
+  public int size() {
+    switch (baseType) {
+      case CHAR:
+      case BOOL:
+        return 1;
+      case INT:
+        return 4;
+      default:
+        return 0;
+    }
+  }
+
+  @Override
   public String toString() {
     return baseType.toString();
   }

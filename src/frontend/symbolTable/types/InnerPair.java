@@ -7,6 +7,11 @@ public class InnerPair extends Type {
   }
 
   @Override
+  public int size() {
+    return 0; // TODO
+  }
+
+  @Override
   public String toString() {
     return "pair";
   }

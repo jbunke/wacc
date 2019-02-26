@@ -29,11 +29,24 @@ public class ProgramNode implements Node {
                                             Stack<Register.ID> available) {
     List<Instruction> instructions = new ArrayList<>();
     instructions.add(new PushInstruction(generator.getRegister(Register.ID.LR)));
+    // Scope variable check
+    int size = symbolTable.getChild(stat).getSize();
+
+    if (size > 0) {
+      instructions.add(new SubInstruction(generator.getRegister(Register.ID.SP),
+              generator.getRegister(Register.ID.SP), size));
+    }
 
     instructions.addAll(stat.generateAssembly(generator,
             symbolTable.getChild(stat), available));
     // LDR r0, =0 is for successful program termination
     // TODO: only add instruction in case of successful termination
+
+    if (size > 0) {
+      instructions.add(new AddInstruction(generator.getRegister(Register.ID.SP),
+              generator.getRegister(Register.ID.SP), size));
+    }
+
     instructions.add(new LDRInstruction(generator
             .getRegister(Register.ID.R0), 0));
     instructions.add(new PopInstruction(generator.getRegister(Register.ID.PC)));
