@@ -49,6 +49,8 @@ public class ReadStatementNode extends StatementNode {
     List<Instruction> instructions = lhs.generateAssembly(generator,
             symbolTable, available);
     Register first = generator.getRegister(available.peek());
+    instructions.add(new AddInstruction(first,
+            generator.getRegister(Register.ID.SP), 0));
     instructions.add(new MovInstruction(generator.getRegister(Register.ID.R0),
             first));
 

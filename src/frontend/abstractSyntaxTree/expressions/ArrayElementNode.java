@@ -26,6 +26,17 @@ public class ArrayElementNode extends ExpressionNode {
   }
 
   @Override
+  public int weight() {
+    int weight = 2;
+
+    for (ExpressionNode index : indices) {
+      weight += index.weight();
+    }
+
+    return weight;
+  }
+
+  @Override
   public void semanticCheck(SymbolTable symbolTable, SemanticErrorList errorList) {
     for (ExpressionNode node : indices) {
       final Type nodeType = node.getType(symbolTable);

@@ -20,6 +20,11 @@ public class IdentifierNode extends ExpressionNode {
   }
 
   @Override
+  public int weight() {
+    return 1;
+  }
+
+  @Override
   public void semanticCheck(SymbolTable symbolTable, SemanticErrorList errorList) {
 
     SymbolCategory id = symbolTable.find(identifier);

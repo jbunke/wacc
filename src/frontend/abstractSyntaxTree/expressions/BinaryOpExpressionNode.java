@@ -2,7 +2,9 @@ package frontend.abstractSyntaxTree.expressions;
 
 import backend.AssemblyGenerator;
 import backend.Register;
+import backend.instructions.AndInstruction;
 import backend.instructions.Instruction;
+import backend.instructions.OrInstruction;
 import frontend.symbolTable.SemanticError;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
@@ -41,7 +43,7 @@ public class BinaryOpExpressionNode extends ExpressionNode {
     this.right = right;
   }
 
-  private enum OperatorType {
+  public enum OperatorType {
     TIMES(2),
     DIVIDE(2),
     MOD(2),
@@ -65,6 +67,11 @@ public class BinaryOpExpressionNode extends ExpressionNode {
     OperatorType(int value) {
       this.value = value;
     }
+  }
+
+  @Override
+  public int weight() {
+    return 1 + left.weight() + right.weight();
   }
 
   @Override
@@ -132,7 +139,58 @@ public class BinaryOpExpressionNode extends ExpressionNode {
   public List<Instruction> generateAssembly(AssemblyGenerator generator,
                                             SymbolTable symbolTable,
                                             Stack<Register.ID> available) {
-    return new ArrayList<>();
+    List<Instruction> instructions = new ArrayList<>();
+
+    Stack<Register.ID> originalRegState = new Stack<>();
+    originalRegState.addAll(available);
+
+    Register first = generator.getRegister(available.pop());
+    Register second = generator.getRegister(available.pop());
+
+    if (left.weight() > right.weight()) {
+      instructions.addAll(generateOperands(left, right, second, first,
+              generator, symbolTable, available));
+    } else {
+      instructions.addAll(generateOperands(right, left, first, second,
+              generator, symbolTable, available));
+    }
+    available.pop();
+
+    instructions.addAll(generateOperation(first, second));
+    available.clear();
+    available.addAll(originalRegState);
+
+    return instructions;
+  }
+
+  private List<Instruction> generateOperation(Register rg1, Register rg2) {
+    List<Instruction> instructions = new ArrayList<>();
+
+    switch (operatorType) {
+      case AND:
+        instructions.add(new AndInstruction(rg1, rg1, rg2));
+        break;
+      case OR:
+        instructions.add(new OrInstruction(rg1, rg1, rg2));
+        break;
+    }
+
+    return instructions;
+  }
+
+  private List<Instruction> generateOperands(ExpressionNode op1,
+          ExpressionNode op2, Register rg1, Register rg2,
+          AssemblyGenerator generator, SymbolTable symbolTable,
+          Stack<Register.ID> available) {
+    List<Instruction> instructions = new ArrayList<>();
+
+    available.push(rg1.getRegID());
+    available.push(rg2.getRegID());
+    instructions.addAll(op1.generateAssembly(generator, symbolTable, available));
+    available.pop();
+    instructions.addAll(op2.generateAssembly(generator, symbolTable, available));
+
+    return instructions;
   }
 
   public Type getType(SymbolTable symbolTable) {

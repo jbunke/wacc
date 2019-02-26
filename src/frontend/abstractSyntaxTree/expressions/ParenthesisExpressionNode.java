@@ -19,6 +19,11 @@ public class ParenthesisExpressionNode extends ExpressionNode {
   }
 
   @Override
+  public int weight() {
+    return containedExpression.weight();
+  }
+
+  @Override
   public void semanticCheck(SymbolTable symbolTable, SemanticErrorList errorList) {
     containedExpression.semanticCheck(symbolTable, errorList);
   }

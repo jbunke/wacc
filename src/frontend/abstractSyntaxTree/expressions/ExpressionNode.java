@@ -7,6 +7,8 @@ import frontend.symbolTable.types.Type;
 
 public abstract class ExpressionNode implements AssignRHS {
 
+  public abstract int weight();
+
   public abstract void semanticCheck(SymbolTable symbolTable, SemanticErrorList errorList);
 
   public abstract Type getType(SymbolTable symbolTable);

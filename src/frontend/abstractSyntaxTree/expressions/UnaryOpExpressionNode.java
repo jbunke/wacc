@@ -77,6 +77,11 @@ public class UnaryOpExpressionNode extends ExpressionNode {
   }
 
   @Override
+  public int weight() {
+    return 1 + operand.weight();
+  }
+
+  @Override
   public void semanticCheck(SymbolTable symbolTable, SemanticErrorList errorList) {
     Type operandType = operand.getType(symbolTable);
     if (operatorType == OperatorType.LENGTH) {
