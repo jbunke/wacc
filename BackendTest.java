@@ -34,22 +34,22 @@ public class BackendTest {
     // Get the output from the reference compiler
     String refCompilerOut = getRefCompilerOutput(filename);
 
-//    if (!emulatorOut.equals(refCompilerOut)) {
-    System.out.println("Mismatched output between reference compiler and "
-        + "your wacc compiler");
+    if (!emulatorOut.equals(refCompilerOut)) {
+      System.out.println("Mismatched output between reference compiler and "
+          + "your wacc compiler");
 
-    System.out.println("\n\n\n");
+      System.out.println("\n\n\n");
 
-    System.out.println("Your compiler output:\n");
-    System.out.println(emulatorOut);
+      System.out.println("Your compiler output:\n");
+      System.out.println(emulatorOut);
 
-    System.out.println("\n\n\n");
+      System.out.println("\n\n\n");
 
-    System.out.println("Reference compiler output:\n");
-    System.out.println(refCompilerOut);
+      System.out.println("Reference compiler output:\n");
+      System.out.println(refCompilerOut);
 
-    System.exit(TEST_FAILURE_EXIT);
-//    }
+      System.exit(TEST_FAILURE_EXIT);
+    }
 
     System.exit(TEST_SUCCESS_EXIT);
   }
@@ -57,27 +57,30 @@ public class BackendTest {
   private static String getRefCompilerOutput(String filename) {
 
     String outputFile = filename.replaceFirst(".*/(\\w+).*", "$1") + ".out";
-    String outputString = "";
+    StringBuilder outputString = new StringBuilder();
     {
       File file = new File(outputFile);
       BufferedReader br = null;
       try {
         br = new BufferedReader(new FileReader(file));
         String line;
+        boolean outputFound = false;
         while ((line = br.readLine()) != null) {
-          if(line == "==========================================================="){
-            //TODO save lines into a String until next "===" is found
+          if (line.equals(
+              "===========================================================")) {
+            outputFound = !outputFound;
+          } else if (outputFound) {
+            outputString.append(line);
           }
         }
       } catch (IOException e) {
         e.printStackTrace();
       }
     }
-    return outputString;
+    return outputString.toString();
   }
 
   private static String getEmulatorOutput(String filename) {
     return "";
   }
-
 }
