@@ -1,6 +1,7 @@
 package frontend.symbolTable;
 
-import java.util.ArrayList;
+import frontend.abstractSyntaxTree.Node;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,10 +16,12 @@ public class SymbolTable {
 
   private final SymbolTable parent;
   private final Map<String, SymbolCategory> identifierMap;
+  private final Map<Node, SymbolTable> childrenMap;
 
   public SymbolTable(SymbolTable parent) {
     this.parent = parent;
     identifierMap = new HashMap<>();
+    childrenMap = new HashMap<>();
 
     if (this.parent == null) {
       for (String keyword : reservedWords) {
@@ -40,7 +43,16 @@ public class SymbolTable {
     return null;
   }
 
-  public SymbolTable newChild() {
-    return new SymbolTable(this);
+  public SymbolTable getChild(Node scope) {
+    if (childrenMap.containsKey(scope)) {
+      return childrenMap.get(scope);
+    }
+    return null;
+  }
+
+  public SymbolTable newChild(Node scope) {
+    SymbolTable child = new SymbolTable(this);
+    childrenMap.put(scope, child);
+    return child;
   }
 }

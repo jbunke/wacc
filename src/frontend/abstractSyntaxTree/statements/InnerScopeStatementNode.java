@@ -1,6 +1,6 @@
 package frontend.abstractSyntaxTree.statements;
 
-import backend.AssemblyGeneratorVisitor;
+import backend.AssemblyGenerator;
 import backend.Register;
 import backend.instructions.Instruction;
 import frontend.symbolTable.SemanticErrorList;
@@ -9,7 +9,6 @@ import frontend.symbolTable.types.Type;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Stack;
 
 public class InnerScopeStatementNode extends StatementNode {
@@ -21,12 +20,12 @@ public class InnerScopeStatementNode extends StatementNode {
 
   @Override
   public void semanticCheck(SymbolTable symbolTable, SemanticErrorList errorList) {
-    SymbolTable innerTable = symbolTable.newChild();
+    SymbolTable innerTable = symbolTable.newChild(innerStatement);
     innerStatement.semanticCheck(innerTable, errorList);
   }
 
   @Override
-  public List<Instruction> generateAssembly(AssemblyGeneratorVisitor generator,
+  public List<Instruction> generateAssembly(AssemblyGenerator generator,
                                             SymbolTable symbolTable,
                                             Stack<Register.ID> available) {
     return new ArrayList<>();

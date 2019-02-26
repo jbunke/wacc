@@ -1,7 +1,7 @@
 package frontend.abstractSyntaxTree.expressions;
 
 
-import backend.AssemblyGeneratorVisitor;
+import backend.AssemblyGenerator;
 import backend.Register;
 import backend.instructions.Instruction;
 import frontend.symbolTable.SemanticError;
@@ -14,7 +14,6 @@ import frontend.symbolTable.Variable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Stack;
 
 public class ArrayElementNode extends ExpressionNode {
@@ -62,8 +61,8 @@ public class ArrayElementNode extends ExpressionNode {
   }
 
   @Override
-  public List<Instruction> generateAssembly(AssemblyGeneratorVisitor generator,
-          SymbolTable symbolTable, Stack<Register.ID> available) {
+  public List<Instruction> generateAssembly(AssemblyGenerator generator,
+                                            SymbolTable symbolTable, Stack<Register.ID> available) {
     return new ArrayList<>();
   }
 
