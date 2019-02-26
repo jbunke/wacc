@@ -39,10 +39,10 @@ public class IfStatementNode extends StatementNode {
       errorList.addError(new SemanticError("Condition provided is not a boolean."));
     }
 
-    SymbolTable trueBranchTable = symbolTable.newChild();
+    SymbolTable trueBranchTable = symbolTable.newChild(trueBranch);
     trueBranch.semanticCheck(trueBranchTable, errorList);
 
-    SymbolTable falseBranchTable = symbolTable.newChild();
+    SymbolTable falseBranchTable = symbolTable.newChild(falseBranch);
     falseBranch.semanticCheck(falseBranchTable, errorList);
   }
 

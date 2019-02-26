@@ -36,7 +36,7 @@ public class WhileStatementNode extends StatementNode {
       errorList.addError(new SemanticError("Condition provided is not a boolean."));
     }
 
-    SymbolTable doStatementTable = symbolTable.newChild();
+    SymbolTable doStatementTable = symbolTable.newChild(doStatement);
     doStatement.semanticCheck(doStatementTable, errorList);
   }
 

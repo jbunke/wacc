@@ -31,7 +31,7 @@ public class ProgramNode implements Node {
     instructions.add(new PushInstruction(generator.getRegister(Register.ID.LR)));
 
     instructions.addAll(stat.generateAssembly(generator,
-            symbolTable.newChild(), available));
+            symbolTable.getChild(stat), available));
     // LDR r0, =0 is for successful program termination
     // TODO: only add instruction in case of successful termination
     instructions.add(new LDRInstruction(generator
@@ -55,12 +55,12 @@ public class ProgramNode implements Node {
 
     // Semantic checks for functions
     for (FunctionDefinitionNode func : functions) {
-      SymbolTable funcTable = symbolTable.newChild();
+      SymbolTable funcTable = symbolTable.newChild(func);
       func.semanticCheck(funcTable, errorList);
     }
 
     // Semantic checks for program global statements
-    SymbolTable statTable = symbolTable.newChild();
+    SymbolTable statTable = symbolTable.newChild(stat);
     stat.semanticCheck(statTable, errorList);
 
     if (stat.containsReturn()) {
