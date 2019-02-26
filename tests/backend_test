@@ -1,5 +1,6 @@
 #!/bin/bash
 
+bash tests/runRefCompile.sh
 javac BackendTest.java
 
 failed=0
