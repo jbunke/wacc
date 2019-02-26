@@ -212,3 +212,11 @@ runBackendTest tests/examples/valid/while/rmStyleAdd.wacc
 
 rm -fr BackendTest.class
 rm -fr *.s
+
+((passed=total-failed))
+
+echo "Passed $passed / $total"
+
+if [ "$passed" -ne "$total" ]; then
+    exit 1
+fi
