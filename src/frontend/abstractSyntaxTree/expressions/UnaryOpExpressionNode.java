@@ -2,6 +2,7 @@ package frontend.abstractSyntaxTree.expressions;
 
 import backend.AssemblyGenerator;
 import backend.Register;
+import backend.instructions.ExOrInstruction;
 import backend.instructions.Instruction;
 import frontend.symbolTable.SemanticError;
 import frontend.symbolTable.SemanticErrorList;
@@ -110,7 +111,25 @@ public class UnaryOpExpressionNode extends ExpressionNode {
   public List<Instruction> generateAssembly(AssemblyGenerator generator,
                                             SymbolTable symbolTable,
                                             Stack<Register.ID> available) {
-    return new ArrayList<>();
+    List<Instruction> instructions = new ArrayList<>();
+
+    switch (operatorType){
+      case NOT:
+        addNotInstructions(generator, symbolTable, available, instructions);
+        break;
+    }
+
+    return instructions;
+  }
+
+  private void addNotInstructions(AssemblyGenerator generator,
+                                  SymbolTable symbolTable,
+                                  Stack<Register.ID> available,
+                                  List<Instruction> instructions) {
+    // Type is boolean
+    instructions.addAll(operand.generateAssembly(generator, symbolTable, available));
+    Register first = generator.getRegister(available.peek());
+    instructions.add(new ExOrInstruction(first, first, 1));
   }
 
   private OperatorType stringToType(String operator) {
