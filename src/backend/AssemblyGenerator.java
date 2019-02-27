@@ -75,8 +75,6 @@ public class AssemblyGenerator {
     BufferedWriter writer = new BufferedWriter(new FileWriter(file));
     writer.write(program);
     writer.close();
-
-    System.out.println(program);
   }
 
   public Register getRegister(Register.ID registerId) {
