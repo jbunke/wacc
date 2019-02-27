@@ -37,6 +37,11 @@ public class Pair extends Type {
     return false;
   }
 
+  @Override
+  public int size() {
+    return 0; // TODO
+  }
+
   private boolean checkEachElement(Type x, Type y) {
     return x == null || y == null || x.equals(y);
   }

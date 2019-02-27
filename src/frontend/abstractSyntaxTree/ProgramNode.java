@@ -1,6 +1,6 @@
 package frontend.abstractSyntaxTree;
 
-import backend.AssemblyGeneratorVisitor;
+import backend.AssemblyGenerator;
 import backend.Register;
 import backend.instructions.*;
 import frontend.abstractSyntaxTree.statements.StatementNode;
@@ -12,6 +12,7 @@ import frontend.symbolTable.SymbolTable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 public class ProgramNode implements Node {
   private final StatementNode stat;
@@ -23,15 +24,32 @@ public class ProgramNode implements Node {
   }
 
   @Override
-  public List<Instruction> generateAssembly(AssemblyGeneratorVisitor assemblyGeneratorVisitor, SymbolTable symbolTable) {
+  public List<Instruction> generateAssembly(AssemblyGenerator generator,
+                                            SymbolTable symbolTable,
+                                            Stack<Register.ID> available) {
     List<Instruction> instructions = new ArrayList<>();
-    instructions.add(new PushInstruction(assemblyGeneratorVisitor.getRegister(Register.ID.LR)));
+    instructions.add(new PushInstruction(generator.getRegister(Register.ID.LR)));
+    // Scope variable check
+    int size = symbolTable.getChild(stat).getSize();
 
+    if (size > 0) {
+      instructions.add(new SubInstruction(generator.getRegister(Register.ID.SP),
+              generator.getRegister(Register.ID.SP), size));
+    }
+
+    instructions.addAll(stat.generateAssembly(generator,
+            symbolTable.getChild(stat), available));
     // LDR r0, =0 is for successful program termination
     // TODO: only add instruction in case of successful termination
-    instructions.add(new LDRInstruction(assemblyGeneratorVisitor
+
+    if (size > 0) {
+      instructions.add(new AddInstruction(generator.getRegister(Register.ID.SP),
+              generator.getRegister(Register.ID.SP), size));
+    }
+
+    instructions.add(new LDRInstruction(generator
             .getRegister(Register.ID.R0), 0));
-    instructions.add(new PopInstruction(assemblyGeneratorVisitor.getRegister(Register.ID.PC)));
+    instructions.add(new PopInstruction(generator.getRegister(Register.ID.PC)));
     instructions.add(new Directive(Directive.ID.LTORG));
 
     return instructions;
@@ -50,12 +68,12 @@ public class ProgramNode implements Node {
 
     // Semantic checks for functions
     for (FunctionDefinitionNode func : functions) {
-      SymbolTable funcTable = symbolTable.newChild();
+      SymbolTable funcTable = symbolTable.newChild(func);
       func.semanticCheck(funcTable, errorList);
     }
 
     // Semantic checks for program global statements
-    SymbolTable statTable = symbolTable.newChild();
+    SymbolTable statTable = symbolTable.newChild(stat);
     stat.semanticCheck(statTable, errorList);
 
     if (stat.containsReturn()) {

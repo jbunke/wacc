@@ -1,18 +1,27 @@
 package frontend.abstractSyntaxTree.statements;
 
-import backend.AssemblyGeneratorVisitor;
+import backend.AssemblyGenerator;
+import backend.Condition;
 import backend.Register;
-import backend.instructions.Instruction;
+import backend.instructions.*;
 import frontend.abstractSyntaxTree.assignment.AssignLHS;
 import frontend.symbolTable.SemanticError;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
+import frontend.symbolTable.types.Array;
 import frontend.symbolTable.types.BaseTypes;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.Stack;
 
 public class ReadStatementNode extends StatementNode {
+  private static final String TERMIN_STRING = "%.*s\\0";
+  private static final String TRUE_STRING = "true\\0";
+  private static final String FALSE_STRING = "false\\0";
+  private static final String INT_FORMATTER = "%d\\0";
+  private static final String CHAR_FORMATTER = "%c\\0";
+
   private final AssignLHS lhs;
 
   public ReadStatementNode(AssignLHS lhs) {
@@ -34,7 +43,52 @@ public class ReadStatementNode extends StatementNode {
   }
 
   @Override
-  public List<Instruction> generateAssembly(AssemblyGeneratorVisitor assemblyGeneratorVisitor, SymbolTable symbolTable) {
-    return null;
+  public List<Instruction> generateAssembly(AssemblyGenerator generator,
+                                            SymbolTable symbolTable,
+                                            Stack<Register.ID> available) {
+    List<Instruction> instructions = lhs.generateAssembly(generator,
+            symbolTable, available);
+    Register first = generator.getRegister(available.peek());
+    instructions.add(new MovInstruction(generator.getRegister(Register.ID.R0),
+            first));
+
+    if (lhs.getType(symbolTable) instanceof BaseTypes) {
+      BaseTypes expType = (BaseTypes) lhs.getType(symbolTable);
+      switch (expType.getBaseType()) {
+        case INT:
+          if (!generator.containsLabel("p_read_int")) {
+            String intMsg = generator.addMsg(INT_FORMATTER);
+            generator.addAdditional("p_read_int",
+                    read(generator, intMsg));
+          }
+          instructions.add(new BranchInstruction(Condition.L, "p_read_int"));
+          break;case CHAR:
+          if (!generator.containsLabel("p_read_char")) {
+            String charMsg = generator.addMsg(CHAR_FORMATTER);
+            generator.addAdditional("p_read_char",
+                    read(generator, charMsg));
+          }
+          instructions.add(new BranchInstruction(Condition.L, "p_read_char"));
+          break;
+      }
+    }
+
+    return instructions;
+  }
+
+  private static List<Instruction> read(AssemblyGenerator generator,
+                                             String intMsg) {
+    List<Instruction> instructions = new ArrayList<>();
+    instructions.add(new PushInstruction(generator.getRegister(Register.ID.LR)));
+    instructions.add(new MovInstruction(generator.getRegister(Register.ID.R1),
+            generator.getRegister(Register.ID.R0)));
+    instructions.add(new LDRInstruction(generator.getRegister(Register.ID.R0),
+            intMsg));
+    instructions.add(new AddInstruction(
+            generator.getRegister(Register.ID.R0),
+            generator.getRegister(Register.ID.R0), 4));
+    instructions.add(new BranchInstruction(Condition.L, "scanf"));
+    instructions.add(new PopInstruction(generator.getRegister(Register.ID.PC)));
+    return instructions;
   }
 }

@@ -1,6 +1,6 @@
 package frontend.abstractSyntaxTree.typeNodes;
 
-import backend.AssemblyGeneratorVisitor;
+import backend.AssemblyGenerator;
 import backend.Register;
 import backend.instructions.*;
 import frontend.abstractSyntaxTree.Node;
@@ -12,7 +12,7 @@ import frontend.symbolTable.types.Type;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.Stack;
 
 public class FunctionDefinitionNode implements Node {
     private final IdentifierNode identifier;
@@ -53,25 +53,20 @@ public class FunctionDefinitionNode implements Node {
 
     @Override
     public List<Instruction> generateAssembly(
-            AssemblyGeneratorVisitor assemblyGeneratorVisitor,
-            SymbolTable symbolTable) {
+            AssemblyGenerator generator,
+            SymbolTable symbolTable, Stack<Register.ID> available) {
 
         List<Instruction> instructions = new ArrayList<>();
 
         // Push instruction
-        instructions.add(new PushInstruction(assemblyGeneratorVisitor
+        instructions.add(new PushInstruction(generator
                 .getRegister(Register.ID.LR)));
-
         // Add all instructions from function body
-        instructions.addAll(body.generateAssembly(assemblyGeneratorVisitor,
-                symbolTable));
-
-        // LDR instruction
-        instructions.add(new LDRInstruction(assemblyGeneratorVisitor
-                .getRegister(Register.ID.R0), 0));
+        instructions.addAll(body.generateAssembly(generator,
+                symbolTable, available));
 
         // Pop instruction
-        instructions.add(new PopInstruction(assemblyGeneratorVisitor
+        instructions.add(new PopInstruction(generator
                 .getRegister(Register.ID.PC)));
 
         // Add LTORG directive

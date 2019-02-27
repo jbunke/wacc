@@ -1,8 +1,9 @@
 package frontend.abstractSyntaxTree.statements;
 
-import backend.AssemblyGeneratorVisitor;
+import backend.AssemblyGenerator;
 import backend.Register;
 import backend.instructions.Instruction;
+import backend.instructions.STRInstruction;
 import frontend.abstractSyntaxTree.assignment.AssignLHS;
 import frontend.abstractSyntaxTree.assignment.AssignRHS;
 import frontend.symbolTable.SemanticError;
@@ -10,8 +11,9 @@ import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.Type;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.Stack;
 
 public class AssignVariableStatementNode extends StatementNode {
 
@@ -44,7 +46,17 @@ public class AssignVariableStatementNode extends StatementNode {
   }
 
   @Override
-  public List<Instruction> generateAssembly(AssemblyGeneratorVisitor assemblyGeneratorVisitor, SymbolTable symbolTable) {
-    return null;
+  public List<Instruction> generateAssembly(AssemblyGenerator generator,
+                                            SymbolTable symbolTable,
+                                            Stack<Register.ID> available) {
+    List<Instruction> instructions = new ArrayList<>();
+
+    instructions.addAll(right.generateAssembly(generator,
+            symbolTable, available));
+    instructions.add(new STRInstruction(
+            generator.getRegister(available.peek()),
+            generator.getRegister(Register.ID.SP)));
+
+    return instructions;
   }
 }

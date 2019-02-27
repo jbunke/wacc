@@ -1,7 +1,7 @@
 package frontend.abstractSyntaxTree.typeNodes;
 
 
-import backend.AssemblyGeneratorVisitor;
+import backend.AssemblyGenerator;
 import backend.Register;
 import backend.instructions.Instruction;
 import frontend.symbolTable.SemanticErrorList;
@@ -9,8 +9,9 @@ import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.InnerPair;
 import frontend.symbolTable.types.Type;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.Stack;
 
 public class InnerPairTypeNode extends TypeNode {
 
@@ -25,7 +26,9 @@ public class InnerPairTypeNode extends TypeNode {
   }
 
   @Override
-  public List<Instruction> generateAssembly(AssemblyGeneratorVisitor assemblyGeneratorVisitor, SymbolTable symbolTable) {
-    return null;
+  public List<Instruction> generateAssembly(AssemblyGenerator generator,
+                                            SymbolTable symbolTable,
+                                            Stack<Register.ID> available) {
+    return new ArrayList<>();
   }
 }

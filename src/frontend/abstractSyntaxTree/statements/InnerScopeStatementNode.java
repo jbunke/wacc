@@ -1,14 +1,17 @@
 package frontend.abstractSyntaxTree.statements;
 
-import backend.AssemblyGeneratorVisitor;
+import backend.AssemblyGenerator;
 import backend.Register;
+import backend.instructions.AddInstruction;
 import backend.instructions.Instruction;
+import backend.instructions.SubInstruction;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.Type;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.Stack;
 
 public class InnerScopeStatementNode extends StatementNode {
   private final StatementNode innerStatement;
@@ -19,13 +22,30 @@ public class InnerScopeStatementNode extends StatementNode {
 
   @Override
   public void semanticCheck(SymbolTable symbolTable, SemanticErrorList errorList) {
-    SymbolTable innerTable = symbolTable.newChild();
+    SymbolTable innerTable = symbolTable.newChild(innerStatement);
     innerStatement.semanticCheck(innerTable, errorList);
   }
 
   @Override
-  public List<Instruction> generateAssembly(AssemblyGeneratorVisitor assemblyGeneratorVisitor, SymbolTable symbolTable) {
-    return null;
+  public List<Instruction> generateAssembly(AssemblyGenerator generator,
+                                            SymbolTable symbolTable,
+                                            Stack<Register.ID> available) {
+    List<Instruction> instructions = new ArrayList<>();
+
+    int size = symbolTable.getChild(innerStatement).getSize();
+
+    if (size > 0) {
+      instructions.add(new SubInstruction(generator.getRegister(Register.ID.SP),
+              generator.getRegister(Register.ID.SP), size));
+    }
+    instructions.addAll(innerStatement.generateAssembly(generator,
+            symbolTable.getChild(innerStatement), available));
+    if (size > 0) {
+      instructions.add(new AddInstruction(generator.getRegister(Register.ID.SP),
+              generator.getRegister(Register.ID.SP), size));
+    }
+
+    return instructions;
   }
 
   @Override

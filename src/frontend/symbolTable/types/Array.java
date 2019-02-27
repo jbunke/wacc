@@ -27,6 +27,16 @@ public class Array extends Type {
   }
 
   @Override
+  public int size() {
+    if (elementType instanceof BaseTypes &&
+            ((BaseTypes) elementType).getBaseType() ==
+                    BaseTypes.base_types.CHAR) {
+      return 4;
+    }
+    return 0;
+  }
+
+  @Override
   public String toString() {
     return "Array[" + elementType.toString() + "]";
   }
