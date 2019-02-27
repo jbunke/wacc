@@ -5,6 +5,7 @@ import backend.Register;
 import backend.instructions.ExOrInstruction;
 import backend.instructions.Instruction;
 import backend.instructions.LDRInstruction;
+import backend.instructions.RSBSInstruction;
 import frontend.symbolTable.SemanticError;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
@@ -122,6 +123,12 @@ public class UnaryOpExpressionNode extends ExpressionNode {
       case ORD:
         instructions.addAll(
                 operand.generateAssembly(generator, symbolTable, available));
+      case NEGATIVE:
+        Register first = generator.getRegister(available.peek());
+        Register sp = generator.getRegister(Register.ID.SP);
+        instructions.add(new LDRInstruction(first, sp));
+        instructions.add(new RSBSInstruction(first, first, 0));
+        // TODO: Add BLVS
     }
 
     return instructions;
