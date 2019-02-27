@@ -4,6 +4,7 @@ import backend.AssemblyGenerator;
 import backend.Register;
 import backend.instructions.ExOrInstruction;
 import backend.instructions.Instruction;
+import backend.instructions.LDRInstruction;
 import frontend.symbolTable.SemanticError;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
@@ -113,10 +114,14 @@ public class UnaryOpExpressionNode extends ExpressionNode {
                                             Stack<Register.ID> available) {
     List<Instruction> instructions = new ArrayList<>();
 
-    switch (operatorType){
+    switch (operatorType) {
       case NOT:
         addNotInstructions(generator, symbolTable, available, instructions);
         break;
+      case CHR:
+      case ORD:
+        instructions.addAll(
+                operand.generateAssembly(generator, symbolTable, available));
     }
 
     return instructions;
