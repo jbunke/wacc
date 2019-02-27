@@ -29,8 +29,6 @@ rules:
 	$(RM) rules
 
 clean:
-	$(RM) rules $(OUTPUT_DIR) $(SOURCE_DIR)/antlr
-	rm -fr *.s
-	rm -fr *.out
+	$(RM) rules $(OUTPUT_DIR) $(SOURCE_DIR)/antlr *.s *.out
 
 .PHONY: all rules clean
