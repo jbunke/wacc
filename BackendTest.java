@@ -41,12 +41,16 @@ public class BackendTest {
       System.out.println("\n\n\n");
 
       System.out.println("Your compiler output:\n");
+      System.out.println("++++++++++++++++++++++++++++++\n");
       System.out.println(emulatorOut);
+      System.out.println("++++++++++++++++++++++++++++++\n");
 
-      System.out.println("\n\n\n");
+      System.out.println("\n\n");
 
       System.out.println("Reference compiler output:\n");
+      System.out.println("++++++++++++++++++++++++++++++\n");
       System.out.println(refCompilerOut);
+      System.out.println("++++++++++++++++++++++++++++++\n");
 
       System.exit(TEST_FAILURE_EXIT);
     }
@@ -81,6 +85,21 @@ public class BackendTest {
   }
 
   private static String getEmulatorOutput(String filename) {
-    return "";
+    StringBuilder outputString = new StringBuilder();
+    try {
+      Process process = Runtime.getRuntime().exec("bash tests/emulate" + filename);
+      process.waitFor();
+
+      BufferedReader reader =
+          new BufferedReader(new InputStreamReader(process.getInputStream()));
+      String line;
+      boolean outputFound = false;
+      while ((line = reader.readLine()) != null) {
+        outputString.append(line);
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return outputString.toString();
   }
 }

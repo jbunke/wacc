@@ -8,7 +8,7 @@ runRefCompiler(){
      }
 
 # Valid files
-echo "=============== Valid files ==============="
+echo "=============== Fetching Reference Outputs ==============="
 echo "..."
 runRefCompiler tests/examples/valid/basic/skip/skip.wacc ''
 runRefCompiler tests/examples/valid/basic/skip/comment.wacc ''

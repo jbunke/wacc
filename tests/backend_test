@@ -12,7 +12,9 @@ runBackendTest(){
     ((total=total+1))
     if [ $code -ne 0 ]; then
         (( failed = failed + 1 ))
-        echo "Error: Compiler returned $code instead of 0 for $1"
+        echo "Error: Output Mismatch for $1"
+    else
+    echo "Backend Test Passed: $1"
     fi
 }
 
