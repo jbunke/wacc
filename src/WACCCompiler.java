@@ -19,6 +19,7 @@ import java.util.List;
 public class WACCCompiler {
 
   private static final int EXPECTED_NUM_ARGS = 1;
+  private static final int FILENAME_ARG_INDEX = 0;
 
   private static final int INCORRECT_ARGS_EXIT = 1;
   private static final int FILE_ERROR_EXIT = 1;
@@ -34,7 +35,7 @@ public class WACCCompiler {
       System.exit(INCORRECT_ARGS_EXIT);
     }
 
-    String file = args[0];
+    String file = args[FILENAME_ARG_INDEX];
 
     if (!file.endsWith(".wacc")) {
       System.out.println("File provided is not of type .wacc");
