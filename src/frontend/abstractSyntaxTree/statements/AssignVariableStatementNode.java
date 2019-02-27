@@ -51,11 +51,13 @@ public class AssignVariableStatementNode extends StatementNode {
                                             Stack<Register.ID> available) {
     List<Instruction> instructions = new ArrayList<>();
 
+    boolean isSingleByte = left.getType(symbolTable).isSingleByte();
+
     instructions.addAll(right.generateAssembly(generator,
             symbolTable, available));
     instructions.add(new STRInstruction(
             generator.getRegister(available.peek()),
-            generator.getRegister(Register.ID.SP)));
+            generator.getRegister(Register.ID.SP), isSingleByte));
 
     return instructions;
   }
