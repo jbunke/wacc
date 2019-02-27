@@ -1,10 +1,9 @@
 package frontend.abstractSyntaxTree.expressions;
 
 import backend.AssemblyGenerator;
+import backend.Condition;
 import backend.Register;
-import backend.instructions.AndInstruction;
-import backend.instructions.Instruction;
-import backend.instructions.OrInstruction;
+import backend.instructions.*;
 import frontend.symbolTable.SemanticError;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
@@ -172,6 +171,12 @@ public class BinaryOpExpressionNode extends ExpressionNode {
         break;
       case OR:
         instructions.add(new OrInstruction(rg1, rg1, rg2));
+      case EQUAL:
+        instructions.add(new CompareInstruction(rg1, rg2));
+        instructions.add(new MovInstruction(rg1, 1)
+                .withCondition(Condition.EQ));
+        instructions.add(new MovInstruction(rg1, 0)
+                .withCondition(Condition.NE));
         break;
     }
 

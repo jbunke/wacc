@@ -1,11 +1,14 @@
 package backend.instructions;
 
+import backend.Condition;
 import backend.Register;
 
 public class MovInstruction extends Instruction {
 
-  private Register dest;
-  private String op;
+  private final Register dest;
+  private final String op;
+
+  private Condition condition;
 
   public MovInstruction(Register dest, int immediate) {
     this.dest = dest;
@@ -39,8 +42,14 @@ public class MovInstruction extends Instruction {
     return "0";
   }
 
+  public MovInstruction withCondition(Condition condition){
+    this.condition = condition;
+    return this;
+  }
+
   @Override
   public String asString() {
-    return "MOV " + dest.toString() + ", " + op;
+    String cmmnd = (condition == null) ? "MOV " : "MOV" + condition.name() + " ";
+    return cmmnd + dest.toString() + ", " + op;
   }
 }
