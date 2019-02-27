@@ -58,11 +58,13 @@ public class DeclarationStatementNode extends StatementNode {
                                             Stack<Register.ID> available) {
     List<Instruction> instructions = new ArrayList<>();
 
+    boolean isSingleByte = identifier.getType(symbolTable).isSingleByte();
+
     instructions.addAll(rhs.generateAssembly(generator,
             symbolTable, available));
     instructions.add(new STRInstruction(
             generator.getRegister(available.peek()),
-            generator.getRegister(Register.ID.SP)));
+            generator.getRegister(Register.ID.SP), isSingleByte));
 
     return instructions;
   }
