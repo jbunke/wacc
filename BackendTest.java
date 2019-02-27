@@ -86,8 +86,9 @@ public class BackendTest {
 
   private static String getEmulatorOutput(String filename) {
     StringBuilder outputString = new StringBuilder();
+    String assemblyFile = filename.replaceFirst(".*/(\\w+).*", "$1");
     try {
-      Process process = Runtime.getRuntime().exec("bash tests/emulate" + filename);
+      Process process = Runtime.getRuntime().exec("bash tests/emulate " + assemblyFile);
       process.waitFor();
 
       BufferedReader reader =
