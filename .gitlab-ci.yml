@@ -1,20 +1,15 @@
 stages:
 - build
-- frontend_tests
-- backend_tests
+- test
 
 build:
   stage: build
   script: make
   artifacts:
     paths:
-      - src/
-      - bin/
+    - src/
+    - bin/
 
-frontend_tests:
-  stage: frontend_tests
-  script: bash tests/frontend_test
-
-backend_tests:
-  stage: backend_tests
-  script: bash tests/backend_test
+test:
+  stage: test
+  script: bash frontend_test ; bash backend_test
