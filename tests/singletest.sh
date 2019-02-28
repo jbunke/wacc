@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Use this script on a single .wacc file
 
+    make
     ./compile "$1" >/dev/null
     code=$?
     ((total=total+1))
