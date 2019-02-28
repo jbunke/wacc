@@ -34,10 +34,11 @@ public class BaseTypes extends Type {
   public int size() {
     switch (baseType) {
       case CHAR:
+        return CHAR_SIZE;
       case BOOL:
-        return 1;
+        return BOOL_SIZE;
       case INT:
-        return 4;
+        return INT_SIZE;
       default:
         return 0;
     }
