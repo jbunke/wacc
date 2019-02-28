@@ -3,7 +3,10 @@ package frontend.abstractSyntaxTree.expressions;
 
 import backend.AssemblyGenerator;
 import backend.Register;
+import backend.Register.ID;
 import backend.instructions.Instruction;
+import backend.instructions.LDRInstruction;
+import backend.instructions.STRInstruction;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.Pair;
@@ -27,6 +30,8 @@ public class PairLiteralExpressionNode extends ExpressionNode {
   public void generateAssembly(AssemblyGenerator generator,
                                             SymbolTable symbolTable,
                                             Stack<Register.ID> available) {
+    Register freeReg = generator.getRegister(available.peek());
+    generator.addInstruction(new LDRInstruction(freeReg, 0));
   }
 
   @Override

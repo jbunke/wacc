@@ -1,6 +1,8 @@
 package frontend.symbolTable.types;
 
 public class Pair extends Type {
+  private static final int PAIR_SIZE = 4;
+
   private final Type first;
   private final Type second;
 
@@ -39,7 +41,7 @@ public class Pair extends Type {
 
   @Override
   public int size() {
-    return 0; // TODO
+    return PAIR_SIZE;
   }
 
   private boolean checkEachElement(Type x, Type y) {
