@@ -172,7 +172,7 @@ public class BinaryOpExpressionNode extends ExpressionNode {
     }
     available.pop();
 
-    instructions.addAll(generateOperation(first, second, generator, available));
+    instructions.addAll(generateOperation(first, second, generator));
     available.clear();
     available.addAll(originalRegState);
 
@@ -180,8 +180,7 @@ public class BinaryOpExpressionNode extends ExpressionNode {
   }
 
   private List<Instruction> generateOperation(Register rg1, Register rg2,
-                                              AssemblyGenerator generator,
-                                              Stack<Register.ID> available) {
+                                              AssemblyGenerator generator) {
     List<Instruction> instructions = new ArrayList<>();
     Register r0 = generator.getRegister(Register.ID.R0);
     Register r1 = generator.getRegister(Register.ID.R1);
