@@ -33,10 +33,7 @@ public class MovInstruction extends Instruction {
   }
 
   private String boolToStringAssembly(boolean value) {
-    if (value) {
-      return "1";
-    }
-    return "0";
+    return value ? "1" : "0";
   }
 
   @Override
