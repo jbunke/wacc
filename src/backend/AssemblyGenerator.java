@@ -20,6 +20,8 @@ public class AssemblyGenerator {
   private Set<String> labels;
   private List<Instruction> dataDirectives;
 
+  private int ifCount;
+
   public AssemblyGenerator(ProgramNode programNode,
                            SymbolTable symbolTable) {
     this.programNode = programNode;
@@ -30,6 +32,8 @@ public class AssemblyGenerator {
     labels.add("main");
     this.dataDirectives = new ArrayList<>();
     this.additionals = new ArrayList<>();
+
+    this.ifCount = 0;
   }
 
   public void generateAssembly(File file) throws IOException {
@@ -91,6 +95,32 @@ public class AssemblyGenerator {
     for (Register.ID id : Register.ID.values()) {
       registers.put(id, new Register(id));
     }
+  }
+
+  public String generateIfDeallocSP(SymbolTable symbolTable, String falseLabel) {
+    String label = "L" + Integer.toString(
+            Integer.parseInt(falseLabel.substring(1)) + 1);
+    List<Instruction> instructions = new ArrayList<>();
+    if (label.equals("L1")) {
+      if (symbolTable.getSize() > 0) {
+        instructions.add(ArithInstruction.add(getRegister(Register.ID.SP),
+                getRegister(Register.ID.SP), symbolTable.getSize()));
+      }
+      instructions.add(new LDRInstruction(getRegister(Register.ID.R0), 0));
+      instructions.add(new PopInstruction(getRegister(Register.ID.PC)));
+      instructions.add(new Directive(Directive.ID.LTORG));
+    } else {
+      instructions.add(new BranchInstruction(new ArrayList<>(), "L1"));
+    }
+    addAdditional(label, instructions);
+    return label;
+  }
+
+  public String generateIfBranch(List<Instruction> instructions) {
+    String label = "L" + Integer.toString(ifCount * 2);
+    ifCount++;
+    addAdditional(label, instructions);
+    return label;
   }
 
   public void generateLabel(String label,
