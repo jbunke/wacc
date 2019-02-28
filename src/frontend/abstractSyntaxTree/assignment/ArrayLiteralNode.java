@@ -85,6 +85,8 @@ public class ArrayLiteralNode implements AssignRHS {
     instructions
         .add(new STRInstruction(sizeParameterRegister, allocatorReg, false));
 
+    available.push(allocatorReg.getRegID());
+
     return instructions;
   }
 
