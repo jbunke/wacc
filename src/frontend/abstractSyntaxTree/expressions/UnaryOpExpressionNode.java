@@ -1,11 +1,9 @@
 package frontend.abstractSyntaxTree.expressions;
 
 import backend.AssemblyGenerator;
+import backend.Condition;
 import backend.Register;
-import backend.instructions.ExOrInstruction;
-import backend.instructions.Instruction;
-import backend.instructions.LDRInstruction;
-import backend.instructions.RSBSInstruction;
+import backend.instructions.*;
 import frontend.symbolTable.SemanticError;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
@@ -19,6 +17,9 @@ import java.util.Map;
 import java.util.Stack;
 
 public class UnaryOpExpressionNode extends ExpressionNode {
+  private final static String OVERFLOW = "OverflowError: the result is too " +
+          "small/large to store in a 4-byte signed-integer.\n";
+
   private final static Map<String, OperatorType> stringOpMap = Map.ofEntries(
           Map.entry("!", OperatorType.NOT),
           Map.entry("+", OperatorType.POSITIVE),
@@ -126,10 +127,13 @@ public class UnaryOpExpressionNode extends ExpressionNode {
         break;
       case NEGATIVE:
         Register first = generator.getRegister(available.peek());
-        Register sp = generator.getRegister(Register.ID.SP);
         operand.generateAssembly(generator, symbolTable, available);
         instructions.add(new RSBSInstruction(first, first, 0));
-        // TODO: Add BLVS
+        List<Condition> blvs = List.of(Condition.L, Condition.VS);
+        generator.generateLabel("p_throw_overflow_error",
+                new String[] {OVERFLOW}, AssemblyGenerator::throw_overflow_error);
+        instructions.add(new BranchInstruction(blvs,
+                "p_throw_overflow_error"));
         break;
     }
 

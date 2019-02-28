@@ -102,6 +102,28 @@ public class AssemblyGenerator {
     }
   }
 
+  public static List<Instruction> throw_overflow_error(AssemblyGenerator generator,
+                                                String[] msgs) {
+    List<Instruction> instructions = new ArrayList<>();
+    instructions.add(new LDRInstruction(
+            generator.getRegister(Register.ID.R0), msgs[0]));
+    generator.generateLabel("p_throw_runtime_error", new String[0],
+            AssemblyGenerator::throw_runtime_error);
+    instructions.add(
+            new BranchInstruction(Condition.L, "p_throw_runtime_error"));
+    return instructions;
+  }
+
+  public static List<Instruction> throw_runtime_error(AssemblyGenerator generator,
+                                               String[] msgs) {
+    List<Instruction> instructions = new ArrayList<>();
+    instructions.add(new BranchInstruction(Condition.L, "p_print_string"));
+    instructions.add(new MovInstruction(generator.getRegister(Register.ID.R0),
+            -1));
+    instructions.add(new BranchInstruction(Condition.L, "exit"));
+    return instructions;
+  }
+
   public String addMsg(String toAdd) {
     if (dataDirectives.isEmpty()) {
       dataDirectives.add(new Directive(Directive.ID.DATA));
