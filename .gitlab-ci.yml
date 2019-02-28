@@ -12,4 +12,4 @@ build:
 
 test:
   stage: test
-  script: bash frontend_test ; bash backend_test
+  script: bash tests/frontend_test ; bash tests/backend_test
