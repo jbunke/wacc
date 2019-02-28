@@ -8,7 +8,7 @@ public class InnerPair extends Type {
 
   @Override
   public int size() {
-    return 0; // TODO
+    return 0;
   }
 
   @Override
