@@ -8,13 +8,13 @@ public class Variable extends SymbolCategory {
   private VarType varType;
 
   public enum VarType {
-    INT, BOOL, STRING, CHAR
+    INT, BOOL, ARRAY, CHAR
   }
 
   public static int size(Variable variable) {
     switch (variable.varType) {
       case INT:
-      case STRING:
+      case ARRAY:
         return 4;
       case BOOL:
       case CHAR:
@@ -34,10 +34,6 @@ public class Variable extends SymbolCategory {
 
   public Object getValue() {
     return value;
-  }
-
-  public VarType getVarType() {
-    return varType;
   }
 
   public void setValue(Object value) {

@@ -62,9 +62,11 @@ public class DeclarationStatementNode extends StatementNode {
 
     instructions.addAll(rhs.generateAssembly(generator,
             symbolTable, available));
+
     instructions.add(new STRInstruction(
             generator.getRegister(available.peek()),
-            generator.getRegister(Register.ID.SP), isSingleByte));
+            generator.getRegister(Register.ID.SP),
+            symbolTable.fetchOffset(identifier.getName()), isSingleByte));
 
     return instructions;
   }

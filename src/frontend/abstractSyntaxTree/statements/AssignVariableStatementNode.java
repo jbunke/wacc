@@ -6,6 +6,7 @@ import backend.instructions.Instruction;
 import backend.instructions.STRInstruction;
 import frontend.abstractSyntaxTree.assignment.AssignLHS;
 import frontend.abstractSyntaxTree.assignment.AssignRHS;
+import frontend.abstractSyntaxTree.expressions.IdentifierNode;
 import frontend.symbolTable.SemanticError;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
@@ -55,9 +56,18 @@ public class AssignVariableStatementNode extends StatementNode {
 
     instructions.addAll(right.generateAssembly(generator,
             symbolTable, available));
-    instructions.add(new STRInstruction(
-            generator.getRegister(available.peek()),
-            generator.getRegister(Register.ID.SP), isSingleByte));
+
+    if (left instanceof IdentifierNode) {
+      IdentifierNode ident = (IdentifierNode) left;
+      instructions.add(new STRInstruction(
+              generator.getRegister(available.peek()),
+              generator.getRegister(Register.ID.SP),
+              symbolTable.fetchOffset(ident.getName()), isSingleByte));
+    } else {
+      instructions.add(new STRInstruction(
+              generator.getRegister(available.peek()),
+              generator.getRegister(Register.ID.SP), isSingleByte));
+    }
 
     return instructions;
   }
