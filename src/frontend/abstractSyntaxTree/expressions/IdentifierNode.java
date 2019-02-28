@@ -47,7 +47,8 @@ public class IdentifierNode extends ExpressionNode {
 
     Register first = generator.getRegister(available.peek());
     instructions.add(new LDRInstruction(first,
-            generator.getRegister(Register.ID.SP)));
+            generator.getRegister(Register.ID.SP),
+            symbolTable.fetchOffset(identifier)));
 
     return instructions;
   }

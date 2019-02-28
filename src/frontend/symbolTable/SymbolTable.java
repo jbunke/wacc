@@ -2,9 +2,7 @@ package frontend.symbolTable;
 
 import frontend.abstractSyntaxTree.Node;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class SymbolTable {
 
@@ -17,18 +15,43 @@ public class SymbolTable {
 
   private final SymbolTable parent;
   private final Map<String, SymbolCategory> identifierMap;
+  private final List<SymbolCategory> contents;
   private final Map<Node, SymbolTable> childrenMap;
 
   public SymbolTable(SymbolTable parent) {
     this.parent = parent;
     identifierMap = new HashMap<>();
     childrenMap = new HashMap<>();
+    contents = new ArrayList<>();
 
     if (this.parent == null) {
       for (String keyword : reservedWords) {
         identifierMap.put(keyword, new Reserved());
       }
     }
+  }
+
+  public int fetchOffset(String identifier) {
+    if (!identifierMap.containsKey(identifier)) {
+      return getSize() + parent.fetchOffset(identifier);
+    }
+    if (!contents.contains(identifierMap.get(identifier))) {
+      Set<String> idents = identifierMap.keySet();
+      for (String ident : idents) {
+        contents.add(identifierMap.get(ident));
+      }
+    }
+    int acc = 0;
+    for (SymbolCategory content : contents) {
+      if (content instanceof Variable) {
+        Variable var = (Variable) content;
+        if (identifierMap.get(identifier).equals(var)) {
+          break;
+        }
+        acc += var.getType().size();
+      }
+    }
+    return acc;
   }
 
   public void add(String identifier, SymbolCategory type) {
