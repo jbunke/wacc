@@ -180,7 +180,8 @@ public class BinaryOpExpressionNode extends ExpressionNode {
                                               AssemblyGenerator generator,
                                               Stack<Register.ID> available) {
     List<Instruction> instructions = new ArrayList<>();
-
+    Register r0 = generator.getRegister(Register.ID.R0);
+    Register r1 = generator.getRegister(Register.ID.R1);
     switch (operatorType) {
       case AND:
         instructions.add(new AndInstruction(rg1, rg1, rg2));
@@ -207,13 +208,7 @@ public class BinaryOpExpressionNode extends ExpressionNode {
         instructions.add(new CompareInstruction(rg2, rg1, 31));
         break;
       case DIVIDE:
-        Register r0 = generator.getRegister(Register.ID.R0);
-        Register r1 = generator.getRegister(Register.ID.R1);
-        if (!generator.containsLabel("p_check_divide_by_zero")) {
-          String divByZeroErrMsg = generator.addMsg(DIV_BY_ZERO_ERR);
-          generator.addAdditional("p_check_divide_by_zero",
-                  p_check_divide_by_zero(generator, divByZeroErrMsg));
-        }
+        generateDivByZeroCheck(generator);
         instructions.add(new MovInstruction(r0, rg1));
         instructions.add(new MovInstruction(r1, rg2));
         instructions.add(new BranchInstruction(Condition.L,
@@ -221,22 +216,36 @@ public class BinaryOpExpressionNode extends ExpressionNode {
         instructions.add(new BranchInstruction(Condition.L,
                 "__aeabi_idiv"));
         instructions.add(new MovInstruction(rg1, r0));
-
+      case MOD:
+        instructions.add(new MovInstruction(r0, rg1));
+        instructions.add(new MovInstruction(r1, rg2));
+        generateDivByZeroCheck(generator);
+        instructions.add(new BranchInstruction(Condition.L,
+                "p_check_divide_by_zero"));
+        instructions.add(new BranchInstruction(Condition.L,
+                "__aeabi_idivmod"));
+        instructions.add(new MovInstruction(rg1, r1));
         break;
     }
 
     return instructions;
   }
 
-  private List<Instruction> p_check_divide_by_zero(AssemblyGenerator generator,
-                                                   String msgName){
+  private static void generateDivByZeroCheck(AssemblyGenerator generator){
+    generator.generateLabel("p_check_divide_by_zero",
+            new String[] {DIV_BY_ZERO_ERR},
+            BinaryOpExpressionNode::check_divide_by_zero);
+  }
+
+    private static List<Instruction> check_divide_by_zero(AssemblyGenerator generator,
+                                                   String[] msgName){
     Register r0 = generator.getRegister(Register.ID.R0);
     Register r1 = generator.getRegister(Register.ID.R1);
 
     List<Instruction> instructions = new ArrayList<>();
     instructions.add(new PushInstruction(generator.getRegister(Register.ID.LR)));
     instructions.add(new CompareInstruction(r1, 0));
-    instructions.add(new LDRInstruction(r0, msgName)
+    instructions.add(new LDRInstruction(r0, msgName[0])
             .withCondition(Condition.EQ));
     List<Condition> branchConds = List.of(Condition.L, Condition.EQ);
     instructions.add(new BranchInstruction(branchConds,
