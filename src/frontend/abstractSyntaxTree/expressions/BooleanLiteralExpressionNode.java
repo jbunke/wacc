@@ -22,6 +22,11 @@ public class BooleanLiteralExpressionNode extends ExpressionNode {
   }
 
   @Override
+  public int weight() {
+    return 1;
+  }
+
+  @Override
   public void semanticCheck(SymbolTable symbolTable, SemanticErrorList errorList) {
   }
 

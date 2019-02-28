@@ -1,8 +1,9 @@
 package frontend.abstractSyntaxTree.expressions;
 
 import backend.AssemblyGenerator;
+import backend.Condition;
 import backend.Register;
-import backend.instructions.Instruction;
+import backend.instructions.*;
 import frontend.symbolTable.SemanticError;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
@@ -16,6 +17,9 @@ import java.util.Map;
 import java.util.Stack;
 
 public class UnaryOpExpressionNode extends ExpressionNode {
+  private final static String OVERFLOW = "OverflowError: the result is too " +
+          "small/large to store in a 4-byte signed-integer.\\n";
+
   private final static Map<String, OperatorType> stringOpMap = Map.ofEntries(
           Map.entry("!", OperatorType.NOT),
           Map.entry("+", OperatorType.POSITIVE),
@@ -77,6 +81,11 @@ public class UnaryOpExpressionNode extends ExpressionNode {
   }
 
   @Override
+  public int weight() {
+    return 1 + operand.weight();
+  }
+
+  @Override
   public void semanticCheck(SymbolTable symbolTable, SemanticErrorList errorList) {
     Type operandType = operand.getType(symbolTable);
     if (operatorType == OperatorType.LENGTH) {
@@ -105,7 +114,40 @@ public class UnaryOpExpressionNode extends ExpressionNode {
   public List<Instruction> generateAssembly(AssemblyGenerator generator,
                                             SymbolTable symbolTable,
                                             Stack<Register.ID> available) {
-    return new ArrayList<>();
+    List<Instruction> instructions = new ArrayList<>();
+
+    switch (operatorType) {
+      case NOT:
+        addNotInstructions(generator, symbolTable, available, instructions);
+        break;
+      case CHR:
+      case ORD:
+        instructions.addAll(
+                operand.generateAssembly(generator, symbolTable, available));
+        break;
+      case NEGATIVE:
+        Register first = generator.getRegister(available.peek());
+        operand.generateAssembly(generator, symbolTable, available);
+        instructions.add(new RSBSInstruction(first, first, 0));
+        List<Condition> blvs = List.of(Condition.L, Condition.VS);
+        generator.generateLabel("p_throw_overflow_error",
+                new String[] {OVERFLOW}, AssemblyGenerator::throw_overflow_error);
+        instructions.add(new BranchInstruction(blvs,
+                "p_throw_overflow_error"));
+        break;
+    }
+
+    return instructions;
+  }
+
+  private void addNotInstructions(AssemblyGenerator generator,
+                                  SymbolTable symbolTable,
+                                  Stack<Register.ID> available,
+                                  List<Instruction> instructions) {
+    // Type is boolean
+    instructions.addAll(operand.generateAssembly(generator, symbolTable, available));
+    Register first = generator.getRegister(available.peek());
+    instructions.add(new ExOrInstruction(first, first, 1));
   }
 
   private OperatorType stringToType(String operator) {

@@ -47,6 +47,11 @@ public class LDRInstruction extends Instruction {
     this.isConstant = false;
   }
 
+  public LDRInstruction withCondition(Condition condition) {
+    this.condition = condition;
+    return this;
+  }
+
   @Override
   public String asString() {
     if (condition == null) {

@@ -51,20 +51,14 @@ public class PrintStatementNode extends StatementNode {
       BaseTypes expType = (BaseTypes) expression.getType(symbolTable);
       switch (expType.getBaseType()) {
         case INT:
-          if (!generator.containsLabel("p_print_int")) {
-            String intMsg = generator.addMsg(INT_FORMATTER);
-            generator.addAdditional("p_print_int",
-                    print_int(generator, intMsg));
-          }
+          generator.generateLabel("p_print_int",
+                  new String[] {INT_FORMATTER}, PrintStatementNode::print_int);
           instructions.add(new BranchInstruction(Condition.L, "p_print_int"));
           break;
         case BOOL:
-          if (!generator.containsLabel("p_print_bool")) {
-            String trueMsg = generator.addMsg(TRUE_STRING);
-            String falseMsg = generator.addMsg(FALSE_STRING);
-            generator.addAdditional("p_print_bool",
-                    print_bool(generator, trueMsg, falseMsg));
-          }
+          generator.generateLabel("p_print_bool",
+                  new String[] {TRUE_STRING, FALSE_STRING},
+                  PrintStatementNode::print_bool);
           instructions.add(new BranchInstruction(Condition.L, "p_print_bool"));
           break;
         case CHAR:
@@ -77,11 +71,9 @@ public class PrintStatementNode extends StatementNode {
               ((BaseTypes) expType.getElementType()).getBaseType() ==
                       BaseTypes.base_types.CHAR) {
         // Dealing with a string
-        if (!generator.containsLabel("p_print_string")) {
-          String code = generator.addMsg(TERMIN_STRING);
-          generator.addAdditional("p_print_string",
-                  print_string(generator, code));
-        }
+        generator.generateLabel("p_print_string",
+                new String[] {TERMIN_STRING},
+                PrintStatementNode::print_string);
         instructions.add(new BranchInstruction(Condition.L, "p_print_string"));
       }
     }
@@ -89,17 +81,17 @@ public class PrintStatementNode extends StatementNode {
     return instructions;
   }
 
-  private static List<Instruction> print_string(AssemblyGenerator generator,
-                                                String code) {
+  public static List<Instruction> print_string(AssemblyGenerator generator,
+                                                String[] msgs) {
     List<Instruction> instructions = new ArrayList<>();
     instructions.add(new PushInstruction(generator.getRegister(Register.ID.LR)));
     instructions.add(new LDRInstruction(generator.getRegister(Register.ID.R1),
             generator.getRegister(Register.ID.R0)));
-    instructions.add(new AddInstruction(generator.getRegister(Register.ID.R2),
+    instructions.add(ArithInstruction.add(generator.getRegister(Register.ID.R2),
             generator.getRegister(Register.ID.R0), 4));
     instructions.add(new LDRInstruction(generator.getRegister(Register.ID.R0),
-            code));
-    instructions.add(new AddInstruction(generator.getRegister(Register.ID.R0),
+            msgs[0]));
+    instructions.add(ArithInstruction.add(generator.getRegister(Register.ID.R0),
             generator.getRegister(Register.ID.R0), 4));
     instructions.add(new BranchInstruction(Condition.L, "printf"));
     instructions.add(new MovInstruction(
@@ -110,16 +102,16 @@ public class PrintStatementNode extends StatementNode {
   }
 
   private static List<Instruction> print_bool(AssemblyGenerator generator,
-                                              String trueMsg, String falseMsg) {
+                                              String[] msgs) {
     List<Instruction> instructions = new ArrayList<>();
     instructions.add(new PushInstruction(generator.getRegister(Register.ID.LR)));
     instructions.add(new CompareInstruction(
             generator.getRegister(Register.ID.R0), 0));
     instructions.add(new LDRInstruction(Condition.NE,
-            generator.getRegister(Register.ID.R0), trueMsg));
+            generator.getRegister(Register.ID.R0), msgs[0]));
     instructions.add(new LDRInstruction(Condition.EQ,
-            generator.getRegister(Register.ID.R0), falseMsg));
-    instructions.add(new AddInstruction(
+            generator.getRegister(Register.ID.R0), msgs[1]));
+    instructions.add(ArithInstruction.add(
             generator.getRegister(Register.ID.R0),
             generator.getRegister(Register.ID.R0), 4));
     instructions.add(new BranchInstruction(Condition.L, "printf"));
@@ -131,14 +123,14 @@ public class PrintStatementNode extends StatementNode {
   }
 
   private static List<Instruction> print_int(AssemblyGenerator generator,
-                                              String intMsg) {
+                                              String[] intMsg) {
     List<Instruction> instructions = new ArrayList<>();
     instructions.add(new PushInstruction(generator.getRegister(Register.ID.LR)));
     instructions.add(new MovInstruction(generator.getRegister(Register.ID.R1),
             generator.getRegister(Register.ID.R0)));
     instructions.add(new LDRInstruction(generator.getRegister(Register.ID.R0),
-            intMsg));
-    instructions.add(new AddInstruction(
+            intMsg[0]));
+    instructions.add(ArithInstruction.add(
             generator.getRegister(Register.ID.R0),
             generator.getRegister(Register.ID.R0), 4));
     instructions.add(new BranchInstruction(Condition.L, "printf"));

@@ -2,12 +2,16 @@ package backend;
 
 import backend.instructions.*;
 import frontend.abstractSyntaxTree.ProgramNode;
+import frontend.abstractSyntaxTree.statements.PrintStatementNode;
 import frontend.symbolTable.SymbolTable;
 
 import java.io.*;
 import java.util.*;
+import java.util.function.BiFunction;
 
 public class AssemblyGenerator {
+  private static final String TERMIN_STRING = "%.*s\\0";
+
   private ProgramNode programNode;
   private SymbolTable symbolTable;
   private List<Instruction> instructions;
@@ -87,6 +91,42 @@ public class AssemblyGenerator {
     for (Register.ID id : Register.ID.values()) {
       registers.put(id, new Register(id));
     }
+  }
+
+  public void generateLabel(String label,
+          String[] msgs, BiFunction<AssemblyGenerator,
+          String[],List<Instruction>> function) {
+    if (!containsLabel(label)) {
+      String[] retMsgs = new String[msgs.length];
+      for (int i = 0; i < msgs.length; i++) {
+        retMsgs[i] = addMsg(msgs[i]);
+      }
+      addAdditional(label, function.apply(this, retMsgs));
+    }
+  }
+
+  public static List<Instruction> throw_overflow_error(AssemblyGenerator generator,
+                                                String[] msgs) {
+    List<Instruction> instructions = new ArrayList<>();
+    instructions.add(new LDRInstruction(
+            generator.getRegister(Register.ID.R0), msgs[0]));
+    generator.generateLabel("p_throw_runtime_error", new String[0],
+            AssemblyGenerator::throw_runtime_error);
+    instructions.add(
+            new BranchInstruction(Condition.L, "p_throw_runtime_error"));
+    return instructions;
+  }
+
+  private static List<Instruction> throw_runtime_error(AssemblyGenerator generator,
+                                               String[] msgs) {
+    List<Instruction> instructions = new ArrayList<>();
+    generator.generateLabel("p_print_string", new String[] {TERMIN_STRING},
+            PrintStatementNode::print_string);
+    instructions.add(new BranchInstruction(Condition.L, "p_print_string"));
+    instructions.add(new MovInstruction(generator.getRegister(Register.ID.R0),
+            -1));
+    instructions.add(new BranchInstruction(Condition.L, "exit"));
+    return instructions;
   }
 
   public String addMsg(String toAdd) {
