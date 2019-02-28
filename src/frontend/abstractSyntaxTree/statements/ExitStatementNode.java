@@ -5,7 +5,6 @@ import backend.AssemblyGenerator;
 import backend.Condition;
 import backend.Register;
 import backend.instructions.BranchInstruction;
-import backend.instructions.Instruction;
 import backend.instructions.MovInstruction;
 import frontend.abstractSyntaxTree.expressions.ExpressionNode;
 import frontend.symbolTable.SemanticError;
@@ -14,8 +13,6 @@ import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.BaseTypes;
 import frontend.symbolTable.types.Type;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Stack;
 
 public class ExitStatementNode extends StatementNode {
@@ -37,24 +34,19 @@ public class ExitStatementNode extends StatementNode {
   }
 
   @Override
-  public List<Instruction> generateAssembly(
+  public void generateAssembly(
           AssemblyGenerator generator,
           SymbolTable symbolTable, Stack<Register.ID> available) {
-    List<Instruction> instructions = new ArrayList<>();
-
     Register R0 = generator.getRegister(Register.ID.R0);
     Register nextAvail = generator.getRegister(available.peek());
 
     // {reg} is first available gp reg (for now using r4)
     // LDR {reg}, -1
-    instructions.addAll(
-            exitCode.generateAssembly(generator, symbolTable, available));
+    exitCode.generateAssembly(generator, symbolTable, available);
 
     // MOV r0, {reg}
-    instructions.add(new MovInstruction(R0, nextAvail));
-    instructions.add(new BranchInstruction(Condition.L, "exit"));
-
-    return instructions;
+    generator.addInstruction(new MovInstruction(R0, nextAvail));
+    generator.addInstruction(new BranchInstruction(Condition.L, "exit"));
   }
 
   @Override

@@ -31,15 +31,12 @@ public class StringLiteralExpressionNode extends ExpressionNode {
   }
 
   @Override
-  public List<Instruction> generateAssembly(AssemblyGenerator generator,
+  public void generateAssembly(AssemblyGenerator generator,
                                             SymbolTable symbolTable,
                                             Stack<Register.ID> available) {
-    List<Instruction> instructions = new ArrayList<>();
     Register first = new Register(available.peek());
 
-    instructions.add(new LDRInstruction(first, generator.addMsg(value)));
-
-    return instructions;
+    generator.addInstruction(new LDRInstruction(first, generator.addMsg(value)));
   }
 
   @Override

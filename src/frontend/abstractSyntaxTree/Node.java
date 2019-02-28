@@ -12,7 +12,7 @@ import java.util.Stack;
 public interface Node {
   void semanticCheck(SymbolTable symbolTable, SemanticErrorList errorList);
 
-  List<Instruction> generateAssembly(AssemblyGenerator generator,
+  void generateAssembly(AssemblyGenerator generator,
                                      SymbolTable symbolTable,
                                      Stack<Register.ID> available);
 }

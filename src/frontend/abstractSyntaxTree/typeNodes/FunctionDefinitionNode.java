@@ -10,8 +10,6 @@ import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.Type;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Stack;
 
 public class FunctionDefinitionNode implements Node {
@@ -52,27 +50,22 @@ public class FunctionDefinitionNode implements Node {
     }
 
     @Override
-    public List<Instruction> generateAssembly(
+    public void generateAssembly(
             AssemblyGenerator generator,
             SymbolTable symbolTable, Stack<Register.ID> available) {
 
-        List<Instruction> instructions = new ArrayList<>();
-
         // Push instruction
-        instructions.add(new PushInstruction(generator
+        generator.addInstruction(new PushInstruction(generator
                 .getRegister(Register.ID.LR)));
         // Add all instructions from function body
-        instructions.addAll(body.generateAssembly(generator,
-                symbolTable, available));
+        body.generateAssembly(generator, symbolTable, available);
 
         // Pop instruction
-        instructions.add(new PopInstruction(generator
+        generator.addInstruction(new PopInstruction(generator
                 .getRegister(Register.ID.PC)));
 
         // Add LTORG directive
-        instructions.add(new Directive(Directive.ID.LTORG));
-
-        return instructions;
+        generator.addInstruction(new Directive(Directive.ID.LTORG));
     }
 
     public String syntaxCheck() {

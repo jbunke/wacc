@@ -6,7 +6,6 @@ import backend.Register;
 import backend.Condition;
 import backend.Register.ID;
 import backend.instructions.BranchInstruction;
-import backend.instructions.Instruction;
 import backend.instructions.LDRInstruction;
 import backend.instructions.MovInstruction;
 import backend.instructions.STRInstruction;
@@ -18,7 +17,6 @@ import frontend.symbolTable.types.Array;
 import frontend.symbolTable.types.Type;
 import frontend.symbolTable.types.BaseTypes;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
@@ -52,44 +50,40 @@ public class ArrayLiteralNode implements AssignRHS {
   }
 
   @Override
-  public List<Instruction> generateAssembly(AssemblyGenerator generator,
+  public void generateAssembly(AssemblyGenerator generator,
       SymbolTable symbolTable,
       Stack<Register.ID> available) {
-    List<Instruction> instructions = new ArrayList<>();
-
     Type elemType = ((Array) this.getType(symbolTable)).getElementType();
     int elemSize = elemType == null ? 0 : elemType.size();
     boolean isSingleByte = elemSize == BYTE_SIZE;
 
     int arraySize = elemSize * arrayElements.size() + BaseTypes.INT_SIZE;
-    instructions
-        .add(new LDRInstruction(generator.getRegister(ID.R0), arraySize));
-    instructions.add(new BranchInstruction(Condition.L, "malloc"));
+    generator
+        .addInstruction(new LDRInstruction(generator.getRegister(ID.R0), arraySize));
+    generator.addInstruction(new BranchInstruction(Condition.L, "malloc"));
 
     Register allocatorReg = generator.getRegister(available.peek());
     available.pop();
-    instructions
-        .add(new MovInstruction(allocatorReg, generator.getRegister(ID.R0)));
+    generator
+        .addInstruction(new MovInstruction(allocatorReg, generator.getRegister(ID.R0)));
 
     int i = BaseTypes.INT_SIZE;
     for (ExpressionNode e : arrayElements) {
-      instructions.addAll(e.generateAssembly(generator, symbolTable, available));
+      e.generateAssembly(generator, symbolTable, available);
       Register resultReg = generator.getRegister(available.peek());
-      instructions.add(
+      generator.addInstruction(
           new STRInstruction(resultReg, allocatorReg, i,
               isSingleByte));
       i += elemSize;
     }
 
     Register sizeParameterRegister = generator.getRegister(available.peek());
-    instructions.add(new LDRInstruction(sizeParameterRegister,
+    generator.addInstruction(new LDRInstruction(sizeParameterRegister,
         arrayElements.size()));
-    instructions
-        .add(new STRInstruction(sizeParameterRegister, allocatorReg, false));
+    generator
+        .addInstruction(new STRInstruction(sizeParameterRegister, allocatorReg, false));
 
     available.push(allocatorReg.getRegID());
-
-    return instructions;
   }
 
   @Override

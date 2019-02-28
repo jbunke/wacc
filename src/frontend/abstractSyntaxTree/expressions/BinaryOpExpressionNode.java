@@ -152,11 +152,9 @@ public class BinaryOpExpressionNode extends ExpressionNode {
   }
 
   @Override
-  public List<Instruction> generateAssembly(AssemblyGenerator generator,
+  public void generateAssembly(AssemblyGenerator generator,
                                             SymbolTable symbolTable,
                                             Stack<Register.ID> available) {
-    List<Instruction> instructions = new ArrayList<>();
-
     Stack<Register.ID> originalRegState = new Stack<>();
     originalRegState.addAll(available);
 
@@ -164,32 +162,29 @@ public class BinaryOpExpressionNode extends ExpressionNode {
     Register second = generator.getRegister(available.pop());
 
     if (left.weight() > right.weight()) {
-      instructions.addAll(generateOperands(left, right, second, first,
-              generator, symbolTable, available));
+      generateOperands(left, right, second, first,
+              generator, symbolTable, available);
     } else {
-      instructions.addAll(generateOperands(right, left, first, second,
-              generator, symbolTable, available));
+      generateOperands(right, left, first, second,
+              generator, symbolTable, available);
     }
     available.pop();
 
-    instructions.addAll(generateOperation(first, second, generator));
+    generateOperation(first, second, generator);
     available.clear();
     available.addAll(originalRegState);
-
-    return instructions;
   }
 
-  private List<Instruction> generateOperation(Register rg1, Register rg2,
+  private void generateOperation(Register rg1, Register rg2,
                                               AssemblyGenerator generator) {
-    List<Instruction> instructions = new ArrayList<>();
     Register r0 = generator.getRegister(Register.ID.R0);
     Register r1 = generator.getRegister(Register.ID.R1);
     switch (operatorType) {
       case AND:
-        instructions.add(new AndInstruction(rg1, rg1, rg2));
+        generator.addInstruction(new AndInstruction(rg1, rg1, rg2));
         break;
       case OR:
-        instructions.add(new OrInstruction(rg1, rg1, rg2));
+        generator.addInstruction(new OrInstruction(rg1, rg1, rg2));
         break;
       case EQUAL:
       case NOT_EQUAL:
@@ -199,54 +194,52 @@ public class BinaryOpExpressionNode extends ExpressionNode {
       case LESS_THAN_OR_EQUAL:
         Condition cond = equivalent.get(operatorType);
         Condition complement = cond.opposite();
-        instructions.add(new CompareInstruction(rg1, rg2));
-        instructions.add(new MovInstruction(rg1, 1)
+        generator.addInstruction(new CompareInstruction(rg1, rg2));
+        generator.addInstruction(new MovInstruction(rg1, 1)
                 .withCondition(cond));
-        instructions.add(new MovInstruction(rg1, 0)
+        generator.addInstruction(new MovInstruction(rg1, 0)
                 .withCondition(complement));
         break;
       case TIMES:
-        instructions.add(new SMULLInstruction(rg1, rg2, rg1, rg2));
-        instructions.add(new CompareInstruction(rg2, rg1, 31));
+        generator.addInstruction(new SMULLInstruction(rg1, rg2, rg1, rg2));
+        generator.addInstruction(new CompareInstruction(rg2, rg1, 31));
         break;
       case DIVIDE:
         generateDivByZeroCheck(generator);
-        instructions.add(new MovInstruction(r0, rg1));
-        instructions.add(new MovInstruction(r1, rg2));
-        instructions.add(new BranchInstruction(Condition.L,
+        generator.addInstruction(new MovInstruction(r0, rg1));
+        generator.addInstruction(new MovInstruction(r1, rg2));
+        generator.addInstruction(new BranchInstruction(Condition.L,
                 "p_check_divide_by_zero"));
-        instructions.add(new BranchInstruction(Condition.L,
+        generator.addInstruction(new BranchInstruction(Condition.L,
                 "__aeabi_idiv"));
-        instructions.add(new MovInstruction(rg1, r0));
+        generator.addInstruction(new MovInstruction(rg1, r0));
       case MOD:
-        instructions.add(new MovInstruction(r0, rg1));
-        instructions.add(new MovInstruction(r1, rg2));
+        generator.addInstruction(new MovInstruction(r0, rg1));
+        generator.addInstruction(new MovInstruction(r1, rg2));
         generateDivByZeroCheck(generator);
-        instructions.add(new BranchInstruction(Condition.L,
+        generator.addInstruction(new BranchInstruction(Condition.L,
                 "p_check_divide_by_zero"));
-        instructions.add(new BranchInstruction(Condition.L,
+        generator.addInstruction(new BranchInstruction(Condition.L,
                 "__aeabi_idivmod"));
-        instructions.add(new MovInstruction(rg1, r1));
+        generator.addInstruction(new MovInstruction(rg1, r1));
         break;
       case PLUS:
-        instructions.add(ArithInstruction.addReg(rg1, rg1, rg2).withS());
+        generator.addInstruction(ArithInstruction.addReg(rg1, rg1, rg2).withS());
         List<Condition> blvs = List.of(Condition.L, Condition.VS);
         generator.generateLabel("p_throw_overflow_error",
                 new String[] {OVERFLOW}, AssemblyGenerator::throw_overflow_error);
-        instructions.add(new BranchInstruction(blvs,
+        generator.addInstruction(new BranchInstruction(blvs,
                 "p_throw_overflow_error"));
         break;
       case MINUS:
-        instructions.add(ArithInstruction.subReg(rg1, rg1, rg2).withS());
+        generator.addInstruction(ArithInstruction.subReg(rg1, rg1, rg2).withS());
         blvs = List.of(Condition.L, Condition.VS);
         generator.generateLabel("p_throw_overflow_error",
                 new String[] {OVERFLOW}, AssemblyGenerator::throw_overflow_error);
-        instructions.add(new BranchInstruction(blvs,
+        generator.addInstruction(new BranchInstruction(blvs,
                 "p_throw_overflow_error"));
         break;
     }
-
-    return instructions;
   }
 
   private static void generateDivByZeroCheck(AssemblyGenerator generator){
@@ -272,19 +265,15 @@ public class BinaryOpExpressionNode extends ExpressionNode {
     return instructions;
   }
 
-  private List<Instruction> generateOperands(ExpressionNode op1,
+  private void generateOperands(ExpressionNode op1,
           ExpressionNode op2, Register rg1, Register rg2,
           AssemblyGenerator generator, SymbolTable symbolTable,
           Stack<Register.ID> available) {
-    List<Instruction> instructions = new ArrayList<>();
-
     available.push(rg1.getRegID());
     available.push(rg2.getRegID());
-    instructions.addAll(op1.generateAssembly(generator, symbolTable, available));
+    op1.generateAssembly(generator, symbolTable, available);
     available.pop();
-    instructions.addAll(op2.generateAssembly(generator, symbolTable, available));
-
-    return instructions;
+    op2.generateAssembly(generator, symbolTable, available);
   }
 
   public Type getType(SymbolTable symbolTable) {

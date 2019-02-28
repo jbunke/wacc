@@ -31,11 +31,11 @@ public class PrintLineStatementNode extends StatementNode {
   }
 
   @Override
-  public List<Instruction> generateAssembly(AssemblyGenerator generator,
+  public void generateAssembly(AssemblyGenerator generator,
                                             SymbolTable symbolTable,
                                             Stack<Register.ID> available) {
-    List<Instruction> instructions = new PrintStatementNode(expression).
-            generateAssembly(generator, symbolTable, available);
+    new PrintStatementNode(expression).generateAssembly(
+            generator, symbolTable, available);
 
     if (!generator.containsLabel("p_print_ln")) {
       String code = generator.addMsg("\\0");
@@ -43,8 +43,8 @@ public class PrintLineStatementNode extends StatementNode {
               print_ln(generator, code));
     }
 
-    instructions.add(new BranchInstruction(Condition.L, "p_print_ln"));
-    return instructions;
+    generator.addInstruction(
+            new BranchInstruction(Condition.L, "p_print_ln"));
   }
 
   private static List<Instruction> print_ln(

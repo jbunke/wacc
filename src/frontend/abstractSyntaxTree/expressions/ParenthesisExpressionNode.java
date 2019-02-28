@@ -29,10 +29,10 @@ public class ParenthesisExpressionNode extends ExpressionNode {
   }
 
   @Override
-  public List<Instruction> generateAssembly(AssemblyGenerator generator,
+  public void generateAssembly(AssemblyGenerator generator,
                                             SymbolTable symbolTable,
                                             Stack<Register.ID> available) {
-    return containedExpression.generateAssembly(generator, symbolTable, available);
+    containedExpression.generateAssembly(generator, symbolTable, available);
   }
 
   @Override

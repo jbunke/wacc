@@ -2,14 +2,11 @@ package frontend.abstractSyntaxTree.statements;
 
 import backend.AssemblyGenerator;
 import backend.Register;
-import backend.instructions.Instruction;
 import backend.instructions.ArithInstruction;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.Type;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Stack;
 
 public class InnerScopeStatementNode extends StatementNode {
@@ -26,25 +23,23 @@ public class InnerScopeStatementNode extends StatementNode {
   }
 
   @Override
-  public List<Instruction> generateAssembly(AssemblyGenerator generator,
+  public void generateAssembly(AssemblyGenerator generator,
                                             SymbolTable symbolTable,
                                             Stack<Register.ID> available) {
-    List<Instruction> instructions = new ArrayList<>();
-
     int size = symbolTable.getChild(innerStatement).getSize();
 
     if (size > 0) {
-      instructions.add(ArithInstruction.sub(generator.getRegister(Register.ID.SP),
+      generator.addInstruction(
+              ArithInstruction.sub(generator.getRegister(Register.ID.SP),
               generator.getRegister(Register.ID.SP), size));
     }
-    instructions.addAll(innerStatement.generateAssembly(generator,
-            symbolTable.getChild(innerStatement), available));
+    innerStatement.generateAssembly(generator,
+            symbolTable.getChild(innerStatement), available);
     if (size > 0) {
-      instructions.add(ArithInstruction.add(generator.getRegister(Register.ID.SP),
+      generator.addInstruction(
+              ArithInstruction.add(generator.getRegister(Register.ID.SP),
               generator.getRegister(Register.ID.SP), size));
     }
-
-    return instructions;
   }
 
   @Override

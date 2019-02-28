@@ -2,7 +2,6 @@ package frontend.abstractSyntaxTree.assignment;
 
 import backend.AssemblyGenerator;
 import backend.Register;
-import backend.instructions.Instruction;
 import frontend.abstractSyntaxTree.expressions.ExpressionNode;
 import frontend.abstractSyntaxTree.expressions.IdentifierNode;
 import frontend.symbolTable.Function;
@@ -12,7 +11,6 @@ import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.Type;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
@@ -75,7 +73,7 @@ public class FunctionCallNode implements AssignRHS {
   }
 
   @Override
-  public List<Instruction> generateAssembly(AssemblyGenerator generator, SymbolTable symbolTable, Stack<Register.ID> available) {
-    return new ArrayList<>();
+  public void generateAssembly(AssemblyGenerator generator, SymbolTable symbolTable, Stack<Register.ID> available) {
+
   }
 }

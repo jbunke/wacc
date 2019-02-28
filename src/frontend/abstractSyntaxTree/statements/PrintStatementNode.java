@@ -38,14 +38,14 @@ public class PrintStatementNode extends StatementNode {
   }
 
   @Override
-  public List<Instruction> generateAssembly(AssemblyGenerator generator,
+  public void generateAssembly(AssemblyGenerator generator,
                                             SymbolTable symbolTable,
                                             Stack<Register.ID> available) {
-    List<Instruction> instructions = expression.generateAssembly(generator,
+    expression.generateAssembly(generator,
             symbolTable, available);
     Register first = generator.getRegister(available.peek());
-    instructions.add(new MovInstruction(generator.getRegister(Register.ID.R0),
-            first));
+    generator.addInstruction(
+            new MovInstruction(generator.getRegister(Register.ID.R0), first));
 
     if (expression.getType(symbolTable) instanceof BaseTypes) {
       BaseTypes expType = (BaseTypes) expression.getType(symbolTable);
@@ -53,16 +53,19 @@ public class PrintStatementNode extends StatementNode {
         case INT:
           generator.generateLabel("p_print_int",
                   new String[] {INT_FORMATTER}, PrintStatementNode::print_int);
-          instructions.add(new BranchInstruction(Condition.L, "p_print_int"));
+          generator.addInstruction(
+                  new BranchInstruction(Condition.L, "p_print_int"));
           break;
         case BOOL:
           generator.generateLabel("p_print_bool",
                   new String[] {TRUE_STRING, FALSE_STRING},
                   PrintStatementNode::print_bool);
-          instructions.add(new BranchInstruction(Condition.L, "p_print_bool"));
+          generator.addInstruction(
+                  new BranchInstruction(Condition.L, "p_print_bool"));
           break;
         case CHAR:
-          instructions.add(new BranchInstruction(Condition.L, "putchar"));
+          generator.addInstruction(
+                  new BranchInstruction(Condition.L, "putchar"));
           break;
       }
     } else if (expression.getType(symbolTable) instanceof Array) {
@@ -74,11 +77,10 @@ public class PrintStatementNode extends StatementNode {
         generator.generateLabel("p_print_string",
                 new String[] {TERMIN_STRING},
                 PrintStatementNode::print_string);
-        instructions.add(new BranchInstruction(Condition.L, "p_print_string"));
+        generator.addInstruction(
+                new BranchInstruction(Condition.L, "p_print_string"));
       }
     }
-
-    return instructions;
   }
 
   public static List<Instruction> print_string(AssemblyGenerator generator,
