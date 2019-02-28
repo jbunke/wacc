@@ -14,13 +14,14 @@ public class AssemblyGenerator {
 
   private ProgramNode programNode;
   private SymbolTable symbolTable;
-  private List<Instruction> instructions;
+  private Map<String, List<Instruction>> instructions;
   private List<Instruction> additionals;
   private Map<Register.ID, Register> registers;
-  private Set<String> labels;
+  private List<String> labels;
   private List<Instruction> dataDirectives;
 
-  private int ifCount;
+  private int lLabelCount;
+  private String activeLabel;
 
   public AssemblyGenerator(ProgramNode programNode,
                            SymbolTable symbolTable) {
@@ -28,12 +29,12 @@ public class AssemblyGenerator {
     this.symbolTable = symbolTable;
 
     setupRegisters();
-    this.labels = new HashSet<>();
+    this.labels = new ArrayList<>();
     labels.add("main");
     this.dataDirectives = new ArrayList<>();
     this.additionals = new ArrayList<>();
 
-    this.ifCount = 0;
+    this.lLabelCount = 0;
   }
 
   public void generateAssembly(File file) throws IOException {
@@ -42,25 +43,23 @@ public class AssemblyGenerator {
   }
 
   private void generateAssembly() {
-    instructions = new ArrayList<>();
+    instructions = new HashMap<>();
+    // Pre-main assembly
+    List<Instruction> programInstructions = new ArrayList<>();
+    programInstructions.add(new Directive(Directive.ID.TEXT));
+    programInstructions.add(new EmptyLine());
+    programInstructions.add(new Directive(Directive.ID.GLOBAL, "main"));
 
-    // Pre-main assembly code:
-    instructions.add(new Directive(Directive.ID.TEXT));
-    instructions.add(new EmptyLine());
-    instructions.add(new Directive(Directive.ID.GLOBAL, "main"));
-    instructions.add(new LabelInstruction("main"));
+    instructions.put("_PROGRAM_", programInstructions);
 
-    List<Instruction> mainInstr =
-            programNode.generateAssembly(this, symbolTable,
+    // programInstructions.add(new LabelInstruction("main"));
+    setActiveLabel("main");
+    programNode.generateAssembly(this, symbolTable,
                     Register.generalPurposeRegisters());
 
     if (!dataDirectives.isEmpty()) {
       dataDirectives.add(new EmptyLine());
     }
-
-    instructions.addAll(mainInstr);
-
-    instructions.addAll(additionals);
   }
 
   private void writeToFile(File file) throws IOException {
@@ -72,9 +71,27 @@ public class AssemblyGenerator {
       sbProg.append("\n");
     }
 
-    for (Instruction instruction : instructions) {
+    List<Instruction> programInstructions = instructions.get("_PROGRAM_");
+    for (Instruction instruction : programInstructions) {
       sbProg.append(instruction.getIndent());
       sbProg.append(instruction.asString());
+      sbProg.append("\n");
+    }
+
+    for (String label : labels) {
+      if (instructions.containsKey(label)) {
+        List<Instruction> instructionList = instructions.get(label);
+        for (Instruction instruction : instructionList) {
+          sbProg.append(instruction.getIndent());
+          sbProg.append(instruction.asString());
+          sbProg.append("\n");
+        }
+      }
+    }
+
+    for (Instruction additional : additionals) {
+      sbProg.append(additional.getIndent());
+      sbProg.append(additional.asString());
       sbProg.append("\n");
     }
 
@@ -83,6 +100,18 @@ public class AssemblyGenerator {
     BufferedWriter writer = new BufferedWriter(new FileWriter(file));
     writer.write(program);
     writer.close();
+  }
+
+  public void addInstruction(Instruction instruction) {
+    if (!instructions.containsKey(activeLabel)) {
+      instructions.put(activeLabel, new ArrayList<>());
+    }
+    List<Instruction> instructionList = instructions.get(activeLabel);
+    instructionList.add(instruction);
+  }
+
+  public void setActiveLabel(String activeLabel) {
+    this.activeLabel = activeLabel;
   }
 
   public Register getRegister(Register.ID registerId) {
@@ -97,29 +126,10 @@ public class AssemblyGenerator {
     }
   }
 
-  public String generateIfDeallocSP(SymbolTable symbolTable, String falseLabel) {
-    String label = "L" + Integer.toString(
-            Integer.parseInt(falseLabel.substring(1)) + 1);
-    List<Instruction> instructions = new ArrayList<>();
-    if (label.equals("L1")) {
-      if (symbolTable.getSize() > 0) {
-        instructions.add(ArithInstruction.add(getRegister(Register.ID.SP),
-                getRegister(Register.ID.SP), symbolTable.getSize()));
-      }
-      instructions.add(new LDRInstruction(getRegister(Register.ID.R0), 0));
-      instructions.add(new PopInstruction(getRegister(Register.ID.PC)));
-      instructions.add(new Directive(Directive.ID.LTORG));
-    } else {
-      instructions.add(new BranchInstruction(new ArrayList<>(), "L1"));
-    }
-    addAdditional(label, instructions);
-    return label;
-  }
-
-  public String generateIfBranch(List<Instruction> instructions) {
-    String label = "L" + Integer.toString(ifCount * 2);
-    ifCount++;
-    addAdditional(label, instructions);
+  public String generateNewLabel() {
+    String label = "L" + Integer.toString(lLabelCount);
+    lLabelCount++;
+    labels.add(label);
     return label;
   }
 
@@ -140,7 +150,8 @@ public class AssemblyGenerator {
     List<Instruction> instructions = new ArrayList<>();
     instructions.add(new LDRInstruction(
             generator.getRegister(Register.ID.R0), msgs[0]));
-    generator.generateLabel("p_throw_runtime_error", new String[0],
+    generator.generateLabel("p_throw_runtime_error",
+            new String[] {TERMIN_STRING},
             AssemblyGenerator::throw_runtime_error);
     instructions.add(
             new BranchInstruction(Condition.L, "p_throw_runtime_error"));
@@ -150,7 +161,7 @@ public class AssemblyGenerator {
   private static List<Instruction> throw_runtime_error(AssemblyGenerator generator,
                                                String[] msgs) {
     List<Instruction> instructions = new ArrayList<>();
-    generator.generateLabel("p_print_string", new String[] {TERMIN_STRING},
+    generator.generateLabel("p_print_string", msgs,
             PrintStatementNode::print_string);
     instructions.add(new BranchInstruction(Condition.L, "p_print_string"));
     instructions.add(new MovInstruction(generator.getRegister(Register.ID.R0),

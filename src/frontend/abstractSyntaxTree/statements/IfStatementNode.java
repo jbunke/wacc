@@ -6,7 +6,7 @@ import backend.Condition;
 import backend.Register;
 import backend.instructions.BranchInstruction;
 import backend.instructions.CompareInstruction;
-import backend.instructions.Instruction;
+import backend.instructions.LabelInstruction;
 import frontend.abstractSyntaxTree.expressions.ExpressionNode;
 import frontend.symbolTable.SemanticError;
 import frontend.symbolTable.SemanticErrorList;
@@ -15,7 +15,6 @@ import frontend.symbolTable.types.BaseTypes;
 import frontend.symbolTable.types.Type;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Stack;
 
 public class IfStatementNode extends StatementNode {
@@ -50,25 +49,28 @@ public class IfStatementNode extends StatementNode {
   }
 
   @Override
-  public List<Instruction> generateAssembly(AssemblyGenerator generator,
+  public void generateAssembly(AssemblyGenerator generator,
                                             SymbolTable symbolTable,
                                             Stack<Register.ID> available) {
-    List<Instruction> instructions = new ArrayList<>();
-
-    instructions.addAll(condition.generateAssembly(generator,
-            symbolTable, available));
-    instructions.add(new CompareInstruction(
+    condition.generateAssembly(generator, symbolTable, available);
+    generator.addInstruction(new CompareInstruction(
             generator.getRegister(available.peek()), 0));
-    String falseLabel = generator.generateIfBranch(
-            falseBranch.generateAssembly(generator,
-            symbolTable.getChild(falseBranch), available));
-    instructions.add(new BranchInstruction(Condition.EQ, falseLabel));
-    instructions.addAll(trueBranch.generateAssembly(generator,
-            symbolTable.getChild(trueBranch), available));
-    String endLabel = generator.generateIfDeallocSP(symbolTable, falseLabel);
-    instructions.add(new BranchInstruction(new ArrayList<>(), endLabel));
 
-    return instructions;
+    String falseLabel = generator.generateNewLabel();
+    generator.addInstruction(new BranchInstruction(Condition.EQ, falseLabel));
+    trueBranch.generateAssembly(generator,
+            symbolTable.getChild(trueBranch), available);
+
+    String endLabel = generator.generateNewLabel();
+    generator.addInstruction(new BranchInstruction(new ArrayList<>(), endLabel));
+
+    generator.setActiveLabel(falseLabel);
+    generator.addInstruction(new LabelInstruction(falseLabel));
+    falseBranch.generateAssembly(generator,
+            symbolTable.getChild(falseBranch), available);
+
+    generator.setActiveLabel(endLabel);
+    generator.addInstruction(new LabelInstruction(endLabel));
   }
 
   @Override

@@ -72,9 +72,8 @@ public class ArrayElementNode extends ExpressionNode {
   }
 
   @Override
-  public List<Instruction> generateAssembly(AssemblyGenerator generator,
-                                            SymbolTable symbolTable, Stack<Register.ID> available) {
-    return new ArrayList<>();
+  public void generateAssembly(AssemblyGenerator generator,
+          SymbolTable symbolTable, Stack<Register.ID> available) {
   }
 
   @Override

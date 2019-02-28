@@ -2,7 +2,6 @@ package frontend.abstractSyntaxTree.typeNodes;
 
 import backend.AssemblyGenerator;
 import backend.Register;
-import backend.instructions.Instruction;
 import frontend.abstractSyntaxTree.Node;
 import frontend.abstractSyntaxTree.expressions.IdentifierNode;
 import frontend.symbolTable.SemanticErrorList;
@@ -50,10 +49,9 @@ public class ParameterListNode implements Node {
   }
 
   @Override
-  public List<Instruction> generateAssembly(AssemblyGenerator generator,
+  public void generateAssembly(AssemblyGenerator generator,
                                             SymbolTable symbolTable,
                                             Stack<Register.ID> available) {
-    return new ArrayList<>();
   }
 
 

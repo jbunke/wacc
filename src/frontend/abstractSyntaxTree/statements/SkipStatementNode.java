@@ -17,9 +17,7 @@ public class SkipStatementNode extends StatementNode {
   }
 
   @Override
-  public List<Instruction> generateAssembly(AssemblyGenerator generator,
+  public void generateAssembly(AssemblyGenerator generator,
                                             SymbolTable symbolTable,
-                                            Stack<Register.ID> available) {
-    return new ArrayList<>();
-  }
+                                            Stack<Register.ID> available) { }
 }

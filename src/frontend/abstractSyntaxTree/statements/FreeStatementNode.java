@@ -2,7 +2,6 @@ package frontend.abstractSyntaxTree.statements;
 
 import backend.AssemblyGenerator;
 import backend.Register;
-import backend.instructions.Instruction;
 import frontend.abstractSyntaxTree.expressions.ExpressionNode;
 import frontend.symbolTable.SemanticError;
 import frontend.symbolTable.SemanticErrorList;
@@ -11,8 +10,6 @@ import frontend.symbolTable.types.Array;
 import frontend.symbolTable.types.Pair;
 import frontend.symbolTable.types.Type;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Stack;
 
 public class FreeStatementNode extends StatementNode {
@@ -33,9 +30,8 @@ public class FreeStatementNode extends StatementNode {
   }
 
   @Override
-  public List<Instruction> generateAssembly(AssemblyGenerator generator,
+  public void generateAssembly(AssemblyGenerator generator,
                                             SymbolTable symbolTable,
                                             Stack<Register.ID> available) {
-    return new ArrayList<>();
   }
 }

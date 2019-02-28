@@ -24,38 +24,37 @@ public class ProgramNode implements Node {
   }
 
   @Override
-  public List<Instruction> generateAssembly(AssemblyGenerator generator,
+  public void generateAssembly(AssemblyGenerator generator,
                                             SymbolTable symbolTable,
                                             Stack<Register.ID> available) {
-    List<Instruction> instructions = new ArrayList<>();
-    instructions.add(new PushInstruction(generator.getRegister(Register.ID.LR)));
-    // Scope variable check
+    generator.addInstruction(new LabelInstruction("main"));
+    generator.addInstruction(new PushInstruction(
+            generator.getRegister(Register.ID.LR)));
+    // scope variable check
     int size = symbolTable.getChild(stat).getSize();
 
 
     if (size > 0) {
-      instructions.add(ArithInstruction.sub(generator.getRegister(Register.ID.SP),
+      generator.addInstruction(ArithInstruction.sub(
+              generator.getRegister(Register.ID.SP),
               generator.getRegister(Register.ID.SP), size));
     }
 
-    instructions.addAll(stat.generateAssembly(generator,
-            symbolTable.getChild(stat), available));
+    stat.generateAssembly(generator, symbolTable.getChild(stat), available);
     // LDR r0, =0 is for successful program termination
     // TODO: only add instruction in case of successful termination
 
-    if (!generator.containsLabel("L1")) {
-      if (size > 0) {
-        instructions.add(ArithInstruction.add(generator.getRegister(Register.ID.SP),
-                generator.getRegister(Register.ID.SP), size));
-      }
-
-      instructions.add(new LDRInstruction(generator
-              .getRegister(Register.ID.R0), 0));
-      instructions.add(new PopInstruction(generator.getRegister(Register.ID.PC)));
-      instructions.add(new Directive(Directive.ID.LTORG));
+    if (size > 0) {
+      generator.addInstruction(ArithInstruction.add(
+              generator.getRegister(Register.ID.SP),
+              generator.getRegister(Register.ID.SP), size));
     }
 
-    return instructions;
+    generator.addInstruction(new LDRInstruction(
+            generator.getRegister(Register.ID.R0), 0));
+    generator.addInstruction(new PopInstruction(
+            generator.getRegister(Register.ID.PC)));
+    generator.addInstruction(new Directive(Directive.ID.LTORG));
   }
 
   @Override

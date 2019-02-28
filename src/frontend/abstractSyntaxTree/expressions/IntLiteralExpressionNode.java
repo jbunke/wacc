@@ -35,14 +35,11 @@ public class IntLiteralExpressionNode extends ExpressionNode {
   }
 
   @Override
-  public List<Instruction> generateAssembly(AssemblyGenerator generator,
+  public void generateAssembly(AssemblyGenerator generator,
                                             SymbolTable symbolTable,
                                             Stack<Register.ID> available) {
-    List<Instruction> instructions = new ArrayList<>();
     Register next = generator.getRegister(available.peek());
-    instructions.add(new LDRInstruction(next, value));
-
-    return instructions;
+    generator.addInstruction(new LDRInstruction(next, value));
   }
 
   @Override

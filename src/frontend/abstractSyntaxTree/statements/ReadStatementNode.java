@@ -15,9 +15,6 @@ import java.util.List;
 import java.util.Stack;
 
 public class ReadStatementNode extends StatementNode {
-  private static final String TERMIN_STRING = "%.*s\\0";
-  private static final String TRUE_STRING = "true\\0";
-  private static final String FALSE_STRING = "false\\0";
   private static final String INT_FORMATTER = "%d\\0";
   private static final String CHAR_FORMATTER = "%c\\0";
 
@@ -42,16 +39,15 @@ public class ReadStatementNode extends StatementNode {
   }
 
   @Override
-  public List<Instruction> generateAssembly(AssemblyGenerator generator,
+  public void generateAssembly(AssemblyGenerator generator,
                                             SymbolTable symbolTable,
                                             Stack<Register.ID> available) {
-    List<Instruction> instructions = lhs.generateAssembly(generator,
-            symbolTable, available);
+    lhs.generateAssembly(generator, symbolTable, available);
     Register first = generator.getRegister(available.peek());
-    instructions.add(ArithInstruction.add(first,
+    generator.addInstruction(ArithInstruction.add(first,
             generator.getRegister(Register.ID.SP), 0));
-    instructions.add(new MovInstruction(generator.getRegister(Register.ID.R0),
-            first));
+    generator.addInstruction(new MovInstruction(
+            generator.getRegister(Register.ID.R0), first));
 
     if (lhs.getType(symbolTable) instanceof BaseTypes) {
       BaseTypes expType = (BaseTypes) lhs.getType(symbolTable);
@@ -62,19 +58,20 @@ public class ReadStatementNode extends StatementNode {
             generator.addAdditional("p_read_int",
                     read(generator, intMsg));
           }
-          instructions.add(new BranchInstruction(Condition.L, "p_read_int"));
-          break;case CHAR:
+          generator.addInstruction(
+                  new BranchInstruction(Condition.L, "p_read_int"));
+          break;
+        case CHAR:
           if (!generator.containsLabel("p_read_char")) {
             String charMsg = generator.addMsg(CHAR_FORMATTER);
             generator.addAdditional("p_read_char",
                     read(generator, charMsg));
           }
-          instructions.add(new BranchInstruction(Condition.L, "p_read_char"));
+          generator.addInstruction(
+                  new BranchInstruction(Condition.L, "p_read_char"));
           break;
       }
     }
-
-    return instructions;
   }
 
   private static List<Instruction> read(AssemblyGenerator generator,

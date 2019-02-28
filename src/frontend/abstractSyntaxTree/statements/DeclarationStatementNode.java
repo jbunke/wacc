@@ -2,7 +2,6 @@ package frontend.abstractSyntaxTree.statements;
 
 import backend.AssemblyGenerator;
 import backend.Register;
-import backend.instructions.Instruction;
 import backend.instructions.STRInstruction;
 import frontend.abstractSyntaxTree.assignment.AssignRHS;
 import frontend.abstractSyntaxTree.expressions.IdentifierNode;
@@ -13,8 +12,6 @@ import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.Type;
 import frontend.symbolTable.Variable;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Stack;
 
 public class DeclarationStatementNode extends StatementNode {
@@ -53,22 +50,17 @@ public class DeclarationStatementNode extends StatementNode {
   }
 
   @Override
-  public List<Instruction> generateAssembly(AssemblyGenerator generator,
+  public void generateAssembly(AssemblyGenerator generator,
                                             SymbolTable symbolTable,
                                             Stack<Register.ID> available) {
-    List<Instruction> instructions = new ArrayList<>();
-
     boolean isSingleByte = identifier.getType(symbolTable).isSingleByte();
 
-    instructions.addAll(rhs.generateAssembly(generator,
-            symbolTable, available));
+    rhs.generateAssembly(generator, symbolTable, available);
 
-    instructions.add(new STRInstruction(
+    generator.addInstruction(new STRInstruction(
             generator.getRegister(available.peek()),
             generator.getRegister(Register.ID.SP),
             symbolTable.fetchOffset(identifier.getName()), isSingleByte));
-
-    return instructions;
   }
 
   IdentifierNode getIdentifier() {

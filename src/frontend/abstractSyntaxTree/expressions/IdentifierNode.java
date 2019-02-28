@@ -2,14 +2,11 @@ package frontend.abstractSyntaxTree.expressions;
 
 import backend.AssemblyGenerator;
 import backend.Register;
-import backend.instructions.Instruction;
 import backend.instructions.LDRInstruction;
 import frontend.symbolTable.*;
 import frontend.symbolTable.types.BaseTypes;
 import frontend.symbolTable.types.Type;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Stack;
 
 public class IdentifierNode extends ExpressionNode {
@@ -40,17 +37,13 @@ public class IdentifierNode extends ExpressionNode {
   }
 
   @Override
-  public List<Instruction> generateAssembly(AssemblyGenerator generator,
+  public void generateAssembly(AssemblyGenerator generator,
                                             SymbolTable symbolTable,
                                             Stack<Register.ID> available) {
-    List<Instruction> instructions = new ArrayList<>();
-
     Register first = generator.getRegister(available.peek());
-    instructions.add(new LDRInstruction(first,
+    generator.addInstruction(new LDRInstruction(first,
             generator.getRegister(Register.ID.SP),
             symbolTable.fetchOffset(identifier)));
-
-    return instructions;
   }
 
   public String getName() {

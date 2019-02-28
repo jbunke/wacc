@@ -2,7 +2,6 @@ package frontend.abstractSyntaxTree.statements;
 
 import backend.AssemblyGenerator;
 import backend.Register;
-import backend.instructions.Instruction;
 import backend.instructions.STRInstruction;
 import frontend.abstractSyntaxTree.assignment.AssignLHS;
 import frontend.abstractSyntaxTree.assignment.AssignRHS;
@@ -12,8 +11,6 @@ import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.Type;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Stack;
 
 public class AssignVariableStatementNode extends StatementNode {
@@ -47,28 +44,23 @@ public class AssignVariableStatementNode extends StatementNode {
   }
 
   @Override
-  public List<Instruction> generateAssembly(AssemblyGenerator generator,
+  public void generateAssembly(AssemblyGenerator generator,
                                             SymbolTable symbolTable,
                                             Stack<Register.ID> available) {
-    List<Instruction> instructions = new ArrayList<>();
-
     boolean isSingleByte = left.getType(symbolTable).isSingleByte();
 
-    instructions.addAll(right.generateAssembly(generator,
-            symbolTable, available));
+    right.generateAssembly(generator, symbolTable, available);
 
     if (left instanceof IdentifierNode) {
       IdentifierNode ident = (IdentifierNode) left;
-      instructions.add(new STRInstruction(
+      generator.addInstruction(new STRInstruction(
               generator.getRegister(available.peek()),
               generator.getRegister(Register.ID.SP),
               symbolTable.fetchOffset(ident.getName()), isSingleByte));
     } else {
-      instructions.add(new STRInstruction(
+      generator.addInstruction(new STRInstruction(
               generator.getRegister(available.peek()),
               generator.getRegister(Register.ID.SP), isSingleByte));
     }
-
-    return instructions;
   }
 }
