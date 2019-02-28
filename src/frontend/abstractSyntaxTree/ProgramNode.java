@@ -43,15 +43,17 @@ public class ProgramNode implements Node {
     // LDR r0, =0 is for successful program termination
     // TODO: only add instruction in case of successful termination
 
-    if (size > 0) {
-      instructions.add(ArithInstruction.add(generator.getRegister(Register.ID.SP),
-              generator.getRegister(Register.ID.SP), size));
-    }
+    if (!generator.containsLabel("L1")) {
+      if (size > 0) {
+        instructions.add(ArithInstruction.add(generator.getRegister(Register.ID.SP),
+                generator.getRegister(Register.ID.SP), size));
+      }
 
-    instructions.add(new LDRInstruction(generator
-            .getRegister(Register.ID.R0), 0));
-    instructions.add(new PopInstruction(generator.getRegister(Register.ID.PC)));
-    instructions.add(new Directive(Directive.ID.LTORG));
+      instructions.add(new LDRInstruction(generator
+              .getRegister(Register.ID.R0), 0));
+      instructions.add(new PopInstruction(generator.getRegister(Register.ID.PC)));
+      instructions.add(new Directive(Directive.ID.LTORG));
+    }
 
     return instructions;
   }

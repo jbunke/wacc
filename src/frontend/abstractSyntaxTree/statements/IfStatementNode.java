@@ -2,7 +2,10 @@ package frontend.abstractSyntaxTree.statements;
 
 
 import backend.AssemblyGenerator;
+import backend.Condition;
 import backend.Register;
+import backend.instructions.BranchInstruction;
+import backend.instructions.CompareInstruction;
 import backend.instructions.Instruction;
 import frontend.abstractSyntaxTree.expressions.ExpressionNode;
 import frontend.symbolTable.SemanticError;
@@ -50,7 +53,22 @@ public class IfStatementNode extends StatementNode {
   public List<Instruction> generateAssembly(AssemblyGenerator generator,
                                             SymbolTable symbolTable,
                                             Stack<Register.ID> available) {
-    return new ArrayList<>();
+    List<Instruction> instructions = new ArrayList<>();
+
+    instructions.addAll(condition.generateAssembly(generator,
+            symbolTable, available));
+    instructions.add(new CompareInstruction(
+            generator.getRegister(available.peek()), 0));
+    String falseLabel = generator.generateIfBranch(
+            falseBranch.generateAssembly(generator,
+            symbolTable.getChild(falseBranch), available));
+    instructions.add(new BranchInstruction(Condition.EQ, falseLabel));
+    instructions.addAll(trueBranch.generateAssembly(generator,
+            symbolTable.getChild(trueBranch), available));
+    String endLabel = generator.generateIfDeallocSP(symbolTable, falseLabel);
+    instructions.add(new BranchInstruction(new ArrayList<>(), endLabel));
+
+    return instructions;
   }
 
   @Override
