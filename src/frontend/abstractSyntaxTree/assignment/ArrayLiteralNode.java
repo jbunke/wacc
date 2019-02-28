@@ -5,13 +5,11 @@ import backend.AssemblyGenerator;
 import backend.Register;
 import backend.Condition;
 import backend.Register.ID;
-import backend.instructions.ArithInstruction;
 import backend.instructions.BranchInstruction;
 import backend.instructions.Instruction;
 import backend.instructions.LDRInstruction;
 import backend.instructions.MovInstruction;
 import backend.instructions.STRInstruction;
-import backend.instructions.SubInstruction;
 import frontend.abstractSyntaxTree.expressions.ExpressionNode;
 import frontend.symbolTable.SemanticError;
 import frontend.symbolTable.SemanticErrorList;
@@ -26,7 +24,6 @@ import java.util.Stack;
 
 public class ArrayLiteralNode implements AssignRHS {
 
-  private static final int ARRAY_LIT_SIZE = 4;
   private static final int BYTE_SIZE = 1;
 
   private final List<ExpressionNode> arrayElements;
@@ -60,23 +57,21 @@ public class ArrayLiteralNode implements AssignRHS {
       Stack<Register.ID> available) {
     List<Instruction> instructions = new ArrayList<>();
 
-    Register sp = generator.getRegister(ID.SP);
-    instructions.add(ArithInstruction.sub(sp, sp, ARRAY_LIT_SIZE));
-
     int elemSize = this.getType(symbolTable).size();
     boolean isSingleByte = elemSize == BYTE_SIZE;
-    int arraySize = elemSize * (arrayElements.size() + 1);
+    int arraySize = elemSize * arrayElements.size() + BaseTypes.INT_SIZE;
     instructions
         .add(new LDRInstruction(generator.getRegister(ID.R0), arraySize));
     instructions.add(new BranchInstruction(Condition.L, "malloc"));
 
     Register allocatorReg = generator.getRegister(available.peek());
+    available.pop();
     instructions
         .add(new MovInstruction(allocatorReg, generator.getRegister(ID.R0)));
 
     int i = BaseTypes.INT_SIZE;
     for (ExpressionNode e : arrayElements) {
-      e.generateAssembly(generator, symbolTable, available);
+      instructions.addAll(e.generateAssembly(generator, symbolTable, available));
       Register resultReg = generator.getRegister(available.peek());
       instructions.add(
           new STRInstruction(resultReg, allocatorReg, i,

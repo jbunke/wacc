@@ -32,6 +32,7 @@ public class ProgramNode implements Node {
     // Scope variable check
     int size = symbolTable.getChild(stat).getSize();
 
+
     if (size > 0) {
       instructions.add(ArithInstruction.sub(generator.getRegister(Register.ID.SP),
               generator.getRegister(Register.ID.SP), size));

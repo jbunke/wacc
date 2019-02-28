@@ -22,13 +22,14 @@ runBackendTest(){
 echo "=============== Running Backend Tests ==============="
 echo "..."
 
+runBackendTest tests/examples/valid/array/arrayBasic.wacc
 runBackendTest tests/examples/valid/basic/skip/skip.wacc
 runBackendTest tests/examples/valid/basic/skip/comment.wacc
 runBackendTest tests/examples/valid/basic/skip/commentInLine.wacc
-#runBackendTest tests/examples/valid/basic/exit/exit-1.wacc
 runBackendTest tests/examples/valid/basic/exit/exitBasic.wacc
 runBackendTest tests/examples/valid/basic/exit/exitBasic2.wacc
 runBackendTest tests/examples/valid/basic/exit/exitWrap.wacc
+#runBackendTest tests/examples/valid/basic/exit/exit-1.wacc
 #runBackendTest tests/examples/valid/scope/printAllTypes.wacc
 #runBackendTest tests/examples/valid/scope/scopeSimpleRedefine.wacc
 #runBackendTest tests/examples/valid/scope/scopeRedefine.wacc
@@ -65,7 +66,6 @@ runBackendTest tests/examples/valid/basic/exit/exitWrap.wacc
 #runBackendTest tests/examples/valid/array/arraySimple.wacc
 #runBackendTest tests/examples/valid/array/arrayNested.wacc
 #runBackendTest tests/examples/valid/array/arrayPrint.wacc
-#runBackendTest tests/examples/valid/array/arrayBasic.wacc
 #runBackendTest tests/examples/valid/pairs/printNull.wacc
 #runBackendTest tests/examples/valid/pairs/printNullPair.wacc
 #runBackendTest tests/examples/valid/pairs/printPair.wacc

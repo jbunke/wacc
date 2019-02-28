@@ -1,6 +1,7 @@
 package frontend.symbolTable.types;
 
 public class Array extends Type {
+  private static final int ARRAY_SIZE = 4;
   private final Type elementType;
 
   public Array(Type elemsType) {
@@ -28,7 +29,7 @@ public class Array extends Type {
 
   @Override
   public int size() {
-    return elementType.size();
+    return ARRAY_SIZE;
   }
 
   @Override

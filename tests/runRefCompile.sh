@@ -11,13 +11,14 @@ runRefCompiler(){
 echo "=============== Fetching Reference Outputs ==============="
 echo "..."
 
+runRefCompiler tests/examples/valid/array/arrayBasic.wacc ''
 runRefCompiler tests/examples/valid/basic/skip/skip.wacc ''
 runRefCompiler tests/examples/valid/basic/skip/comment.wacc ''
 runRefCompiler tests/examples/valid/basic/skip/commentInLine.wacc ''
-#runRefCompiler tests/examples/valid/basic/exit/exit-1.wacc ''
 runRefCompiler tests/examples/valid/basic/exit/exitBasic.wacc ''
 runRefCompiler tests/examples/valid/basic/exit/exitBasic2.wacc ''
 runRefCompiler tests/examples/valid/basic/exit/exitWrap.wacc ''
+#runRefCompiler tests/examples/valid/basic/exit/exit-1.wacc ''
 #runRefCompiler tests/examples/valid/advanced/binarySortTree.wacc ''
 #runRefCompiler tests/examples/valid/advanced/ticTacToe.wacc ''
 #runRefCompiler tests/examples/valid/advanced/hashTable.wacc ''
@@ -30,7 +31,6 @@ runRefCompiler tests/examples/valid/basic/exit/exitWrap.wacc ''
 #runRefCompiler tests/examples/valid/array/arraySimple.wacc ''
 #runRefCompiler tests/examples/valid/array/arrayNested.wacc ''
 #runRefCompiler tests/examples/valid/array/arrayPrint.wacc ''
-#runRefCompiler tests/examples/valid/array/arrayBasic.wacc ''
 #runRefCompiler tests/examples/valid/pairs/printNull.wacc ''
 #runRefCompiler tests/examples/valid/pairs/printNullPair.wacc ''
 #runRefCompiler tests/examples/valid/pairs/printPair.wacc ''
