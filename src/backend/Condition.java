@@ -6,7 +6,8 @@ public enum Condition {
   GT, GE, // greater than, greater than or equal to
   LT, LE, // less than, less than or equal to
   AL,     // always
-  VS;     // overflow
+  VS,     // overflow
+  S;
 
   public Condition opposite() {
     switch (this) {

@@ -8,7 +8,6 @@ import frontend.abstractSyntaxTree.assignment.AssignLHS;
 import frontend.symbolTable.SemanticError;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
-import frontend.symbolTable.types.Array;
 import frontend.symbolTable.types.BaseTypes;
 
 import java.util.ArrayList;
@@ -49,7 +48,7 @@ public class ReadStatementNode extends StatementNode {
     List<Instruction> instructions = lhs.generateAssembly(generator,
             symbolTable, available);
     Register first = generator.getRegister(available.peek());
-    instructions.add(new AddInstruction(first,
+    instructions.add(ArithInstruction.add(first,
             generator.getRegister(Register.ID.SP), 0));
     instructions.add(new MovInstruction(generator.getRegister(Register.ID.R0),
             first));
@@ -86,7 +85,7 @@ public class ReadStatementNode extends StatementNode {
             generator.getRegister(Register.ID.R0)));
     instructions.add(new LDRInstruction(generator.getRegister(Register.ID.R0),
             intMsg));
-    instructions.add(new AddInstruction(
+    instructions.add(ArithInstruction.add(
             generator.getRegister(Register.ID.R0),
             generator.getRegister(Register.ID.R0), 4));
     instructions.add(new BranchInstruction(Condition.L, "scanf"));
