@@ -171,6 +171,7 @@ public class BinaryOpExpressionNode extends ExpressionNode {
         break;
       case OR:
         instructions.add(new OrInstruction(rg1, rg1, rg2));
+        break;
       case EQUAL:
         instructions.add(new CompareInstruction(rg1, rg2));
         instructions.add(new MovInstruction(rg1, 1)

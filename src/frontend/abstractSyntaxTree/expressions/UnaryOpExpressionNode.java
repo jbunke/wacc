@@ -123,6 +123,7 @@ public class UnaryOpExpressionNode extends ExpressionNode {
       case ORD:
         instructions.addAll(
                 operand.generateAssembly(generator, symbolTable, available));
+        break;
       case NEGATIVE:
         Register first = generator.getRegister(available.peek());
         Register sp = generator.getRegister(Register.ID.SP);
