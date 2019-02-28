@@ -46,6 +46,10 @@ public class BinaryOpExpressionNode extends ExpressionNode {
   private final ExpressionNode right;
   private final OperatorType operatorType;
 
+  private static final String DIV_BY_ZERO_ERR = "DivideByZeroError: " +
+          "divide or modulo by zero\\n\\0";
+
+
   public BinaryOpExpressionNode(ExpressionNode left, String operatorType, ExpressionNode right) {
     this.left = left;
     this.operatorType = stringToType(operatorType);
@@ -165,14 +169,16 @@ public class BinaryOpExpressionNode extends ExpressionNode {
     }
     available.pop();
 
-    instructions.addAll(generateOperation(first, second));
+    instructions.addAll(generateOperation(first, second, generator, available));
     available.clear();
     available.addAll(originalRegState);
 
     return instructions;
   }
 
-  private List<Instruction> generateOperation(Register rg1, Register rg2) {
+  private List<Instruction> generateOperation(Register rg1, Register rg2,
+                                              AssemblyGenerator generator,
+                                              Stack<Register.ID> available) {
     List<Instruction> instructions = new ArrayList<>();
 
     switch (operatorType) {
@@ -196,8 +202,46 @@ public class BinaryOpExpressionNode extends ExpressionNode {
         instructions.add(new MovInstruction(rg1, 0)
                 .withCondition(complement));
         break;
+      case TIMES:
+        instructions.add(new SMULLInstruction(rg1, rg2, rg1, rg2));
+        instructions.add(new CompareInstruction(rg2, rg1, 31));
+        break;
+      case DIVIDE:
+        Register r0 = generator.getRegister(Register.ID.R0);
+        Register r1 = generator.getRegister(Register.ID.R1);
+        if (!generator.containsLabel("p_check_divide_by_zero")) {
+          String divByZeroErrMsg = generator.addMsg(DIV_BY_ZERO_ERR);
+          generator.addAdditional("p_check_divide_by_zero",
+                  p_check_divide_by_zero(generator, divByZeroErrMsg));
+        }
+        instructions.add(new MovInstruction(r0, rg1));
+        instructions.add(new MovInstruction(r1, rg2));
+        instructions.add(new BranchInstruction(Condition.L,
+                "p_check_divide_by_zero"));
+        instructions.add(new BranchInstruction(Condition.L,
+                "__aeabi_idiv"));
+        instructions.add(new MovInstruction(rg1, r0));
+
+        break;
     }
 
+    return instructions;
+  }
+
+  private List<Instruction> p_check_divide_by_zero(AssemblyGenerator generator,
+                                                   String msgName){
+    Register r0 = generator.getRegister(Register.ID.R0);
+    Register r1 = generator.getRegister(Register.ID.R1);
+
+    List<Instruction> instructions = new ArrayList<>();
+    instructions.add(new PushInstruction(generator.getRegister(Register.ID.LR)));
+    instructions.add(new CompareInstruction(r1, 0));
+    instructions.add(new LDRInstruction(r0, msgName)
+            .withCondition(Condition.EQ));
+    List<Condition> branchConds = List.of(Condition.L, Condition.EQ);
+    instructions.add(new BranchInstruction(branchConds,
+            "p_throw_runtime_error"));
+    instructions.add(new PopInstruction(generator.getRegister(Register.ID.PC)));
     return instructions;
   }
 

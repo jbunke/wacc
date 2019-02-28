@@ -15,7 +15,6 @@ import frontend.symbolTable.types.BaseTypes;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
-import java.util.function.BiFunction;
 
 public class PrintStatementNode extends StatementNode {
   private static final String TERMIN_STRING = "%.*s\\0";
@@ -38,18 +37,6 @@ public class PrintStatementNode extends StatementNode {
     }
   }
 
-  private void generateLabel(AssemblyGenerator generator, String label,
-          String[] msgs,
-          BiFunction<AssemblyGenerator, String[],List<Instruction>> function) {
-    if (!generator.containsLabel(label)) {
-      String[] retMsgs = new String[msgs.length];
-      for (int i = 0; i < msgs.length; i++) {
-        retMsgs[i] = generator.addMsg(msgs[i]);
-      }
-      generator.addAdditional(label, function.apply(generator, retMsgs));
-    }
-  }
-
   @Override
   public List<Instruction> generateAssembly(AssemblyGenerator generator,
                                             SymbolTable symbolTable,
@@ -64,12 +51,12 @@ public class PrintStatementNode extends StatementNode {
       BaseTypes expType = (BaseTypes) expression.getType(symbolTable);
       switch (expType.getBaseType()) {
         case INT:
-          generateLabel(generator, "p_print_int",
+          generator.generateLabel("p_print_int",
                   new String[] {INT_FORMATTER}, PrintStatementNode::print_int);
           instructions.add(new BranchInstruction(Condition.L, "p_print_int"));
           break;
         case BOOL:
-          generateLabel(generator, "p_print_bool",
+          generator.generateLabel("p_print_bool",
                   new String[] {TRUE_STRING, FALSE_STRING},
                   PrintStatementNode::print_bool);
           instructions.add(new BranchInstruction(Condition.L, "p_print_bool"));
@@ -84,7 +71,7 @@ public class PrintStatementNode extends StatementNode {
               ((BaseTypes) expType.getElementType()).getBaseType() ==
                       BaseTypes.base_types.CHAR) {
         // Dealing with a string
-        generateLabel(generator, "p_print_string",
+        generator.generateLabel("p_print_string",
                 new String[] {TERMIN_STRING},
                 PrintStatementNode::print_string);
         instructions.add(new BranchInstruction(Condition.L, "p_print_string"));

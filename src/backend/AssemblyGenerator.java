@@ -6,6 +6,7 @@ import frontend.symbolTable.SymbolTable;
 
 import java.io.*;
 import java.util.*;
+import java.util.function.BiFunction;
 
 public class AssemblyGenerator {
   private ProgramNode programNode;
@@ -86,6 +87,18 @@ public class AssemblyGenerator {
 
     for (Register.ID id : Register.ID.values()) {
       registers.put(id, new Register(id));
+    }
+  }
+
+  public void generateLabel(String label,
+          String[] msgs, BiFunction<AssemblyGenerator,
+          String[],List<Instruction>> function) {
+    if (!containsLabel(label)) {
+      String[] retMsgs = new String[msgs.length];
+      for (int i = 0; i < msgs.length; i++) {
+        retMsgs[i] = addMsg(msgs[i]);
+      }
+      addAdditional(label, function.apply(this, retMsgs));
     }
   }
 
