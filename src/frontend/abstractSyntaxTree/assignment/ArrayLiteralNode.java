@@ -57,8 +57,10 @@ public class ArrayLiteralNode implements AssignRHS {
       Stack<Register.ID> available) {
     List<Instruction> instructions = new ArrayList<>();
 
-    int elemSize = ((Array) this.getType(symbolTable)).getElementType().size();
+    Type elemType = ((Array) this.getType(symbolTable)).getElementType();
+    int elemSize = elemType == null ? 0 : elemType.size();
     boolean isSingleByte = elemSize == BYTE_SIZE;
+
     int arraySize = elemSize * arrayElements.size() + BaseTypes.INT_SIZE;
     instructions
         .add(new LDRInstruction(generator.getRegister(ID.R0), arraySize));
