@@ -123,12 +123,17 @@ public class UnaryOpExpressionNode extends ExpressionNode {
       case ORD:
         instructions.addAll(
                 operand.generateAssembly(generator, symbolTable, available));
+        break;
       case NEGATIVE:
         Register first = generator.getRegister(available.peek());
         Register sp = generator.getRegister(Register.ID.SP);
         instructions.add(new LDRInstruction(first, sp));
         instructions.add(new RSBSInstruction(first, first, 0));
         // TODO: Add BLVS
+        break;
+      case LENGTH:
+        // TODO: Implement once arrays are implemented
+        break;
     }
 
     return instructions;
