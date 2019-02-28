@@ -127,9 +127,10 @@ public class UnaryOpExpressionNode extends ExpressionNode {
       case NEGATIVE:
         Register first = generator.getRegister(available.peek());
         Register sp = generator.getRegister(Register.ID.SP);
-        instructions.add(new LDRInstruction(first, sp));
+        operand.generateAssembly(generator, symbolTable, available);
         instructions.add(new RSBSInstruction(first, first, 0));
         // TODO: Add BLVS
+        break;
     }
 
     return instructions;
