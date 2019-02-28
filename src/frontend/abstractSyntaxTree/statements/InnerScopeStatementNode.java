@@ -2,9 +2,8 @@ package frontend.abstractSyntaxTree.statements;
 
 import backend.AssemblyGenerator;
 import backend.Register;
-import backend.instructions.AddInstruction;
 import backend.instructions.Instruction;
-import backend.instructions.SubInstruction;
+import backend.instructions.ArithInstruction;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.Type;
@@ -35,13 +34,13 @@ public class InnerScopeStatementNode extends StatementNode {
     int size = symbolTable.getChild(innerStatement).getSize();
 
     if (size > 0) {
-      instructions.add(new SubInstruction(generator.getRegister(Register.ID.SP),
+      instructions.add(ArithInstruction.sub(generator.getRegister(Register.ID.SP),
               generator.getRegister(Register.ID.SP), size));
     }
     instructions.addAll(innerStatement.generateAssembly(generator,
             symbolTable.getChild(innerStatement), available));
     if (size > 0) {
-      instructions.add(new AddInstruction(generator.getRegister(Register.ID.SP),
+      instructions.add(ArithInstruction.add(generator.getRegister(Register.ID.SP),
               generator.getRegister(Register.ID.SP), size));
     }
 

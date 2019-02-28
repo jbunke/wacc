@@ -87,11 +87,11 @@ public class PrintStatementNode extends StatementNode {
     instructions.add(new PushInstruction(generator.getRegister(Register.ID.LR)));
     instructions.add(new LDRInstruction(generator.getRegister(Register.ID.R1),
             generator.getRegister(Register.ID.R0)));
-    instructions.add(new AddInstruction(generator.getRegister(Register.ID.R2),
+    instructions.add(ArithInstruction.add(generator.getRegister(Register.ID.R2),
             generator.getRegister(Register.ID.R0), 4));
     instructions.add(new LDRInstruction(generator.getRegister(Register.ID.R0),
             msgs[0]));
-    instructions.add(new AddInstruction(generator.getRegister(Register.ID.R0),
+    instructions.add(ArithInstruction.add(generator.getRegister(Register.ID.R0),
             generator.getRegister(Register.ID.R0), 4));
     instructions.add(new BranchInstruction(Condition.L, "printf"));
     instructions.add(new MovInstruction(
@@ -111,7 +111,7 @@ public class PrintStatementNode extends StatementNode {
             generator.getRegister(Register.ID.R0), msgs[0]));
     instructions.add(new LDRInstruction(Condition.EQ,
             generator.getRegister(Register.ID.R0), msgs[1]));
-    instructions.add(new AddInstruction(
+    instructions.add(ArithInstruction.add(
             generator.getRegister(Register.ID.R0),
             generator.getRegister(Register.ID.R0), 4));
     instructions.add(new BranchInstruction(Condition.L, "printf"));
@@ -130,7 +130,7 @@ public class PrintStatementNode extends StatementNode {
             generator.getRegister(Register.ID.R0)));
     instructions.add(new LDRInstruction(generator.getRegister(Register.ID.R0),
             intMsg[0]));
-    instructions.add(new AddInstruction(
+    instructions.add(ArithInstruction.add(
             generator.getRegister(Register.ID.R0),
             generator.getRegister(Register.ID.R0), 4));
     instructions.add(new BranchInstruction(Condition.L, "printf"));

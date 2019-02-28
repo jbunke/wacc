@@ -33,7 +33,7 @@ public class ProgramNode implements Node {
     int size = symbolTable.getChild(stat).getSize();
 
     if (size > 0) {
-      instructions.add(new SubInstruction(generator.getRegister(Register.ID.SP),
+      instructions.add(ArithInstruction.sub(generator.getRegister(Register.ID.SP),
               generator.getRegister(Register.ID.SP), size));
     }
 
@@ -43,7 +43,7 @@ public class ProgramNode implements Node {
     // TODO: only add instruction in case of successful termination
 
     if (size > 0) {
-      instructions.add(new AddInstruction(generator.getRegister(Register.ID.SP),
+      instructions.add(ArithInstruction.add(generator.getRegister(Register.ID.SP),
               generator.getRegister(Register.ID.SP), size));
     }
 

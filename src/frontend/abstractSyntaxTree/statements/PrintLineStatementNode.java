@@ -53,7 +53,7 @@ public class PrintLineStatementNode extends StatementNode {
     instructions.add(new PushInstruction(generator.getRegister(Register.ID.LR)));
     instructions.add(new LDRInstruction(
             generator.getRegister(Register.ID.R0), code));
-    instructions.add(new AddInstruction(generator.getRegister(Register.ID.R0),
+    instructions.add(ArithInstruction.add(generator.getRegister(Register.ID.R0),
             generator.getRegister(Register.ID.R0), 4));
     instructions.add(new BranchInstruction(Condition.L, "puts"));
     instructions.add(new MovInstruction(
