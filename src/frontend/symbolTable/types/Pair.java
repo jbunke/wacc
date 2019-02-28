@@ -32,7 +32,8 @@ public class Pair extends Type {
     if (other instanceof Pair) {
       Pair pair = (Pair) other;
 
-      return checkEachElement(first, pair.first) && checkEachElement(second, pair.second);
+      return checkElementEquality(first, pair.first) &&
+          checkElementEquality(second, pair.second);
     }
 
     //obj not an instance of pair
@@ -44,7 +45,7 @@ public class Pair extends Type {
     return PAIR_SIZE;
   }
 
-  private boolean checkEachElement(Type x, Type y) {
+  private boolean checkElementEquality(Type x, Type y) {
     return x == null || y == null || x.equals(y);
   }
 
