@@ -2,6 +2,7 @@ package backend;
 
 import backend.instructions.*;
 import frontend.abstractSyntaxTree.ProgramNode;
+import frontend.abstractSyntaxTree.statements.PrintStatementNode;
 import frontend.symbolTable.SymbolTable;
 
 import java.io.*;
@@ -9,6 +10,8 @@ import java.util.*;
 import java.util.function.BiFunction;
 
 public class AssemblyGenerator {
+  private static final String TERMIN_STRING = "%.*s\\0";
+
   private ProgramNode programNode;
   private SymbolTable symbolTable;
   private List<Instruction> instructions;
@@ -114,9 +117,11 @@ public class AssemblyGenerator {
     return instructions;
   }
 
-  public static List<Instruction> throw_runtime_error(AssemblyGenerator generator,
+  private static List<Instruction> throw_runtime_error(AssemblyGenerator generator,
                                                String[] msgs) {
     List<Instruction> instructions = new ArrayList<>();
+    generator.generateLabel("p_print_string", new String[] {TERMIN_STRING},
+            PrintStatementNode::print_string);
     instructions.add(new BranchInstruction(Condition.L, "p_print_string"));
     instructions.add(new MovInstruction(generator.getRegister(Register.ID.R0),
             -1));

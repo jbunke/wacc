@@ -18,7 +18,7 @@ import java.util.Stack;
 
 public class UnaryOpExpressionNode extends ExpressionNode {
   private final static String OVERFLOW = "OverflowError: the result is too " +
-          "small/large to store in a 4-byte signed-integer.\n";
+          "small/large to store in a 4-byte signed-integer.\\n";
 
   private final static Map<String, OperatorType> stringOpMap = Map.ofEntries(
           Map.entry("!", OperatorType.NOT),

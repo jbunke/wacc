@@ -16,6 +16,9 @@ import java.util.Map;
 import java.util.Stack;
 
 public class BinaryOpExpressionNode extends ExpressionNode {
+  private final static String OVERFLOW = "OverflowError: the result is too " +
+          "small/large to store in a 4-byte signed-integer.\\n";
+
   private final static Map<String, OperatorType> stringOpMap = Map.ofEntries(
           Map.entry("*", OperatorType.TIMES),
           Map.entry("/", OperatorType.DIVIDE),
@@ -225,6 +228,22 @@ public class BinaryOpExpressionNode extends ExpressionNode {
         instructions.add(new BranchInstruction(Condition.L,
                 "__aeabi_idivmod"));
         instructions.add(new MovInstruction(rg1, r1));
+        break;
+      case PLUS:
+        instructions.add(ArithInstruction.addReg(rg1, rg1, rg2).withS());
+        List<Condition> blvs = List.of(Condition.L, Condition.VS);
+        generator.generateLabel("p_throw_overflow_error",
+                new String[] {OVERFLOW}, AssemblyGenerator::throw_overflow_error);
+        instructions.add(new BranchInstruction(blvs,
+                "p_throw_overflow_error"));
+        break;
+      case MINUS:
+        instructions.add(ArithInstruction.subReg(rg1, rg1, rg2).withS());
+        blvs = List.of(Condition.L, Condition.VS);
+        generator.generateLabel("p_throw_overflow_error",
+                new String[] {OVERFLOW}, AssemblyGenerator::throw_overflow_error);
+        instructions.add(new BranchInstruction(blvs,
+                "p_throw_overflow_error"));
         break;
     }
 

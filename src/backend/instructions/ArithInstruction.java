@@ -13,6 +13,24 @@ public class ArithInstruction extends Instruction {
   private final String operand;
   private List<Condition> conditions;
 
+  public static ArithInstruction addReg(Register destRegister,
+                                        Register opReg1,
+                                        Register opReg2) {
+    ArithInstruction ins =
+            new ArithInstruction(destRegister, opReg1, opReg2);
+    ins.code = "ADD";
+    return ins;
+  }
+
+  public static ArithInstruction subReg(Register destRegister,
+                                        Register opReg1,
+                                        Register opReg2) {
+    ArithInstruction ins =
+            new ArithInstruction(destRegister, opReg1, opReg2);
+    ins.code = "SUB";
+    return ins;
+  }
+
   public static ArithInstruction add(Register destRegister,
                                      Register sourceRegister, int operand) {
     ArithInstruction ins =
@@ -34,6 +52,14 @@ public class ArithInstruction extends Instruction {
     this.destRegister = destRegister;
     this.sourceRegister = sourceRegister;
     this.operand = "#" + Integer.toString(operand);
+    this.conditions = new ArrayList<>();
+  }
+
+  private ArithInstruction(Register destRegister,
+                           Register opReg1, Register opReg2) {
+    this.destRegister = destRegister;
+    this.sourceRegister = opReg1;
+    this.operand = opReg2.toString();
     this.conditions = new ArrayList<>();
   }
 

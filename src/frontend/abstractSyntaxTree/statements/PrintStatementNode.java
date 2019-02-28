@@ -81,7 +81,7 @@ public class PrintStatementNode extends StatementNode {
     return instructions;
   }
 
-  private static List<Instruction> print_string(AssemblyGenerator generator,
+  public static List<Instruction> print_string(AssemblyGenerator generator,
                                                 String[] msgs) {
     List<Instruction> instructions = new ArrayList<>();
     instructions.add(new PushInstruction(generator.getRegister(Register.ID.LR)));
