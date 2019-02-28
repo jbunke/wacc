@@ -32,6 +32,16 @@ public class BinaryOpExpressionNode extends ExpressionNode {
           Map.entry("||", OperatorType.OR)
   );
 
+  private final static Map<OperatorType, Condition> equivalent =
+          Map.ofEntries(
+          Map.entry(OperatorType.EQUAL, Condition.EQ),
+          Map.entry(OperatorType.NOT_EQUAL, Condition.NE),
+          Map.entry(OperatorType.GREATER_THAN_OR_EQUAL, Condition.GE),
+          Map.entry(OperatorType.GREATER_THAN, Condition.GT),
+          Map.entry(OperatorType.LESS_THAN_OR_EQUAL, Condition.LE),
+          Map.entry(OperatorType.LESS_THAN, Condition.LT)
+  );
+
   private final ExpressionNode left;
   private final ExpressionNode right;
   private final OperatorType operatorType;
@@ -179,11 +189,18 @@ public class BinaryOpExpressionNode extends ExpressionNode {
         instructions.add(new OrInstruction(rg1, rg1, rg2));
         break;
       case EQUAL:
+      case NOT_EQUAL:
+      case GREATER_THAN:
+      case GREATER_THAN_OR_EQUAL:
+      case LESS_THAN:
+      case LESS_THAN_OR_EQUAL:
+        Condition cond = equivalent.get(operatorType);
+        Condition complement = cond.opposite();
         instructions.add(new CompareInstruction(rg1, rg2));
         instructions.add(new MovInstruction(rg1, 1)
-                .withCondition(Condition.EQ));
+                .withCondition(cond));
         instructions.add(new MovInstruction(rg1, 0)
-                .withCondition(Condition.NE));
+                .withCondition(complement));
         break;
       case TIMES:
         instructions.add(new SMULLInstruction(rg1, rg2, rg1, rg2));
