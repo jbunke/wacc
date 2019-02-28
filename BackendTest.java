@@ -35,20 +35,20 @@ public class BackendTest {
     String refCompilerOut = getRefCompilerOutput(filename);
 
     if (!emulatorOut.equals(refCompilerOut)) {
-      System.out.println("Mismatched output between reference compiler and "
-          + "your wacc compiler");
+      System.out.println("\nMismatched output between reference compiler and "
+          + "your wacc compiler for\n >>>" + filename);
 
-      System.out.println("\n\n\n");
+      System.out.println("\n");
 
       System.out.println("Your compiler output:\n");
-      System.out.println("++++++++++++++++++++++++++++++\n");
+      System.out.println("++++++++++++++++++++++++++++++");
       System.out.println(emulatorOut);
       System.out.println("++++++++++++++++++++++++++++++\n");
 
       System.out.println("\n\n");
 
       System.out.println("Reference compiler output:\n");
-      System.out.println("++++++++++++++++++++++++++++++\n");
+      System.out.println("++++++++++++++++++++++++++++++");
       System.out.println(refCompilerOut);
       System.out.println("++++++++++++++++++++++++++++++\n");
 
@@ -68,13 +68,25 @@ public class BackendTest {
       try {
         br = new BufferedReader(new FileReader(file));
         String line;
-        boolean outputFound = false;
-        while ((line = br.readLine()) != null) {
+        boolean foundExit = false;
+        boolean outputFoundStart = false;
+        boolean outputFoundEnd = false;
+        while ((line = br.readLine()) != null && !foundExit) {
           if (line.equals(
               "===========================================================")) {
-            outputFound = !outputFound;
-          } else if (outputFound) {
+            if (!outputFoundStart) {
+              outputFoundStart = true;
+            } else {
+              outputFoundEnd = true;
+              outputFoundStart = false;
+            }
+          } else if (outputFoundStart) {
+            outputString.append(System.getProperty("line.separator"));
             outputString.append(line);
+          } else if (outputFoundEnd) {
+            outputString.append(System.getProperty("line.separator"));
+            outputString.append(line);
+            foundExit = true;
           }
         }
       } catch (IOException e) {
@@ -96,6 +108,7 @@ public class BackendTest {
       String line;
       boolean outputFound = false;
       while ((line = reader.readLine()) != null) {
+        outputString.append(System.getProperty("line.separator"));
         outputString.append(line);
       }
     } catch (Exception e) {

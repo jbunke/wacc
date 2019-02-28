@@ -4,7 +4,7 @@ runRefCompiler(){
      WACC=`sed 's:.*/::' <<< $1` >/dev/null
      NAME=`sed 's/\..*//' <<< ${WACC}` >/dev/null
      echo $2 | ./tests/refCompile -x "$1" | tee ${NAME}.out >/dev/null
-     echo "Reference Output: Created " ${NAME}.out
+     echo "Reference Output Created :" ${NAME}.out
      }
 
 # Valid files
@@ -14,6 +14,10 @@ echo "..."
 runRefCompiler tests/examples/valid/basic/skip/skip.wacc ''
 runRefCompiler tests/examples/valid/basic/skip/comment.wacc ''
 runRefCompiler tests/examples/valid/basic/skip/commentInLine.wacc ''
+#runRefCompiler tests/examples/valid/basic/exit/exit-1.wacc ''
+runRefCompiler tests/examples/valid/basic/exit/exitBasic.wacc ''
+runRefCompiler tests/examples/valid/basic/exit/exitBasic2.wacc ''
+runRefCompiler tests/examples/valid/basic/exit/exitWrap.wacc ''
 #runRefCompiler tests/examples/valid/advanced/binarySortTree.wacc ''
 #runRefCompiler tests/examples/valid/advanced/ticTacToe.wacc ''
 #runRefCompiler tests/examples/valid/advanced/hashTable.wacc ''
@@ -94,10 +98,6 @@ runRefCompiler tests/examples/valid/basic/skip/commentInLine.wacc ''
 #runRefCompiler tests/examples/valid/IO/print/printBool.wacc ''
 #runRefCompiler tests/examples/valid/IO/print/printInt.wacc ''
 #runRefCompiler tests/examples/valid/IO/print/printChar.wacc ''
-#runRefCompiler tests/examples/valid/basic/exit/exit-1.wacc ''
-#runRefCompiler tests/examples/valid/basic/exit/exitBasic.wacc ''
-#runRefCompiler tests/examples/valid/basic/exit/exitBasic2.wacc ''
-#runRefCompiler tests/examples/valid/basic/exit/exitWrap.wacc ''
 #runRefCompiler tests/examples/valid/scope/printAllTypes.wacc ''
 #runRefCompiler tests/examples/valid/scope/scopeSimpleRedefine.wacc ''
 #runRefCompiler tests/examples/valid/scope/scopeRedefine.wacc ''
