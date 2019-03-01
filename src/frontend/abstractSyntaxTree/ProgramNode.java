@@ -39,24 +39,12 @@ public class ProgramNode implements Node {
 
     // scope variable check for program statement
     SymbolTable statTable = symbolTable.getChild(stat);
-    int size = statTable.getSize();
 
-    while (size > 0) {
-      generator.addInstruction(ArithInstruction.sub(
-              generator.getRegister(Register.ID.SP),
-              generator.getRegister(Register.ID.SP), Math.min(size, 1024)));
-      size = Math.max(0, size - 1024);
-    }
+    generator.allocate(statTable);
 
     stat.generateAssembly(generator, symbolTable.getChild(stat), available);
 
-    size = statTable.getSize();
-    while (size > 0) {
-      generator.addInstruction(ArithInstruction.add(
-              generator.getRegister(Register.ID.SP),
-              generator.getRegister(Register.ID.SP), Math.min(size, 1024)));
-      size = Math.max(0, size - 1024);
-    }
+    generator.deallocate(statTable);
 
     generator.addInstruction(new LDRInstruction(
             generator.getRegister(Register.ID.R0), 0));

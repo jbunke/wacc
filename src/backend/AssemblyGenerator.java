@@ -4,6 +4,7 @@ import backend.Register.ID;
 import backend.instructions.*;
 import frontend.abstractSyntaxTree.ProgramNode;
 import frontend.abstractSyntaxTree.statements.PrintStatementNode;
+import frontend.abstractSyntaxTree.statements.StatementNode;
 import frontend.symbolTable.SymbolTable;
 import java.io.*;
 import java.util.*;
@@ -104,6 +105,28 @@ public class AssemblyGenerator {
     BufferedWriter writer = new BufferedWriter(new FileWriter(file));
     writer.write(program);
     writer.close();
+  }
+
+  public void allocate(SymbolTable symbolTable) {
+    int size = symbolTable.getSize();
+
+    while (size > 0) {
+      addInstruction(
+              ArithInstruction.sub(getRegister(Register.ID.SP),
+              getRegister(Register.ID.SP), Math.min(1024, size)));
+      size = Math.max(0, size - 1024);
+    }
+  }
+
+  public void deallocate(SymbolTable symbolTable) {
+    int size = symbolTable.getSize();
+
+    while (size > 0) {
+      addInstruction(
+              ArithInstruction.add(getRegister(Register.ID.SP),
+              getRegister(Register.ID.SP), Math.min(1024, size)));
+      size = Math.max(0, size - 1024);
+    }
   }
 
   public void addInstruction(Instruction instruction) {
