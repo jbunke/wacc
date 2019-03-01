@@ -12,6 +12,7 @@ import java.util.function.BiFunction;
 public class AssemblyGenerator {
   private static final String TERMIN_STRING = "%.*s\\0";
   private static final int NULL_PTR_VAL = 0;
+  private static final int ADDR_SIZE = 4;
 
   private ProgramNode programNode;
   private SymbolTable symbolTable;
@@ -221,6 +222,42 @@ public class AssemblyGenerator {
     instructions.add(new PopInstruction(generator.getRegister(Register.ID.PC)));
 
     generator.generateLabel("p_throw_runtime_error", new String[0],AssemblyGenerator::throw_runtime_error);
+
+    return instructions;
+  }
+
+  public static List<Instruction> free_pair(AssemblyGenerator generator, String[] msgs) {
+    List<Instruction> instructions = new ArrayList<>();
+    Register LinkReg = generator.getRegister(ID.LR);
+    Register R0 = generator.getRegister(ID.R0);
+    Register SP = generator.getRegister(ID.SP);
+    Register PC = generator.getRegister(ID.PC);
+
+    instructions.add(new PushInstruction(LinkReg));
+
+    instructions.add(new CompareInstruction(R0, NULL_PTR_VAL));
+    instructions.add(new LDRInstruction(Condition.EQ, R0, msgs[0]));
+
+    generator.generateLabel("p_throw_runtime_error",
+            new String[0],
+            AssemblyGenerator::throw_runtime_error);
+
+
+    instructions.add(new BranchInstruction(Condition.EQ,
+            "p_throw_runtime_error"));
+
+    instructions.add(new PushInstruction(R0));
+
+    instructions.add(new LDRInstruction(R0, R0));
+    instructions.add(new BranchInstruction(Condition.L, "free"));
+
+    instructions.add(new LDRInstruction(R0, SP));
+    instructions.add(new LDRInstruction(R0, R0, ADDR_SIZE));
+    instructions.add(new BranchInstruction(Condition.L, "free"));
+
+    instructions.add(new PopInstruction(R0));
+    instructions.add(new BranchInstruction(Condition.L, "free"));
+    instructions.add(new PopInstruction(PC));
 
     return instructions;
   }
