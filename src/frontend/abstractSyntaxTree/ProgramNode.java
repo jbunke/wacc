@@ -30,9 +30,15 @@ public class ProgramNode implements Node {
     generator.addInstruction(new LabelInstruction("main"));
     generator.addInstruction(new PushInstruction(
             generator.getRegister(Register.ID.LR)));
-    // scope variable check
-    int size = symbolTable.getChild(stat).getSize();
 
+    // functions
+    for (FunctionDefinitionNode function : functions) {
+      function.generateAssembly(
+              generator, symbolTable.getChild(function), available);
+    }
+
+    // scope variable check for program statement
+    int size = symbolTable.getChild(stat).getSize();
 
     if (size > 0) {
       generator.addInstruction(ArithInstruction.sub(
@@ -41,8 +47,6 @@ public class ProgramNode implements Node {
     }
 
     stat.generateAssembly(generator, symbolTable.getChild(stat), available);
-    // LDR r0, =0 is for successful program termination
-    // TODO: only add instruction in case of successful termination
 
     if (size > 0) {
       generator.addInstruction(ArithInstruction.add(
