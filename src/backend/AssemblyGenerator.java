@@ -4,7 +4,6 @@ import backend.instructions.*;
 import frontend.abstractSyntaxTree.ProgramNode;
 import frontend.abstractSyntaxTree.statements.PrintStatementNode;
 import frontend.symbolTable.SymbolTable;
-
 import java.io.*;
 import java.util.*;
 import java.util.function.BiFunction;
@@ -180,6 +179,26 @@ public class AssemblyGenerator {
     return instructions;
   }
 
+  public static List<Instruction> check_divide_by_zero(AssemblyGenerator generator,
+                                                        String[] msgName){
+    Register r0 = generator.getRegister(Register.ID.R0);
+    Register r1 = generator.getRegister(Register.ID.R1);
+
+    List<Instruction> instructions = new ArrayList<>();
+    instructions.add(new PushInstruction(generator.getRegister(Register.ID.LR)));
+    instructions.add(new CompareInstruction(r1, 0));
+    instructions.add(new LDRInstruction(r0, msgName[0])
+            .withCondition(Condition.EQ));
+    List<Condition> branchConds = List.of(Condition.L, Condition.EQ);
+    instructions.add(new BranchInstruction(branchConds,
+            "p_throw_runtime_error"));
+    instructions.add(new PopInstruction(generator.getRegister(Register.ID.PC)));
+
+    generator.generateLabel("p_throw_runtime_error", new String[0],AssemblyGenerator::throw_runtime_error);
+
+    return instructions;
+  }
+
   public String addMsg(String toAdd) {
     if (dataDirectives.isEmpty()) {
       dataDirectives.add(new Directive(Directive.ID.DATA));
@@ -210,15 +229,9 @@ public class AssemblyGenerator {
   private int realStringLength(String s) {
     int baseLength = s.length();
     int subtract = 0;
-    boolean lastEscape = false;
     for (char c : s.toCharArray()) {
       if (c == '\\') {
-        if (lastEscape) {
-          lastEscape = false;
-        } else {
-          subtract++;
-          lastEscape = true;
-        }
+        subtract++;
       }
     }
     return baseLength - subtract;
