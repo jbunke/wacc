@@ -213,7 +213,7 @@ public class Visitor extends WACCParserBaseVisitor<Node> {
 
     switch (charLit) {
       case "'\\0'":
-        return new CharacterLiteralExpressionNode('\0');
+        return new IntLiteralExpressionNode(0);
       case "'\\b'":
         return new CharacterLiteralExpressionNode('\b');
       case "'\\t'":
