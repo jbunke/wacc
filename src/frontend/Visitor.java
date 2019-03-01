@@ -209,7 +209,30 @@ public class Visitor extends WACCParserBaseVisitor<Node> {
 
   @Override
   public Node visitCharLiteral(WACCParser.CharLiteralContext ctx) {
-    return new CharacterLiteralExpressionNode(ctx.CHAR_LIT().getText().charAt(1));
+    String charLit = ctx.CHAR_LIT().getText();
+
+    switch (charLit) {
+      case "'\\0'":
+        return new CharacterLiteralExpressionNode('\0');
+      case "'\\b'":
+        return new CharacterLiteralExpressionNode('\b');
+      case "'\\t'":
+        return new CharacterLiteralExpressionNode('\t');
+      case "'\\n'":
+        return new CharacterLiteralExpressionNode('\n');
+      case "'\\f'":
+        return new CharacterLiteralExpressionNode('\f');
+      case "'\\r'":
+        return new CharacterLiteralExpressionNode('\r');
+      case "'\\\"'":
+        return new CharacterLiteralExpressionNode('\"');
+      case "'\\''":
+        return new CharacterLiteralExpressionNode('\'');
+      case "'\\\\'":
+        return new CharacterLiteralExpressionNode('\\');
+    }
+
+    return new CharacterLiteralExpressionNode(charLit.charAt(1));
   }
 
   @Override
