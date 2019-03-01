@@ -1,5 +1,6 @@
 package backend;
 
+import backend.Register.ID;
 import backend.instructions.*;
 import frontend.abstractSyntaxTree.ProgramNode;
 import frontend.abstractSyntaxTree.statements.PrintStatementNode;
@@ -11,6 +12,7 @@ import java.util.function.BiFunction;
 
 public class AssemblyGenerator {
   private static final String TERMIN_STRING = "%.*s\\0";
+  private static final int NULL_PTR_VAL = 0;
 
   private ProgramNode programNode;
   private SymbolTable symbolTable;
@@ -165,6 +167,27 @@ public class AssemblyGenerator {
             AssemblyGenerator::throw_runtime_error);
     instructions.add(
             new BranchInstruction(Condition.L, "p_throw_runtime_error"));
+    return instructions;
+  }
+
+  public static List<Instruction> check_null_ptr(AssemblyGenerator generator,
+      String[] msgs) {
+    List<Instruction> instructions = new ArrayList<>();
+    Register R0 = generator.getRegister(ID.R0);
+
+    instructions.add(new PushInstruction(generator.getRegister(ID.LR)));
+    instructions.add(new CompareInstruction(R0, NULL_PTR_VAL));
+    instructions.add(new LDRInstruction(Condition.EQ, R0, msgs[0]));
+
+    generator.generateLabel("p_throw_runtime_error",
+        new String[0],
+        AssemblyGenerator::throw_runtime_error);
+
+    instructions.add(new BranchInstruction(List.of(Condition.L, Condition.EQ),
+        "p_throw_runtime_error"));
+
+    instructions.add(new PopInstruction(generator.getRegister(ID.PC)));
+
     return instructions;
   }
 

@@ -5,7 +5,6 @@ import backend.Condition;
 import backend.Register;
 import backend.Register.ID;
 import backend.instructions.BranchInstruction;
-import backend.instructions.Instruction;
 import backend.instructions.LDRInstruction;
 import backend.instructions.MovInstruction;
 import backend.instructions.STRInstruction;
@@ -15,14 +14,11 @@ import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.Pair;
 import frontend.symbolTable.types.Type;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Stack;
 
 public class NewPairNode implements AssignRHS {
 
-  private static final int NUM_ELEMENTS = 2;
-  private static final int ADDR_SIZE = 4;
+  private static final int NUM_PAIR_ELEMENTS = 2;
 
   private static final int LEFT_ELEM = 1;
   private static final int RIGHT_ELEM = 2;
@@ -45,7 +41,7 @@ public class NewPairNode implements AssignRHS {
       SymbolTable symbolTable,
       Stack<Register.ID> available) {
     generator.addInstruction(new LDRInstruction(generator.getRegister(ID.R0),
-        NUM_ELEMENTS * ADDR_SIZE));
+        NUM_PAIR_ELEMENTS * ADDR_SIZE));
     generator.addInstruction(new BranchInstruction(Condition.L, "malloc"));
 
     Register ptrReg = generator.getRegister(available.pop());
