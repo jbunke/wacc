@@ -22,8 +22,6 @@ import java.util.Stack;
 
 public class ArrayLiteralNode implements AssignRHS {
 
-  private static final int BYTE_SIZE = 1;
-
   private final List<ExpressionNode> arrayElements;
 
   public ArrayLiteralNode(List<ExpressionNode> arrayElements) {
@@ -62,8 +60,7 @@ public class ArrayLiteralNode implements AssignRHS {
         .addInstruction(new LDRInstruction(generator.getRegister(ID.R0), arraySize));
     generator.addInstruction(new BranchInstruction(Condition.L, "malloc"));
 
-    Register allocatorReg = generator.getRegister(available.peek());
-    available.pop();
+    Register allocatorReg = generator.getRegister(available.pop());
     generator
         .addInstruction(new MovInstruction(allocatorReg, generator.getRegister(ID.R0)));
 
