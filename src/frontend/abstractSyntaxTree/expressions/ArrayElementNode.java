@@ -3,7 +3,14 @@ package frontend.abstractSyntaxTree.expressions;
 
 import backend.AssemblyGenerator;
 import backend.Register;
+import backend.Register.ID;
+import backend.Condition;
 import backend.instructions.Instruction;
+import backend.instructions.STRInstruction;
+import backend.instructions.LDRInstruction;
+import backend.instructions.BranchInstruction;
+import backend.instructions.MovInstruction;
+import backend.instructions.ArithInstruction;
 import frontend.symbolTable.SemanticError;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
@@ -17,6 +24,13 @@ import java.util.List;
 import java.util.Stack;
 
 public class ArrayElementNode extends ExpressionNode {
+  private static final int INT_SIZE = 4;
+
+  private static final String CHECK_ARRAY_BOUNDS = "p_check_array_bounds";
+  private static final String CHECK_ARRAY_LOWER = "ArrayIndexOutOfBoundsError: " +
+          "negative index\\n\\0";
+  private static final String CHECK_ARRAY_UPPER = "ArrayIndexOutOfBoundsError: " +
+          "index too large\\n\\0";
   private final IdentifierNode identifier;
   private final List<ExpressionNode> indices;
 
@@ -74,6 +88,34 @@ public class ArrayElementNode extends ExpressionNode {
   @Override
   public void generateAssembly(AssemblyGenerator generator,
           SymbolTable symbolTable, Stack<Register.ID> available) {
+    Register R0 = generator.getRegister(ID.R0);
+    Register R1 = generator.getRegister(ID.R1);
+    Register addrReg = generator.getRegister(available.pop());
+    Register nextFree = generator.getRegister(available.peek());
+    Register SP = generator.getRegister(ID.SP);
+
+    generator.addInstruction(ArithInstruction.add(nextFree, SP, symbolTable.fetchOffset(identifier.getName())));
+
+    Type t = identifier.getType(symbolTable);
+
+    for (ExpressionNode e : indices) {
+      e.generateAssembly(generator, symbolTable, available);
+
+      generator.addInstruction(new LDRInstruction(addrReg, addrReg));
+      generator.addInstruction(new MovInstruction(R0, nextFree));
+      generator.addInstruction(new MovInstruction(R1, addrReg));
+
+      generator.generateLabel(CHECK_ARRAY_BOUNDS, new String[]
+              {CHECK_ARRAY_LOWER, CHECK_ARRAY_UPPER}, AssemblyGenerator::check_array_bounds);
+      generator.addInstruction(new BranchInstruction(Condition.L, CHECK_ARRAY_BOUNDS));
+      generator.addInstruction(ArithInstruction.add(addrReg, addrReg, INT_SIZE));
+      generator.addInstruction(ArithInstruction.addReg(addrReg, addrReg, nextFree));
+      generator.addInstruction(ArithInstruction.add(addrReg, addrReg, INT_SIZE));
+    }
+
+    generator.addInstruction(new LDRInstruction(addrReg, addrReg));
+
+    available.push(addrReg.getRegID());
   }
 
   @Override
