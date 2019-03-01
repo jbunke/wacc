@@ -245,24 +245,7 @@ public class BinaryOpExpressionNode extends ExpressionNode {
   private static void generateDivByZeroCheck(AssemblyGenerator generator){
     generator.generateLabel("p_check_divide_by_zero",
             new String[] {DIV_BY_ZERO_ERR},
-            BinaryOpExpressionNode::check_divide_by_zero);
-  }
-
-    private static List<Instruction> check_divide_by_zero(AssemblyGenerator generator,
-                                                   String[] msgName){
-    Register r0 = generator.getRegister(Register.ID.R0);
-    Register r1 = generator.getRegister(Register.ID.R1);
-
-    List<Instruction> instructions = new ArrayList<>();
-    instructions.add(new PushInstruction(generator.getRegister(Register.ID.LR)));
-    instructions.add(new CompareInstruction(r1, 0));
-    instructions.add(new LDRInstruction(r0, msgName[0])
-            .withCondition(Condition.EQ));
-    List<Condition> branchConds = List.of(Condition.L, Condition.EQ);
-    instructions.add(new BranchInstruction(branchConds,
-            "p_throw_runtime_error"));
-    instructions.add(new PopInstruction(generator.getRegister(Register.ID.PC)));
-    return instructions;
+            AssemblyGenerator::check_divide_by_zero);
   }
 
   private void generateOperands(ExpressionNode op1,
