@@ -22,13 +22,16 @@ runBackendTest(){
 echo "=============== Running Backend Tests ==============="
 echo "..."
 
-runBackendTest tests/examples/valid/array/arrayBasic.wacc
 runBackendTest tests/examples/valid/basic/skip/skip.wacc
 runBackendTest tests/examples/valid/basic/skip/comment.wacc
 runBackendTest tests/examples/valid/basic/skip/commentInLine.wacc
 runBackendTest tests/examples/valid/basic/exit/exitBasic.wacc
 runBackendTest tests/examples/valid/basic/exit/exitBasic2.wacc
 runBackendTest tests/examples/valid/basic/exit/exitWrap.wacc
+runBackendTest tests/examples/valid/array/arrayBasic.wacc
+runBackendTest tests/examples/valid/pairs/createPair.wacc
+runBackendTest tests/examples/valid/pairs/createPair02.wacc
+runBackendTest tests/examples/valid/pairs/createPair03.wacc
 #runBackendTest tests/examples/valid/basic/exit/exit-1.wacc
 #runBackendTest tests/examples/valid/scope/printAllTypes.wacc
 #runBackendTest tests/examples/valid/scope/scopeSimpleRedefine.wacc
@@ -76,10 +79,7 @@ runBackendTest tests/examples/valid/basic/exit/exitWrap.wacc
 #runBackendTest tests/examples/valid/pairs/writeFst.wacc
 #runBackendTest tests/examples/valid/pairs/printPairOfNulls.wacc
 #runBackendTest tests/examples/valid/pairs/null.wacc
-#runBackendTest tests/examples/valid/pairs/createPair02.wacc
-#runBackendTest tests/examples/valid/pairs/createPair.wacc
 #runBackendTest tests/examples/valid/pairs/checkRefPair.wacc
-#runBackendTest tests/examples/valid/pairs/createPair03.wacc
 #runBackendTest tests/examples/valid/pairs/readPair.wacc
 #runBackendTest tests/examples/valid/pairs/linkedList.wacc
 #runBackendTest tests/examples/valid/if/if1.wacc
