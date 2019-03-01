@@ -8,6 +8,8 @@ import frontend.symbolTable.types.Type;
 import java.util.Stack;
 
 public interface AssignRHS extends AssignLHS {
+  public static final int ADDR_SIZE = 4;
+
   Type getType(SymbolTable symbolTable);
 
   void generateAssembly(AssemblyGenerator generator,
