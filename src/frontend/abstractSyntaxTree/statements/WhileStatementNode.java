@@ -59,6 +59,7 @@ public class WhileStatementNode extends StatementNode {
     generator.addInstruction(new LabelInstruction(trueLabel));
     doStatement.generateAssembly(generator, symbolTable.getChild(doStatement),
             available);
+    generator.sortLabels(trueLabel, label);
     generator.setActiveLabel(label);
   }
 

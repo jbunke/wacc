@@ -111,15 +111,18 @@ public class AssemblyGenerator {
     instructionList.add(instruction);
   }
 
-  public String previousActiveLabel() {
-    return lastLabels.pop();
+  public void sortLabels(String first, String second) {
+    if (labels.indexOf(first) > labels.indexOf(second)) {
+      labels.remove(first);
+      labels.add(labels.indexOf(second), first);
+    }
   }
 
   public void setActiveLabel(String activeLabel) {
     lastLabels.push(this.activeLabel);
     this.activeLabel = activeLabel;
     if (!labels.contains(activeLabel)) {
-      labels.add(activeLabel);
+      labels.add(0, activeLabel);
     }
   }
 
@@ -133,6 +136,12 @@ public class AssemblyGenerator {
     for (Register.ID id : Register.ID.values()) {
       registers.put(id, new Register(id));
     }
+  }
+
+  public String labelWithoutAdd() {
+    String label = "L" + Integer.toString(lLabelCount);
+    lLabelCount++;
+    return label;
   }
 
   public String generateNewLabel() {

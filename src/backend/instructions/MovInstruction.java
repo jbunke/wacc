@@ -17,7 +17,11 @@ public class MovInstruction extends Instruction {
 
   public MovInstruction(Register dest, char immediate) {
     this.dest = dest;
-    this.op = "#'" + immediate + "'";
+    if (immediate == '\0') {
+      this.op = "#0";
+    } else {
+      this.op = "#'" + immediate + "'";
+    }
   }
 
   public MovInstruction(Register dest, boolean immediate) {
