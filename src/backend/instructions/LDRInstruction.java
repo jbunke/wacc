@@ -60,16 +60,16 @@ public class LDRInstruction extends Instruction {
 
   @Override
   public String asString() {
-    String ldrCmmd = isSingleByte ? "LDRSB " : "LDR ";
+    String ldrCmmd = isSingleByte ? "LDRSB" : "LDR";
 
     if (condition == null) {
       if (isConstant) {
-        return ldrCmmd + destRegister.toString() + ", =" + constant;
+        return ldrCmmd + " " + destRegister.toString() + ", =" + constant;
       } else if (offset == 0) {
-        return ldrCmmd + destRegister.toString() + ", [" +
+        return ldrCmmd + " " + destRegister.toString() + ", [" +
                 indexRegister.toString() + "]";
       }
-      return ldrCmmd + destRegister.toString() + ", [" +
+      return ldrCmmd + " " + destRegister.toString() + ", [" +
               indexRegister.toString() + ", #" + offset + "]";
     } else {
       if (isConstant) {
