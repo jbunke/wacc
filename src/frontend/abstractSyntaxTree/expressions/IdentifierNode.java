@@ -41,9 +41,11 @@ public class IdentifierNode extends ExpressionNode {
                                             SymbolTable symbolTable,
                                             Stack<Register.ID> available) {
     Register first = generator.getRegister(available.peek());
+    boolean isSingleByte = getType(symbolTable).size() == 1;
     generator.addInstruction(new LDRInstruction(first,
             generator.getRegister(Register.ID.SP),
-            symbolTable.fetchOffset(identifier)));
+            symbolTable.fetchOffset(identifier))
+            .isSingleByte(isSingleByte));
   }
 
   public String getName() {

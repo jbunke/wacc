@@ -11,6 +11,7 @@ public class LDRInstruction extends Instruction {
   private int offset;
   private boolean isConstant;
   private Condition condition = null;
+  private boolean isSingleByte = false;
 
   public LDRInstruction(Register destRegister, int constant) {
     this.destRegister = destRegister;
@@ -52,27 +53,34 @@ public class LDRInstruction extends Instruction {
     return this;
   }
 
+  public LDRInstruction isSingleByte(boolean isSingleByte){
+    this.isSingleByte = isSingleByte;
+    return this;
+  }
+
   @Override
   public String asString() {
+    String ldrCmmd = isSingleByte ? "LDRSB " : "LDR ";
+
     if (condition == null) {
       if (isConstant) {
-        return "LDR " + destRegister.toString() + ", =" + constant;
+        return ldrCmmd + destRegister.toString() + ", =" + constant;
       } else if (offset == 0) {
-        return "LDR " + destRegister.toString() + ", [" +
+        return ldrCmmd + destRegister.toString() + ", [" +
                 indexRegister.toString() + "]";
       }
-      return "LDR " + destRegister.toString() + ", [" +
+      return ldrCmmd + destRegister.toString() + ", [" +
               indexRegister.toString() + ", #" + offset + "]";
     } else {
       if (isConstant) {
-        return "LDR" + condition.name() + " " +
+        return ldrCmmd + condition.name() + " " +
                 destRegister.toString() + ", =" + constant;
       } else if (offset == 0) {
-        return "LDR" + condition.name() + " " +
+        return ldrCmmd + condition.name() + " " +
                 destRegister.toString() + ", [" +
                 indexRegister.toString() + "]";
       }
-      return "LDR" + condition.name() + " " + destRegister.toString() + ", [" +
+      return ldrCmmd + condition.name() + " " + destRegister.toString() + ", [" +
               indexRegister.toString() + ", #" + offset + "]";
     }
   }
