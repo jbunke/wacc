@@ -33,7 +33,8 @@ public class SymbolTable {
 
   public void populateOnDeclare(String identifier) {
     if (!contents.contains(identifier) &&
-            identifierMap.containsKey(identifier)) {
+            (identifierMap.containsKey(identifier) ||
+                    identifier.equals("_FUNC_"))) {
       contents.add(identifier);
     }
   }
@@ -44,9 +45,13 @@ public class SymbolTable {
     }
     int offset = getSize();
     for (String content : contents) {
-      Variable variable = (Variable) identifierMap.get(content);
-      offset -= variable.getType().size();
-      if (content.equals(identifier)) break;
+      if (content.equals("_FUNC_")) {
+        offset += 4;
+      } else {
+        Variable variable = (Variable) identifierMap.get(content);
+        offset -= variable.getType().size();
+        if (content.equals(identifier)) break;
+      }
     }
     return offset;
   }

@@ -52,6 +52,11 @@ public class ParameterListNode implements Node {
   public void generateAssembly(AssemblyGenerator generator,
                                             SymbolTable symbolTable,
                                             Stack<Register.ID> available) {
+    symbolTable.populateOnDeclare("_FUNC_");
+    for (int i = identifierList.size() - 1; i >= 0; i--) {
+      String name = identifierList.get(i).getName();
+      symbolTable.populateOnDeclare(name);
+    }
   }
 
 

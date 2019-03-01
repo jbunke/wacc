@@ -60,6 +60,7 @@ public class FunctionDefinitionNode implements Node {
     generator.addInstruction(new PushInstruction(generator
             .getRegister(Register.ID.LR)));
 
+    parameters.generateAssembly(generator, symbolTable, available);
     body.generateAssembly(generator, symbolTable, available);
 
     generator.addInstruction(new PopInstruction(generator
@@ -67,8 +68,6 @@ public class FunctionDefinitionNode implements Node {
     generator.addInstruction(new PopInstruction(generator
             .getRegister(Register.ID.PC)));
     generator.addInstruction(new Directive(Directive.ID.LTORG));
-    String prev = generator.previousActiveLabel();
-    System.out.println(prev);
     generator.setActiveLabel("main");
   }
 
