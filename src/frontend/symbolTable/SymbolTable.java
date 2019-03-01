@@ -15,7 +15,7 @@ public class SymbolTable {
 
   private final SymbolTable parent;
   private final Map<String, SymbolCategory> identifierMap;
-  private final List<SymbolCategory> contents;
+  private final List<String> contents;
   private final Map<Node, SymbolTable> childrenMap;
 
   public SymbolTable(SymbolTable parent) {
@@ -31,27 +31,24 @@ public class SymbolTable {
     }
   }
 
+  public void populateOnDeclare(String identifier) {
+    if (!contents.contains(identifier) &&
+            identifierMap.containsKey(identifier)) {
+      contents.add(identifier);
+    }
+  }
+
   public int fetchOffset(String identifier) {
     if (!identifierMap.containsKey(identifier)) {
       return getSize() + parent.fetchOffset(identifier);
     }
-    if (!contents.contains(identifierMap.get(identifier))) {
-      Set<String> idents = identifierMap.keySet();
-      for (String ident : idents) {
-        contents.add(identifierMap.get(ident));
-      }
+    int offset = getSize();
+    for (String content : contents) {
+      Variable variable = (Variable) identifierMap.get(content);
+      offset -= variable.getType().size();
+      if (content.equals(identifier)) break;
     }
-    int acc = 0;
-    for (SymbolCategory content : contents) {
-      if (content instanceof Variable) {
-        Variable var = (Variable) content;
-        if (identifierMap.get(identifier).equals(var)) {
-          break;
-        }
-        acc += var.getType().size();
-      }
-    }
-    return acc;
+    return offset;
   }
 
   public void add(String identifier, SymbolCategory type) {

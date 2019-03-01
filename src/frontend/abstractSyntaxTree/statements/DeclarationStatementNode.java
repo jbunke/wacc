@@ -57,6 +57,9 @@ public class DeclarationStatementNode extends StatementNode {
 
     rhs.generateAssembly(generator, symbolTable, available);
 
+    // Populate symbol table with identifier for stack pointer offset
+    symbolTable.populateOnDeclare(identifier.getName());
+
     generator.addInstruction(new STRInstruction(
             generator.getRegister(available.peek()),
             generator.getRegister(Register.ID.SP),
