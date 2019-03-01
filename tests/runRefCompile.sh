@@ -11,6 +11,7 @@ runRefCompiler(){
 echo "=============== Fetching Reference Outputs ==============="
 echo "..."
 
+runRefCompiler tests/examples/valid/pairs/createPair.wacc ''
 runRefCompiler tests/examples/valid/array/arrayBasic.wacc ''
 runRefCompiler tests/examples/valid/basic/skip/skip.wacc ''
 runRefCompiler tests/examples/valid/basic/skip/comment.wacc ''
@@ -42,7 +43,6 @@ runRefCompiler tests/examples/valid/basic/exit/exitWrap.wacc ''
 #runRefCompiler tests/examples/valid/pairs/printPairOfNulls.wacc ''
 #runRefCompiler tests/examples/valid/pairs/null.wacc ''
 #runRefCompiler tests/examples/valid/pairs/createPair02.wacc ''
-#runRefCompiler tests/examples/valid/pairs/createPair.wacc ''
 #runRefCompiler tests/examples/valid/pairs/checkRefPair.wacc ''
 #runRefCompiler tests/examples/valid/pairs/createPair03.wacc ''
 #runRefCompiler tests/examples/valid/pairs/readPair.wacc ''

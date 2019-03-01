@@ -22,6 +22,7 @@ runBackendTest(){
 echo "=============== Running Backend Tests ==============="
 echo "..."
 
+runBackendTest tests/examples/valid/pairs/createPair.wacc
 runBackendTest tests/examples/valid/array/arrayBasic.wacc
 runBackendTest tests/examples/valid/basic/skip/skip.wacc
 runBackendTest tests/examples/valid/basic/skip/comment.wacc
@@ -77,7 +78,6 @@ runBackendTest tests/examples/valid/basic/exit/exitWrap.wacc
 #runBackendTest tests/examples/valid/pairs/printPairOfNulls.wacc
 #runBackendTest tests/examples/valid/pairs/null.wacc
 #runBackendTest tests/examples/valid/pairs/createPair02.wacc
-#runBackendTest tests/examples/valid/pairs/createPair.wacc
 #runBackendTest tests/examples/valid/pairs/checkRefPair.wacc
 #runBackendTest tests/examples/valid/pairs/createPair03.wacc
 #runBackendTest tests/examples/valid/pairs/readPair.wacc
