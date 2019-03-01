@@ -66,8 +66,10 @@ public class IfStatementNode extends StatementNode {
 
     generator.setActiveLabel(falseLabel);
     generator.addInstruction(new LabelInstruction(falseLabel));
+    generator.allocate(symbolTable.getChild(falseBranch));
     falseBranch.generateAssembly(generator,
             symbolTable.getChild(falseBranch), available);
+    generator.deallocate(symbolTable.getChild(falseBranch));
 
     generator.setActiveLabel(endLabel);
     generator.addInstruction(new LabelInstruction(endLabel));

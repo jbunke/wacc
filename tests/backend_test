@@ -4,11 +4,26 @@ bash tests/runRefCompile.sh
 javac BackendTest.java
 
 failed=0
+
+basic=7
+sequence=8
+input/output=18
+variable=14
+expression=42
+array=10
+conditional=10
+loop=12
+scope=10
+simple_function=10
+nested_function=7
+runtime=21
+heap=16
+
 total=0
 
 runBackendTest(){
     java BackendTest "$1" $2
-    code=$?
+    code=$?#
     ((total=total+1))
     if [ $code -ne 0 ]; then
         (( failed = failed + 1 ))
@@ -18,227 +33,431 @@ runBackendTest(){
     fi
 }
 
+runBackendTest_basic(){
+    java BackendTest "$1" $2
+    code=$?
+    ((basic_total=basic_total+1))
+    ((total=total+1))
+
+    if [ $code -ne 0 ]; then
+        (( basic_failed = basic_failed + 1 ))
+        (( failed = failed + 1 ))
+        echo "Error: Output Mismatch for $1"
+    else
+    echo "Backend Test Passed: $1"
+    fi
+}
+
+runBackendTest_sequence(){
+    java BackendTest "$1" $2
+    code=$?
+    ((sequence_total=sequence_total+1))
+    ((total=total+1))
+    if [ $code -ne 0 ]; then
+        (( sequence_failed = sequence_failed + 1 ))
+         (( failed = failed + 1 ))
+        echo "Error: Output Mismatch for $1"
+    else
+    echo "Backend Test Passed: $1"
+    fi
+}
+
+runBackendTest_io(){
+    java BackendTest "$1" $2
+    code=$?
+    ((io_total=io_total+1))
+    ((total=total+1))
+
+    if [ $code -ne 0 ]; then
+        (( io_failed = io_failed + 1 ))
+        (( failed = failed + 1 ))
+        echo "Error: Output Mismatch for $1"
+    else
+    echo "Backend Test Passed: $1"
+    fi
+}
+
+runBackendTest_variable(){
+    java BackendTest "$1" $2
+    code=$?
+    ((variable_total=variable_total+1))
+    ((total=total+1))
+
+    if [ $code -ne 0 ]; then
+        (( variable_failed = variable_failed + 1 ))
+        (( failed = failed + 1 ))
+        echo "Error: Output Mismatch for $1"
+    else
+    echo "Backend Test Passed: $1"
+    fi
+}
+
+runBackendTest_expression(){
+    java BackendTest "$1" $2
+    code=$?
+    ((expression_total=expression_total+1))
+    ((total=total+1))
+
+    if [ $code -ne 0 ]; then
+        (( expression_failed = expression_failed + 1 ))
+        (( failed = failed + 1 ))
+        echo "Error: Output Mismatch for $1"
+    else
+    echo "Backend Test Passed: $1"
+    fi
+}
+
+runBackendTest_array(){
+    java BackendTest "$1" $2
+    code=$?
+    ((array_total=array_total+1))
+    ((total=total+1))
+
+    if [ $code -ne 0 ]; then
+        (( array_failed = array_failed + 1 ))
+        (( failed = failed + 1 ))
+        echo "Error: Output Mismatch for $1"
+    else
+    echo "Backend Test Passed: $1"
+    fi
+}
+
+runBackendTest_conditional(){
+    java BackendTest "$1" $2
+    code=$?
+    ((conditional_total=conditional_total+1))
+    ((total=total+1))
+
+    if [ $code -ne 0 ]; then
+        (( conditional_failed = conditional_failed + 1 ))
+        (( failed = failed + 1 ))
+        echo "Error: Output Mismatch for $1"
+    else
+    echo "Backend Test Passed: $1"
+    fi
+}
+
+runBackendTest_loop(){
+    java BackendTest "$1" $2
+    code=$?
+    ((loop_total=loop_total+1))
+    ((total=total+1))
+
+    if [ $code -ne 0 ]; then
+        (( loop_failed = loop_failed + 1 ))
+        (( failed = failed + 1 ))
+        echo "Error: Output Mismatch for $1"
+    else
+    echo "Backend Test Passed: $1"
+    fi
+}
+
+runBackendTest_scope(){
+    java BackendTest "$1" $2
+    code=$?
+    ((scope_total=scope_total+1))
+    ((total=total+1))
+
+    if [ $code -ne 0 ]; then
+        (( scope_failed = scope_failed + 1 ))
+        (( failed = failed + 1 ))
+        echo "Error: Output Mismatch for $1"
+    else
+    echo "Backend Test Passed: $1"
+    fi
+}
+
+runBackendTest_simplefunc(){
+    java BackendTest "$1" $2
+    code=$?
+    ((simplefunc_total=simplefunc_total+1))
+    ((total=total+1))
+
+    if [ $code -ne 0 ]; then
+        (( simplefunc_failed = simplefunc_failed + 1 ))
+        (( failed = failed + 1 ))
+        echo "Error: Output Mismatch for $1"
+    else
+    echo "Backend Test Passed: $1"
+    fi
+}
+
+runBackendTest_nestedfunc(){
+    java BackendTest "$1" $2
+    code=$?
+    ((nestedfunc_total=nestedfunc_total+1))
+    ((total=total+1))
+
+    if [ $code -ne 0 ]; then
+        (( nestedfunc_failed = nestedfunc_failed + 1 ))
+        (( failed = failed + 1 ))
+        echo "Error: Output Mismatch for $1"
+    else
+    echo "Backend Test Passed: $1"
+    fi
+}
+
+runBackendTest_runtime(){
+    java BackendTest "$1" $2
+    code=$?
+    ((runtime_total=runtime_total+1))
+    ((total=total+1))
+
+    if [ $code -ne 0 ]; then
+        (( runtime_failed = runtime_failed + 1 ))
+        (( failed = failed + 1 ))
+        echo "Error: Output Mismatch for $1"
+    else
+    echo "Backend Test Passed: $1"
+    fi
+}
+
+runBackendTest_heap(){
+    java BackendTest "$1" $2
+    code=$?
+    ((heap_total=heap_total+1))
+    ((total=total+1))
+
+    if [ $code -ne 0 ]; then
+        (( heap_failed = heap_failed + 1 ))
+        (( failed = failed + 1 ))
+        echo "Error: Output Mismatch for $1"
+    else
+    echo "Backend Test Passed: $1"
+    fi
+}
+
+
 
 echo "=============== Running Backend Tests ==============="
 echo "..."
 
-runBackendTest tests/examples/valid/basic/skip/skip.wacc ""
-runBackendTest tests/examples/valid/basic/skip/comment.wacc ""
-runBackendTest tests/examples/valid/basic/skip/commentInLine.wacc ""
-runBackendTest tests/examples/valid/basic/exit/exitBasic.wacc ""
-runBackendTest tests/examples/valid/basic/exit/exitBasic2.wacc ""
-runBackendTest tests/examples/valid/basic/exit/exitWrap.wacc ""
-runBackendTest tests/examples/valid/basic/exit/exit-1.wacc ""
+runBackendTest_basic tests/examples/valid/basic/skip/skip.wacc ""
+runBackendTest_basic tests/examples/valid/basic/skip/comment.wacc ""
+runBackendTest_basic tests/examples/valid/basic/skip/commentInLine.wacc ""
+runBackendTest_basic tests/examples/valid/basic/exit/exitBasic.wacc ""
+runBackendTest_basic tests/examples/valid/basic/exit/exitBasic2.wacc ""
+# runBackendTest_basic tests/examples/valid/basic/exit/exitWrap.wacc ""
 
-
-runBackendTest tests/examples/valid/scope/printAllTypes.wacc ""
-runBackendTest tests/examples/valid/scope/scopeSimpleRedefine.wacc ""
-runBackendTest tests/examples/valid/scope/scopeRedefine.wacc ""
-runBackendTest tests/examples/valid/scope/indentationNotImportant.wacc ""
-runBackendTest tests/examples/valid/scope/scope.wacc ""
-runBackendTest tests/examples/valid/scope/scopeBasic.wacc ""
-runBackendTest tests/examples/valid/scope/ifNested2.wacc ""
-runBackendTest tests/examples/valid/scope/ifNested1.wacc ""
-runBackendTest tests/examples/valid/scope/scopeVars.wacc ""
-runBackendTest tests/examples/valid/scope/intsAndKeywords.wacc ""
-
-
-runBackendTest tests/examples/valid/variables/capCharDeclaration.wacc ""
-runBackendTest tests/examples/valid/variables/negIntDeclaration.wacc ""
-runBackendTest tests/examples/valid/variables/charDeclaration.wacc ""
-runBackendTest tests/examples/valid/variables/emptyStringDeclaration.wacc ""
-runBackendTest tests/examples/valid/variables/stringDeclaration.wacc ""
-runBackendTest tests/examples/valid/variables/longVarNames.wacc ""
-runBackendTest tests/examples/valid/variables/boolDeclaration.wacc ""
-runBackendTest tests/examples/valid/variables/_VarNames.wacc ""
-runBackendTest tests/examples/valid/variables/charDeclaration2.wacc ""
-runBackendTest tests/examples/valid/variables/manyVariables.wacc ""
-runBackendTest tests/examples/valid/variables/intDeclaration.wacc ""
-runBackendTest tests/examples/valid/variables/boolDeclaration2.wacc ""
-runBackendTest tests/examples/valid/variables/zeroIntDeclaration.wacc ""
-runBackendTest tests/examples/valid/variables/puncCharDeclaration.wacc ""
-
+runBackendTest_array tests/examples/valid/array/arrayBasic.wacc ""
+# runBackendTest_heap tests/examples/valid/pairs/createPair.wacc ""
+# runBackendTest_heap tests/examples/valid/pairs/createPair02.wacc ""
+# runBackendTest_heap tests/examples/valid/pairs/createPair03.wacc ""
+# runBackendTest_basic tests/examples/valid/basic/exit/exit-1.wacc ""
+# runBackendTest_scope tests/examples/valid/scope/printAllTypes.wacc ""
+runBackendTest_scope tests/examples/valid/scope/scopeSimpleRedefine.wacc ""
+runBackendTest_scope tests/examples/valid/scope/scopeRedefine.wacc ""
+runBackendTest_scope tests/examples/valid/scope/indentationNotImportant.wacc ""
+runBackendTest_scope tests/examples/valid/scope/scope.wacc ""
+runBackendTest_scope tests/examples/valid/scope/scopeBasic.wacc ""
+runBackendTest_scope tests/examples/valid/scope/ifNested2.wacc ""
+runBackendTest_scope tests/examples/valid/scope/ifNested1.wacc ""
+runBackendTest_scope tests/examples/valid/scope/scopeVars.wacc ""
+runBackendTest_scope tests/examples/valid/scope/intsAndKeywords.wacc ""
+runBackendTest_variable tests/examples/valid/variables/capCharDeclaration.wacc ""
+runBackendTest_variable tests/examples/valid/variables/negIntDeclaration.wacc ""
+runBackendTest_variable tests/examples/valid/variables/charDeclaration.wacc ""
+runBackendTest_variable tests/examples/valid/variables/emptyStringDeclaration.wacc ""
+runBackendTest_variable tests/examples/valid/variables/stringDeclaration.wacc ""
+runBackendTest_variable tests/examples/valid/variables/longVarNames.wacc ""
+runBackendTest_variable tests/examples/valid/variables/boolDeclaration.wacc ""
+runBackendTest_variable tests/examples/valid/variables/_VarNames.wacc ""
+runBackendTest_variable tests/examples/valid/variables/charDeclaration2.wacc ""
+# runBackendTest_variable tests/examples/valid/variables/manyVariables.wacc ""
+runBackendTest_variable tests/examples/valid/variables/intDeclaration.wacc ""
+runBackendTest_variable tests/examples/valid/variables/boolDeclaration2.wacc ""
+runBackendTest_variable tests/examples/valid/variables/zeroIntDeclaration.wacc ""
+runBackendTest_variable tests/examples/valid/variables/puncCharDeclaration.wacc ""
 runBackendTest tests/examples/valid/advanced/binarySortTree.wacc ""
-runBackendTest tests/examples/valid/advanced/ticTacToe.wacc ""
-runBackendTest tests/examples/valid/advanced/hashTable.wacc ""
-
-runBackendTest tests/examples/valid/array/arrayBasic.wacc ""
-runBackendTest tests/examples/valid/array/arrayLength.wacc ""
-runBackendTest tests/examples/valid/array/arrayEmpty.wacc ""
-runBackendTest tests/examples/valid/array/array.wacc ""
-runBackendTest tests/examples/valid/array/arrayLookup.wacc ""
-runBackendTest tests/examples/valid/array/modifyString.wacc ""
-runBackendTest tests/examples/valid/array/printRef.wacc ""
-runBackendTest tests/examples/valid/array/arraySimple.wacc ""
-runBackendTest tests/examples/valid/array/arrayNested.wacc ""
-runBackendTest tests/examples/valid/array/arrayPrint.wacc ""
-
-runBackendTest tests/examples/valid/pairs/createPair.wacc ""
-runBackendTest tests/examples/valid/pairs/createPair02.wacc ""
-runBackendTest tests/examples/valid/pairs/createPair03.wacc ""
-runBackendTest tests/examples/valid/pairs/nestedPair.wacc ""
-runBackendTest tests/examples/valid/pairs/createRefPair.wacc ""
-runBackendTest tests/examples/valid/pairs/free.wacc ""
-runBackendTest tests/examples/valid/pairs/writeSnd.wacc ""
-runBackendTest tests/examples/valid/pairs/writeFst.wacc ""
-runBackendTest tests/examples/valid/pairs/checkRefPair.wacc ""
-runBackendTest tests/examples/valid/pairs/readPair.wacc "a 1"
-runBackendTest tests/examples/valid/pairs/printPair.wacc ""
-runBackendTest tests/examples/valid/pairs/printNull.wacc ""
-runBackendTest tests/examples/valid/pairs/printNullPair.wacc ""
-runBackendTest tests/examples/valid/pairs/printPairOfNulls.wacc ""
-runBackendTest tests/examples/valid/pairs/null.wacc ""
-runBackendTest tests/examples/valid/pairs/linkedList.wacc ""
-
-
-runBackendTest tests/examples/valid/if/if1.wacc ""
-runBackendTest tests/examples/valid/if/whitespace.wacc ""
-runBackendTest tests/examples/valid/if/ifFalse.wacc ""
-runBackendTest tests/examples/valid/if/ifBasic.wacc ""
-runBackendTest tests/examples/valid/if/if6.wacc ""
-runBackendTest tests/examples/valid/if/ifTrue.wacc ""
-runBackendTest tests/examples/valid/if/if5.wacc ""
-runBackendTest tests/examples/valid/if/if4.wacc ""
-runBackendTest tests/examples/valid/if/if3.wacc ""
-runBackendTest tests/examples/valid/if/if2.wacc ""
-
-
-runBackendTest tests/examples/valid/runtimeErr/integerOverflow/intJustOverflow.wacc ""
-runBackendTest tests/examples/valid/runtimeErr/integerOverflow/intnegateOverflow.wacc ""
-runBackendTest tests/examples/valid/runtimeErr/integerOverflow/intmultOverflow.wacc ""
-runBackendTest tests/examples/valid/runtimeErr/integerOverflow/intnegateOverflow3.wacc ""
-runBackendTest tests/examples/valid/runtimeErr/integerOverflow/intWayOverflow.wacc ""
-runBackendTest tests/examples/valid/runtimeErr/integerOverflow/intnegateOverflow2.wacc ""
-runBackendTest tests/examples/valid/runtimeErr/integerOverflow/intUnderflow.wacc ""
-runBackendTest tests/examples/valid/runtimeErr/integerOverflow/intnegateOverflow4.wacc ""
-runBackendTest tests/examples/valid/runtimeErr/nullDereference/readNull2.wacc ""
-runBackendTest tests/examples/valid/runtimeErr/nullDereference/useNull2.wacc ""
-runBackendTest tests/examples/valid/runtimeErr/nullDereference/setNull1.wacc ""
-runBackendTest tests/examples/valid/runtimeErr/nullDereference/freeNull.wacc ""
-runBackendTest tests/examples/valid/runtimeErr/nullDereference/setNull2.wacc ""
-runBackendTest tests/examples/valid/runtimeErr/nullDereference/useNull1.wacc ""
-runBackendTest tests/examples/valid/runtimeErr/nullDereference/readNull1.wacc ""
-runBackendTest tests/examples/valid/runtimeErr/doubleFrees/doubleFree.wacc ""
-runBackendTest tests/examples/valid/runtimeErr/doubleFrees/hiddenDoubleFree.wacc ""
-runBackendTest tests/examples/valid/runtimeErr/divideByZero/divZero.wacc ""
-runBackendTest tests/examples/valid/runtimeErr/divideByZero/divideByZero.wacc ""
-runBackendTest tests/examples/valid/runtimeErr/divideByZero/modByZero.wacc ""
-runBackendTest tests/examples/valid/runtimeErr/arrayOutOfBounds/arrayOutOfBoundsWrite.wacc ""
-runBackendTest tests/examples/valid/runtimeErr/arrayOutOfBounds/arrayNegBounds.wacc ""
-runBackendTest tests/examples/valid/runtimeErr/arrayOutOfBounds/arrayOutOfBounds.wacc ""
-
-
-runBackendTest tests/examples/valid/IO/IOLoop.wacc "1,Y,2,Y,3,Y,4,N"
-runBackendTest tests/examples/valid/IO/read/echoPuncChar.wacc "c"
-runBackendTest tests/examples/valid/IO/read/echoBigInt.wacc ""
-runBackendTest tests/examples/valid/IO/read/echoInt.wacc ""
-runBackendTest tests/examples/valid/IO/read/echoNegInt.wacc ""
-runBackendTest tests/examples/valid/IO/read/echoChar.wacc "c"
-runBackendTest tests/examples/valid/IO/read/echoBigNegInt.wacc ""
-runBackendTest tests/examples/valid/IO/read/read.wacc ""
-runBackendTest tests/examples/valid/IO/IOSequence.wacc ""
-runBackendTest tests/examples/valid/IO/print/println.wacc ""
-runBackendTest tests/examples/valid/IO/print/stringAssignmentWithPrint.wacc ""
-runBackendTest tests/examples/valid/IO/print/printEscChar.wacc ""
-runBackendTest tests/examples/valid/IO/print/multipleStringsAssignment.wacc ""
-runBackendTest tests/examples/valid/IO/print/print.wacc ""
-runBackendTest tests/examples/valid/IO/print/hashInProgram.wacc ""
-runBackendTest tests/examples/valid/IO/print/printBool.wacc ""
-runBackendTest tests/examples/valid/IO/print/printInt.wacc ""
-runBackendTest tests/examples/valid/IO/print/printChar.wacc ""
-
-
-runBackendTest tests/examples/valid/function/nested_functions/fixedPointRealArithmetic.wacc ""
-runBackendTest tests/examples/valid/function/nested_functions/printTriangle.wacc ""
-runBackendTest tests/examples/valid/function/nested_functions/printInputTriangle.wacc ""
-runBackendTest tests/examples/valid/function/nested_functions/mutualRecursion.wacc ""
-runBackendTest tests/examples/valid/function/nested_functions/fibonacciFullRec.wacc ""
-runBackendTest tests/examples/valid/function/nested_functions/functionConditionalReturn.wacc ""
-runBackendTest tests/examples/valid/function/nested_functions/simpleRecursion.wacc ""
-runBackendTest tests/examples/valid/function/nested_functions/fibonacciRecursive.wacc ""
-
-runBackendTest tests/examples/valid/function/simple_functions/functionDeclaration.wacc ""
-runBackendTest tests/examples/valid/function/simple_functions/sameArgName2.wacc ""
-runBackendTest tests/examples/valid/function/simple_functions/functionManyArguments.wacc ""
-runBackendTest tests/examples/valid/function/simple_functions/asciiTable.wacc ""
-runBackendTest tests/examples/valid/function/simple_functions/functionSimple.wacc ""
-runBackendTest tests/examples/valid/function/simple_functions/incFunction.wacc ""
-runBackendTest tests/examples/valid/function/simple_functions/sameArgName.wacc ""
-runBackendTest tests/examples/valid/function/simple_functions/negFunction.wacc ""
-runBackendTest tests/examples/valid/function/simple_functions/functionUpdateParameter.wacc ""
-runBackendTest tests/examples/valid/function/simple_functions/functionReturnPair.wacc ""
-
-
-runBackendTest tests/examples/valid/expressions/intCalc.wacc ""
-runBackendTest tests/examples/valid/expressions/multNoWhitespaceExpr.wacc ""
-runBackendTest tests/examples/valid/expressions/andExpr.wacc ""
-runBackendTest tests/examples/valid/expressions/divExpr.wacc ""
-runBackendTest tests/examples/valid/expressions/negBothMod.wacc ""
-runBackendTest tests/examples/valid/expressions/longSplitExpr.wacc ""
-runBackendTest tests/examples/valid/expressions/negDivisorDiv.wacc ""
-runBackendTest tests/examples/valid/expressions/ordAndchrExpr.wacc ""
-runBackendTest tests/examples/valid/expressions/lessExpr.wacc ""
-runBackendTest tests/examples/valid/expressions/lessCharExpr.wacc ""
-runBackendTest tests/examples/valid/expressions/negDividendDiv.wacc ""
-runBackendTest tests/examples/valid/expressions/longExpr2.wacc ""
-runBackendTest tests/examples/valid/expressions/longSplitExpr2.wacc ""
-runBackendTest tests/examples/valid/expressions/minusExpr.wacc ""
-runBackendTest tests/examples/valid/expressions/intExpr1.wacc ""
-runBackendTest tests/examples/valid/expressions/greaterEqExpr.wacc ""
-runBackendTest tests/examples/valid/expressions/plusPlusExpr.wacc ""
-runBackendTest tests/examples/valid/expressions/lessEqExpr.wacc ""
-runBackendTest tests/examples/valid/expressions/multExpr.wacc ""
-runBackendTest tests/examples/valid/expressions/longExpr3.wacc ""
-runBackendTest tests/examples/valid/expressions/plusNoWhitespaceExpr.wacc ""
-runBackendTest tests/examples/valid/expressions/plusMinusExpr.wacc ""
-runBackendTest tests/examples/valid/expressions/negDividendMod.wacc ""
-runBackendTest tests/examples/valid/expressions/longExpr.wacc ""
-runBackendTest tests/examples/valid/expressions/boolExpr1.wacc ""
-runBackendTest tests/examples/valid/expressions/equalsExpr.wacc ""
-runBackendTest tests/examples/valid/expressions/negDivisorMod.wacc ""
-runBackendTest tests/examples/valid/expressions/negBothDiv.wacc ""
-runBackendTest tests/examples/valid/expressions/orExpr.wacc ""
-runBackendTest tests/examples/valid/expressions/sequentialCount.wacc ""
-runBackendTest tests/examples/valid/expressions/notequalsExpr.wacc ""
-runBackendTest tests/examples/valid/expressions/negExpr.wacc ""
-runBackendTest tests/examples/valid/expressions/stringEqualsExpr.wacc ""
-runBackendTest tests/examples/valid/expressions/notExpr.wacc ""
-runBackendTest tests/examples/valid/expressions/greaterExpr.wacc ""
-runBackendTest tests/examples/valid/expressions/plusExpr.wacc ""
-runBackendTest tests/examples/valid/expressions/charComparisonExpr.wacc ""
-runBackendTest tests/examples/valid/expressions/modExpr.wacc ""
-runBackendTest tests/examples/valid/expressions/minusPlusExpr.wacc ""
-runBackendTest tests/examples/valid/expressions/minusMinusExpr.wacc ""
-runBackendTest tests/examples/valid/expressions/boolCalc.wacc ""
-runBackendTest tests/examples/valid/expressions/minusNoWhitespaceExpr.wacc ""
-
-
-runBackendTest tests/examples/valid/sequence/stringAssignment.wacc ""
-runBackendTest tests/examples/valid/sequence/charAssignment.wacc ""
-runBackendTest tests/examples/valid/sequence/intLeadingZeros.wacc ""
-runBackendTest tests/examples/valid/sequence/boolAssignment.wacc ""
-runBackendTest tests/examples/valid/sequence/intAssignment.wacc ""
-runBackendTest tests/examples/valid/sequence/basicSeq.wacc ""
-runBackendTest tests/examples/valid/sequence/basicSeq2.wacc ""
-runBackendTest tests/examples/valid/sequence/exitSimple.wacc ""
-
-
-runBackendTest tests/examples/valid/while/whileBasic.wacc ""
-runBackendTest tests/examples/valid/while/loopIntCondition.wacc ""
-runBackendTest tests/examples/valid/while/rmStyleAddIO.wacc ""
-runBackendTest tests/examples/valid/while/whileFalse.wacc ""
-runBackendTest tests/examples/valid/while/fibonacciFullIt.wacc ""
-runBackendTest tests/examples/valid/while/whileCount.wacc ""
-runBackendTest tests/examples/valid/while/min.wacc ""
-runBackendTest tests/examples/valid/while/max.wacc ""
-runBackendTest tests/examples/valid/while/whileBoolFlip.wacc ""
-runBackendTest tests/examples/valid/while/fibonacciIterative.wacc ""
-runBackendTest tests/examples/valid/while/loopCharCondition.wacc ""
-runBackendTest tests/examples/valid/while/rmStyleAdd.wacc ""
+# runBackendTest tests/examples/valid/advanced/ticTacToe.wacc "q"
+# runBackendTest tests/examples/valid/advanced/hashTable.wacc ""
+# runBackendTest_array tests/examples/valid/array/arrayLength.wacc ""
+# runBackendTest_array tests/examples/valid/array/arrayEmpty.wacc ""
+# runBackendTest_array tests/examples/valid/array/array.wacc ""
+# runBackendTest_array tests/examples/valid/array/arrayLookup.wacc ""
+# runBackendTest_array tests/examples/valid/array/modifyString.wacc ""
+# runBackendTest_array tests/examples/valid/array/printRef.wacc ""
+runBackendTest_array tests/examples/valid/array/arraySimple.wacc ""
+# runBackendTest_array tests/examples/valid/array/arrayNested.wacc ""
+# runBackendTest_array tests/examples/valid/array/arrayPrint.wacc ""
+# runBackendTest_heap tests/examples/valid/pairs/printNull.wacc ""
+# runBackendTest_heap tests/examples/valid/pairs/printNullPair.wacc ""
+# runBackendTest_heap tests/examples/valid/pairs/printPair.wacc ""
+# runBackendTest_heap tests/examples/valid/pairs/nestedPair.wacc ""
+# runBackendTest_heap tests/examples/valid/pairs/createRefPair.wacc ""
+# runBackendTest_heap tests/examples/valid/pairs/free.wacc ""
+# runBackendTest_heap tests/examples/valid/pairs/writeSnd.wacc ""
+# runBackendTest_heap tests/examples/valid/pairs/writeFst.wacc ""
+# runBackendTest_heap tests/examples/valid/pairs/printPairOfNulls.wacc ""
+# runBackendTest_heap tests/examples/valid/pairs/null.wacc ""
+# runBackendTest_heap tests/examples/valid/pairs/checkRefPair.wacc ""
+# runBackendTest_heap tests/examples/valid/pairs/readPair.wacc ""
+# runBackendTest_heap tests/examples/valid/pairs/linkedList.wacc ""
+runBackendTest_conditional tests/examples/valid/if/if1.wacc ""
+runBackendTest_conditional tests/examples/valid/if/whitespace.wacc ""
+runBackendTest_conditional tests/examples/valid/if/ifFalse.wacc ""
+runBackendTest_conditional tests/examples/valid/if/ifBasic.wacc ""
+runBackendTest_conditional tests/examples/valid/if/if6.wacc ""
+runBackendTest_conditional tests/examples/valid/if/ifTrue.wacc ""
+runBackendTest_conditional tests/examples/valid/if/if5.wacc ""
+runBackendTest_conditional tests/examples/valid/if/if4.wacc ""
+runBackendTest_conditional tests/examples/valid/if/if3.wacc ""
+runBackendTest_conditional tests/examples/valid/if/if2.wacc ""
+runBackendTest_runtime tests/examples/valid/runtimeErr/integerOverflow/intJustOverflow.wacc ""
+runBackendTest_runtime tests/examples/valid/runtimeErr/integerOverflow/intnegateOverflow.wacc ""
+# runBackendTest_runtime tests/examples/valid/runtimeErr/integerOverflow/intmultOverflow.wacc ""
+# runBackendTest_runtime tests/examples/valid/runtimeErr/integerOverflow/intnegateOverflow3.wacc ""
+runBackendTest_runtime tests/examples/valid/runtimeErr/integerOverflow/intWayOverflow.wacc ""
+# runBackendTest_runtime tests/examples/valid/runtimeErr/integerOverflow/intnegateOverflow2.wacc ""
+runBackendTest_runtime tests/examples/valid/runtimeErr/integerOverflow/intUnderflow.wacc ""
+runBackendTest_runtime tests/examples/valid/runtimeErr/integerOverflow/intnegateOverflow4.wacc ""
+runBackendTest_runtime tests/examples/valid/runtimeErr/nullDereference/readNull2.wacc ""
+runBackendTest_runtime tests/examples/valid/runtimeErr/nullDereference/useNull2.wacc ""
+runBackendTest_runtime tests/examples/valid/runtimeErr/nullDereference/setNull1.wacc ""
+runBackendTest_runtime tests/examples/valid/runtimeErr/nullDereference/freeNull.wacc ""
+runBackendTest_runtime tests/examples/valid/runtimeErr/nullDereference/setNull2.wacc ""
+runBackendTest_runtime tests/examples/valid/runtimeErr/nullDereference/useNull1.wacc ""
+runBackendTest_runtime tests/examples/valid/runtimeErr/nullDereference/readNull1.wacc ""
+# runBackendTest_runtime tests/examples/valid/runtimeErr/doubleFrees/doubleFree.wacc ""
+# runBackendTest_runtime tests/examples/valid/runtimeErr/doubleFrees/hiddenDoubleFree.wacc ""
+runBackendTest_runtime tests/examples/valid/runtimeErr/divideByZero/divZero.wacc ""
+runBackendTest_runtime tests/examples/valid/runtimeErr/divideByZero/divideByZero.wacc ""
+runBackendTest_runtime tests/examples/valid/runtimeErr/divideByZero/modByZero.wacc ""
+# runBackendTest_runtime tests/examples/valid/runtimeErr/arrayOutOfBounds/arrayOutOfBoundsWrite.wacc ""
+# runBackendTest_runtime tests/examples/valid/runtimeErr/arrayOutOfBounds/arrayNegBounds.wacc ""
+# runBackendTest_runtime tests/examples/valid/runtimeErr/arrayOutOfBounds/arrayOutOfBounds.wacc ""
+# runBackendTest_io tests/examples/valid/IO/IOLoop.wacc "1,Y,2,Y,3,Y,4,N"
+runBackendTest_io tests/examples/valid/IO/read/echoPuncChar.wacc "c"
+runBackendTest_io tests/examples/valid/IO/read/echoBigInt.wacc ""
+runBackendTest_io tests/examples/valid/IO/read/echoInt.wacc ""
+runBackendTest_io tests/examples/valid/IO/read/echoNegInt.wacc ""
+runBackendTest_io tests/examples/valid/IO/read/echoChar.wacc "c"
+runBackendTest_io tests/examples/valid/IO/read/echoBigNegInt.wacc ""
+runBackendTest_io tests/examples/valid/IO/read/read.wacc ""
+runBackendTest_io tests/examples/valid/IO/IOSequence.wacc ""
+runBackendTest_io tests/examples/valid/IO/print/println.wacc ""
+runBackendTest_io tests/examples/valid/IO/print/stringAssignmentWithPrint.wacc ""
+runBackendTest_io tests/examples/valid/IO/print/printEscChar.wacc ""
+# runBackendTest_io tests/examples/valid/IO/print/multipleStringsAssignment.wacc ""
+runBackendTest_io tests/examples/valid/IO/print/print.wacc ""
+runBackendTest_io tests/examples/valid/IO/print/hashInProgram.wacc ""
+runBackendTest_io tests/examples/valid/IO/print/printBool.wacc ""
+runBackendTest_io tests/examples/valid/IO/print/printInt.wacc ""
+runBackendTest_io tests/examples/valid/IO/print/printChar.wacc ""
+# runBackendTest_nestedfunc tests/examples/valid/function/nested_functions/fixedPointRealArithmetic.wacc ""
+# runBackendTest_nestedfunc tests/examples/valid/function/nested_functions/printTriangle.wacc ""
+runBackendTest_nestedfunc tests/examples/valid/function/nested_functions/printInputTriangle.wacc ""
+# runBackendTest_nestedfunc tests/examples/valid/function/nested_functions/mutualRecursion.wacc ""
+# runBackendTest_nestedfunc tests/examples/valid/function/nested_functions/fibonacciFullRec.wacc ""
+runBackendTest_nestedfunc tests/examples/valid/function/nested_functions/functionConditionalReturn.wacc ""
+# runBackendTest_nestedfunc tests/examples/valid/function/nested_functions/simpleRecursion.wacc ""
+# runBackendTest_nestedfunc tests/examples/valid/function/nested_functions/fibonacciRecursive.wacc ""
+runBackendTest_simplefunc tests/examples/valid/function/simple_functions/functionDeclaration.wacc ""
+runBackendTest_simplefunc tests/examples/valid/function/simple_functions/sameArgName2.wacc ""
+# runBackendTest_simplefunc tests/examples/valid/function/simple_functions/functionManyArguments.wacc ""
+# runBackendTest_simplefunc tests/examples/valid/function/simple_functions/asciiTable.wacc ""
+runBackendTest_simplefunc tests/examples/valid/function/simple_functions/functionSimple.wacc ""
+runBackendTest_simplefunc tests/examples/valid/function/simple_functions/incFunction.wacc ""
+runBackendTest_simplefunc tests/examples/valid/function/simple_functions/sameArgName.wacc ""
+runBackendTest_simplefunc tests/examples/valid/function/simple_functions/negFunction.wacc ""
+runBackendTest_simplefunc tests/examples/valid/function/simple_functions/functionUpdateParameter.wacc ""
+runBackendTest_simplefunc tests/examples/valid/function/simple_functions/functionReturnPair.wacc ""
+runBackendTest_expression tests/examples/valid/expressions/intCalc.wacc ""
+runBackendTest_expression tests/examples/valid/expressions/multNoWhitespaceExpr.wacc ""
+runBackendTest_expression tests/examples/valid/expressions/andExpr.wacc ""
+runBackendTest_expression tests/examples/valid/expressions/divExpr.wacc ""
+runBackendTest_expression tests/examples/valid/expressions/negBothMod.wacc ""
+runBackendTest_expression tests/examples/valid/expressions/longSplitExpr.wacc ""
+runBackendTest_expression tests/examples/valid/expressions/negDivisorDiv.wacc ""
+runBackendTest_expression tests/examples/valid/expressions/ordAndchrExpr.wacc ""
+runBackendTest_expression tests/examples/valid/expressions/lessExpr.wacc ""
+runBackendTest_expression tests/examples/valid/expressions/lessCharExpr.wacc ""
+runBackendTest_expression tests/examples/valid/expressions/negDividendDiv.wacc ""
+runBackendTest_expression tests/examples/valid/expressions/longExpr2.wacc ""
+runBackendTest_expression tests/examples/valid/expressions/longSplitExpr2.wacc ""
+runBackendTest_expression tests/examples/valid/expressions/minusExpr.wacc ""
+runBackendTest_expression tests/examples/valid/expressions/intExpr1.wacc ""
+runBackendTest_expression tests/examples/valid/expressions/greaterEqExpr.wacc ""
+runBackendTest_expression tests/examples/valid/expressions/plusPlusExpr.wacc ""
+runBackendTest_expression tests/examples/valid/expressions/lessEqExpr.wacc ""
+runBackendTest_expression tests/examples/valid/expressions/multExpr.wacc ""
+runBackendTest_expression tests/examples/valid/expressions/longExpr3.wacc ""
+runBackendTest_expression tests/examples/valid/expressions/plusNoWhitespaceExpr.wacc ""
+runBackendTest_expression tests/examples/valid/expressions/plusMinusExpr.wacc ""
+runBackendTest_expression tests/examples/valid/expressions/negDividendMod.wacc ""
+runBackendTest_expression tests/examples/valid/expressions/longExpr.wacc ""
+runBackendTest_expression tests/examples/valid/expressions/boolExpr1.wacc ""
+runBackendTest_expression tests/examples/valid/expressions/equalsExpr.wacc ""
+runBackendTest_expression tests/examples/valid/expressions/negDivisorMod.wacc ""
+runBackendTest_expression tests/examples/valid/expressions/negBothDiv.wacc ""
+runBackendTest_expression tests/examples/valid/expressions/orExpr.wacc ""
+runBackendTest_expression tests/examples/valid/expressions/sequentialCount.wacc ""
+runBackendTest_expression tests/examples/valid/expressions/notequalsExpr.wacc ""
+runBackendTest_expression tests/examples/valid/expressions/negExpr.wacc ""
+runBackendTest_expression tests/examples/valid/expressions/stringEqualsExpr.wacc ""
+runBackendTest_expression tests/examples/valid/expressions/notExpr.wacc ""
+runBackendTest_expression tests/examples/valid/expressions/greaterExpr.wacc ""
+runBackendTest_expression tests/examples/valid/expressions/plusExpr.wacc ""
+runBackendTest_expression tests/examples/valid/expressions/charComparisonExpr.wacc ""
+runBackendTest_expression tests/examples/valid/expressions/modExpr.wacc ""
+runBackendTest_expression tests/examples/valid/expressions/minusPlusExpr.wacc ""
+runBackendTest_expression tests/examples/valid/expressions/minusMinusExpr.wacc ""
+runBackendTest_expression tests/examples/valid/expressions/boolCalc.wacc ""
+runBackendTest_expression tests/examples/valid/expressions/minusNoWhitespaceExpr.wacc ""
+runBackendTest_sequence tests/examples/valid/sequence/stringAssignment.wacc ""
+runBackendTest_sequence tests/examples/valid/sequence/charAssignment.wacc ""
+runBackendTest_sequence tests/examples/valid/sequence/intLeadingZeros.wacc ""
+runBackendTest_sequence tests/examples/valid/sequence/boolAssignment.wacc ""
+runBackendTest_sequence tests/examples/valid/sequence/intAssignment.wacc ""
+runBackendTest_sequence tests/examples/valid/sequence/basicSeq.wacc ""
+runBackendTest_sequence tests/examples/valid/sequence/basicSeq2.wacc ""
+runBackendTest_sequence tests/examples/valid/sequence/exitSimple.wacc ""
+runBackendTest_loop tests/examples/valid/while/whileBasic.wacc ""
+runBackendTest_loop tests/examples/valid/while/loopIntCondition.wacc ""
+runBackendTest_loop tests/examples/valid/while/rmStyleAddIO.wacc ""
+runBackendTest_loop tests/examples/valid/while/whileFalse.wacc ""
+runBackendTest_loop tests/examples/valid/while/fibonacciFullIt.wacc ""
+runBackendTest_loop tests/examples/valid/while/whileCount.wacc ""
+runBackendTest_loop tests/examples/valid/while/min.wacc ""
+runBackendTest_loop tests/examples/valid/while/max.wacc ""
+runBackendTest_loop tests/examples/valid/while/whileBoolFlip.wacc ""
+runBackendTest_loop tests/examples/valid/while/fibonacciIterative.wacc ""
+runBackendTest_loop tests/examples/valid/while/loopCharCondition.wacc ""
+runBackendTest_loop tests/examples/valid/while/rmStyleAdd.wacc ""
 
 rm -fr BackendTest.class *.s *.out
 
 ((passed=total-failed))
+((basic_passed=basic_total-basic_failed))
+((sequence_passed=sequence_total-sequence_failed))
+((io_passed=io_total-io_failed))
+((variable_passed=variable_total-variable_failed))
+((expression_passed=expression_total-expression_failed))
+((array_passed=array_total-array_failed))
+((conditional_passed=conditional_total-conditional_failed))
+((loop_passed=loop_total-loop_failed))
+((scope_passed=scope_total-scope_failed))
+((simplefunc_passed=simplefunc_total-simplefunc_failed))
+((nestedfunc_passed=nestedfunc_total-nestedfunc_failed))
+((runtime_passed=runtime_total-runtime_failed))
+((heap_passed=heap_total-heap_failed))
+
+
+
+
+echo "Basic $basic_passed / $basic_total"
+echo "Sequence $sequence_passed / $sequence_total"
+echo "IO $io_passed / $io_total"
+echo "Variable $variable_passed / $variable_total"
+echo "Expression $expression_passed / $expression_total"
+echo "Array $array_passed / $array_total"
+echo "Conditional $conditional_passed / $conditional_total"
+echo "Loop $loop_passed / $loop_total"
+echo "Scope $scope_passed / $scope_total"
+echo "Simple Function $simplefunc_passed / $simplefunc_total"
+echo "Nested Function $nestedfunc_passed / $nestedfunc_total"
+echo "Runtime $runtime_passed / $runtime_total"
+# echo "Heap $heap_passed / $heap_total"
 
 echo "Passed $passed / $total"
 

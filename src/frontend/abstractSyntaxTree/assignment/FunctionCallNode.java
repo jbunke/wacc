@@ -99,10 +99,11 @@ public class FunctionCallNode implements AssignRHS {
     generator.addInstruction(new BranchInstruction(Condition.L, funcLabel));
 
     // Stack de-allocation from function arguments
-    if (totalSize > 0) {
+    while (totalSize > 0) {
       generator.addInstruction(ArithInstruction.add(
               generator.getRegister(Register.ID.SP),
-              generator.getRegister(Register.ID.SP), totalSize));
+              generator.getRegister(Register.ID.SP), Math.min(1024, totalSize)));
+      totalSize = Math.max(0, totalSize - 1024);
     }
 
     // Move result (R0) into first available general purpose since it's a call

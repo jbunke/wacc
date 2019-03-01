@@ -26,20 +26,13 @@ public class InnerScopeStatementNode extends StatementNode {
   public void generateAssembly(AssemblyGenerator generator,
                                             SymbolTable symbolTable,
                                             Stack<Register.ID> available) {
-    int size = symbolTable.getChild(innerStatement).getSize();
+    SymbolTable innerTable = symbolTable.getChild(innerStatement);
 
-    if (size > 0) {
-      generator.addInstruction(
-              ArithInstruction.sub(generator.getRegister(Register.ID.SP),
-              generator.getRegister(Register.ID.SP), size));
-    }
-    innerStatement.generateAssembly(generator,
-            symbolTable.getChild(innerStatement), available);
-    if (size > 0) {
-      generator.addInstruction(
-              ArithInstruction.add(generator.getRegister(Register.ID.SP),
-              generator.getRegister(Register.ID.SP), size));
-    }
+    generator.allocate(innerTable);
+
+    innerStatement.generateAssembly(generator, innerTable, available);
+
+    generator.deallocate(innerTable);
   }
 
   @Override

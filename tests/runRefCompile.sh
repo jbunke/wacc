@@ -53,7 +53,7 @@ runRefCompiler tests/examples/valid/variables/puncCharDeclaration.wacc ''
 
 
 runRefCompiler tests/examples/valid/advanced/binarySortTree.wacc ''
-runRefCompiler tests/examples/valid/advanced/ticTacToe.wacc ''
+runRefCompiler tests/examples/valid/advanced/ticTacToe.wacc 'q'
 runRefCompiler tests/examples/valid/advanced/hashTable.wacc ''
 runRefCompiler tests/examples/valid/array/arrayLength.wacc ''
 runRefCompiler tests/examples/valid/array/arrayEmpty.wacc ''
