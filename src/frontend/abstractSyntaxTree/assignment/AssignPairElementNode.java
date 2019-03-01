@@ -75,12 +75,7 @@ public class AssignPairElementNode implements AssignRHS {
   @Override
   public Type getType(SymbolTable symbolTable) {
     Pair pair = (Pair) identifier.getType(symbolTable);
-    if (position == 0) {
-      return pair.getFirst();
-    } else {
-      return pair.getSecond();
-    }
-
+    return position == FST_POSITION ? pair.getFirst() : pair.getSecond();
   }
 
 }
