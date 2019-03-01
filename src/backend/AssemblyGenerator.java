@@ -170,7 +170,7 @@ public class AssemblyGenerator {
   private static List<Instruction> throw_runtime_error(AssemblyGenerator generator,
                                                String[] msgs) {
     List<Instruction> instructions = new ArrayList<>();
-    generator.generateLabel("p_throw_runtime_error", new String[] {TERMIN_STRING},
+    generator.generateLabel("p_print_string", new String[] {TERMIN_STRING},
             PrintStatementNode::print_string);
     instructions.add(new BranchInstruction(Condition.L, "p_print_string"));
     instructions.add(new MovInstruction(generator.getRegister(Register.ID.R0),
