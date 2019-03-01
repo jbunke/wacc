@@ -5,6 +5,7 @@ import backend.Register;
 import backend.instructions.STRInstruction;
 import frontend.abstractSyntaxTree.assignment.AssignLHS;
 import frontend.abstractSyntaxTree.assignment.AssignRHS;
+import frontend.abstractSyntaxTree.assignment.AssignPairElementNode;
 import frontend.abstractSyntaxTree.expressions.IdentifierNode;
 import frontend.symbolTable.SemanticError;
 import frontend.symbolTable.SemanticErrorList;
@@ -57,6 +58,9 @@ public class AssignVariableStatementNode extends StatementNode {
               generator.getRegister(available.peek()),
               generator.getRegister(Register.ID.SP),
               symbolTable.fetchOffset(ident.getName()), isSingleByte));
+    } else if (left instanceof AssignPairElementNode) {
+        AssignPairElementNode pair = (AssignPairElementNode) left;
+        pair.generateLHSAssembly(generator, symbolTable, available);
     } else {
       generator.addInstruction(new STRInstruction(
               generator.getRegister(available.peek()),
