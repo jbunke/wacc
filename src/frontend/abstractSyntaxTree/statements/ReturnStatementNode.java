@@ -2,6 +2,7 @@ package frontend.abstractSyntaxTree.statements;
 
 import backend.AssemblyGenerator;
 import backend.Register;
+import backend.instructions.MovInstruction;
 import frontend.abstractSyntaxTree.expressions.ExpressionNode;
 import frontend.symbolTable.SemanticError;
 import frontend.symbolTable.SemanticErrorList;
@@ -34,7 +35,15 @@ public class ReturnStatementNode extends StatementNode {
   @Override
   public void generateAssembly(AssemblyGenerator generator,
                                             SymbolTable symbolTable,
-                                            Stack<Register.ID> available) { }
+                                            Stack<Register.ID> available) {
+    result.generateAssembly(generator, symbolTable, available);
+
+    /* Move result (housed in first available general purpose register)
+     * into R0 (return register) */
+    generator.addInstruction(new MovInstruction(
+            generator.getRegister(Register.ID.R0),
+            generator.getRegister(available.peek())));
+  }
 
   @Override
   public boolean containsReturn() {

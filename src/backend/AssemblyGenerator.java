@@ -22,6 +22,7 @@ public class AssemblyGenerator {
 
   private int lLabelCount;
   private String activeLabel;
+  private Stack<String> lastLabels;
 
   public AssemblyGenerator(ProgramNode programNode,
                            SymbolTable symbolTable) {
@@ -35,6 +36,7 @@ public class AssemblyGenerator {
     this.additionals = new ArrayList<>();
 
     this.lLabelCount = 0;
+    this.lastLabels = new Stack<>();
   }
 
   public void generateAssembly(File file) throws IOException {
@@ -110,8 +112,16 @@ public class AssemblyGenerator {
     instructionList.add(instruction);
   }
 
+  public String previousActiveLabel() {
+    return lastLabels.pop();
+  }
+
   public void setActiveLabel(String activeLabel) {
+    lastLabels.push(this.activeLabel);
     this.activeLabel = activeLabel;
+    if (!labels.contains(activeLabel)) {
+      labels.add(activeLabel);
+    }
   }
 
   public Register getRegister(Register.ID registerId) {
@@ -151,7 +161,7 @@ public class AssemblyGenerator {
     instructions.add(new LDRInstruction(
             generator.getRegister(Register.ID.R0), msgs[0]));
     generator.generateLabel("p_throw_runtime_error",
-            new String[] {TERMIN_STRING},
+            new String[0],
             AssemblyGenerator::throw_runtime_error);
     instructions.add(
             new BranchInstruction(Condition.L, "p_throw_runtime_error"));
@@ -161,7 +171,7 @@ public class AssemblyGenerator {
   private static List<Instruction> throw_runtime_error(AssemblyGenerator generator,
                                                String[] msgs) {
     List<Instruction> instructions = new ArrayList<>();
-    generator.generateLabel("p_print_string", msgs,
+    generator.generateLabel("p_print_string", new String[] {TERMIN_STRING},
             PrintStatementNode::print_string);
     instructions.add(new BranchInstruction(Condition.L, "p_print_string"));
     instructions.add(new MovInstruction(generator.getRegister(Register.ID.R0),

@@ -1,7 +1,12 @@
 package frontend.abstractSyntaxTree.assignment;
 
 import backend.AssemblyGenerator;
+import backend.Condition;
 import backend.Register;
+import backend.instructions.ArithInstruction;
+import backend.instructions.BranchInstruction;
+import backend.instructions.MovInstruction;
+import backend.instructions.STRInstruction;
 import frontend.abstractSyntaxTree.expressions.ExpressionNode;
 import frontend.abstractSyntaxTree.expressions.IdentifierNode;
 import frontend.symbolTable.Function;
@@ -11,6 +16,7 @@ import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.Type;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
@@ -73,7 +79,35 @@ public class FunctionCallNode implements AssignRHS {
   }
 
   @Override
-  public void generateAssembly(AssemblyGenerator generator, SymbolTable symbolTable, Stack<Register.ID> available) {
+  public void generateAssembly(AssemblyGenerator generator,
+          SymbolTable symbolTable, Stack<Register.ID> available) {
+    // Arguments stored in negative stack addresses
+    int totalSize = 0;
+    for (int i = arguments.size() - 1; i >= 0; i--) {
+      ExpressionNode argument = arguments.get(i);
+      argument.generateAssembly(generator, symbolTable, available);
+      int size = argument.getType(symbolTable).size();
+      generator.addInstruction(new STRInstruction(
+              generator.getRegister(available.peek()),
+              generator.getRegister(Register.ID.SP), -size, size == 1
+      ).addExclamation());
+      totalSize += size;
+    }
 
+    // Branch to function
+    String funcLabel = "f_" + functionIdentifier.getName();
+    generator.addInstruction(new BranchInstruction(Condition.L, funcLabel));
+
+    // Stack de-allocation from function arguments
+    if (totalSize > 0) {
+      generator.addInstruction(ArithInstruction.add(
+              generator.getRegister(Register.ID.SP),
+              generator.getRegister(Register.ID.SP), totalSize));
+    }
+
+    // Move result (R0) into first available general purpose since it's a call
+    generator.addInstruction(new MovInstruction(
+            generator.getRegister(available.peek()),
+            generator.getRegister(Register.ID.R0)));
   }
 }

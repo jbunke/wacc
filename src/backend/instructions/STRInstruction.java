@@ -24,9 +24,14 @@ public class STRInstruction extends Instruction {
     }
   }
 
+  public STRInstruction addExclamation() {
+    this.memory += "!";
+    return this;
+  }
+
   @Override
   public String asString() {
     String cmmnd = isSingleByte ? ("STRB ") : ("STR ");
-    return cmmnd + source.toString() + "," + memory;
+    return cmmnd + source.toString() + ", " + memory;
   }
 }
