@@ -42,6 +42,10 @@ public class AssemblyGenerator {
     this.lastLabels = new Stack<>();
   }
 
+  /**
+   * generateAssembly is called from WACCCompiler (the main class)
+   * the assembly generation is done in the private generateAssembly().
+   * File writing is done in writeToFile(). */
   public void generateAssembly(File file) throws IOException {
     generateAssembly();
     writeToFile(file);
@@ -107,6 +111,8 @@ public class AssemblyGenerator {
     writer.close();
   }
 
+  /** allocate and deallocate handle the (de)allocation
+   * of stack space whenever a scope change occurs */
   public void allocate(SymbolTable symbolTable) {
     int size = symbolTable.getSize();
 
@@ -129,6 +135,11 @@ public class AssemblyGenerator {
     }
   }
 
+  /**
+   * addInstruction adds a specified instruction to
+   * the instruction list of the active label
+   *
+   * @param instruction the instruction to be added */
   public void addInstruction(Instruction instruction) {
     if (!instructions.containsKey(activeLabel)) {
       instructions.put(activeLabel, new ArrayList<>());
@@ -164,6 +175,8 @@ public class AssemblyGenerator {
     }
   }
 
+  /**
+   * Generates a unique new label used for conditionals and loops */
   public String generateNewLabel() {
     String label = "L" + Integer.toString(lLabelCount);
     lLabelCount++;
@@ -171,6 +184,10 @@ public class AssemblyGenerator {
     return label;
   }
 
+  /**
+   * Generates helper functions
+   * @param msgs Data directives for helper functions
+   * @param function Function to call to generate instructions */
   public void generateLabel(String label,
           String[] msgs, BiFunction<AssemblyGenerator,
           String[],List<Instruction>> function) {

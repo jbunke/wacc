@@ -81,8 +81,15 @@ public class PrintStatementNode extends StatementNode {
                 PrintStatementNode::print_string);
         generator.addInstruction(
                 new BranchInstruction(Condition.L, "p_print_string"));
+      } else {
+        generator.generateLabel("p_print_reference",
+                new String[] {PAIR_FORMATTER},
+                PrintStatementNode::print_reference);
+        generator.addInstruction(new BranchInstruction(
+                Condition.L, "p_print_reference"));
       }
-    } else if (expression.getType(symbolTable) instanceof Pair) {
+    } else if (expression.getType(symbolTable) instanceof Pair ||
+            expression.getType(symbolTable) instanceof Array) {
       generator.generateLabel("p_print_reference",
               new String[] {PAIR_FORMATTER},
               PrintStatementNode::print_reference);
@@ -91,7 +98,7 @@ public class PrintStatementNode extends StatementNode {
     }
   }
 
-  public static List<Instruction> print_reference(AssemblyGenerator generator,
+  private static List<Instruction> print_reference(AssemblyGenerator generator,
                                                   String[] msgs) {
     List<Instruction> instructions = new ArrayList<>();
     instructions.add(new PushInstruction(generator.getRegister(Register.ID.LR)));
