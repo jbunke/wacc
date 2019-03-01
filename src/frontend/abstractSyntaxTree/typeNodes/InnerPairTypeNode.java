@@ -26,5 +26,6 @@ public class InnerPairTypeNode extends TypeNode {
   public void generateAssembly(AssemblyGenerator generator,
                                             SymbolTable symbolTable,
                                             Stack<Register.ID> available) {
+
   }
 }

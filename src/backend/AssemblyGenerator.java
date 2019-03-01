@@ -14,6 +14,7 @@ public class AssemblyGenerator {
   private static final String TERMIN_STRING = "%.*s\\0";
   private static final int NULL_PTR_VAL = 0;
   private static final int ADDR_SIZE = 4;
+  private static final int MIN_ARRAY_INDEX = 0;
 
   private ProgramNode programNode;
   private SymbolTable symbolTable;
@@ -210,6 +211,40 @@ public class AssemblyGenerator {
             AssemblyGenerator::throw_runtime_error);
     instructions.add(
             new BranchInstruction(Condition.L, "p_throw_runtime_error"));
+    return instructions;
+  }
+
+  public static List<Instruction> check_array_bounds(AssemblyGenerator generator,
+                                                     String[] msgs) {
+    Register R0 = generator.getRegister(ID.R0);
+    Register R1 = generator.getRegister(ID.R1);
+
+    List<Instruction> instructions = new ArrayList<>();
+    instructions.add(new PushInstruction(generator.getRegister(ID.LR)));
+    instructions.add(new backend.instructions.CompareInstruction(R0, MIN_ARRAY_INDEX));
+    instructions.add(new backend.instructions.LDRInstruction(Condition.LT, R0, msgs[0]));
+
+    generator.generateLabel("p_throw_runtime_error",
+            new String[0],
+            AssemblyGenerator::throw_runtime_error);
+
+    instructions.add(new BranchInstruction(List.of(Condition.L, Condition.LT),
+            "p_throw_runtime_error"));
+
+    instructions.add(new LDRInstruction(R1, R1));
+    instructions.add(new CompareInstruction(R0, R1));
+
+    instructions.add(new backend.instructions.LDRInstruction(Condition.GE, R0, msgs[1]));
+
+    generator.generateLabel("p_throw_runtime_error",
+            new String[0],
+            AssemblyGenerator::throw_runtime_error);
+
+    instructions.add(new BranchInstruction(List.of(Condition.L, Condition.GE),
+            "p_throw_runtime_error"));
+
+    instructions.add(new PopInstruction(generator.getRegister(ID.PC)));
+
     return instructions;
   }
 
