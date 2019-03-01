@@ -213,6 +213,7 @@ public class BinaryOpExpressionNode extends ExpressionNode {
         generator.addInstruction(new BranchInstruction(Condition.L,
                 "__aeabi_idiv"));
         generator.addInstruction(new MovInstruction(rg1, r0));
+        break;
       case MOD:
         generator.addInstruction(new MovInstruction(r0, rg1));
         generator.addInstruction(new MovInstruction(r1, rg2));
