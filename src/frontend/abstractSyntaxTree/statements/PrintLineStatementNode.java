@@ -49,10 +49,11 @@ public class PrintLineStatementNode extends StatementNode {
 
   private static List<Instruction> print_ln(
           AssemblyGenerator generator, String code) {
+    boolean isSingleByte = code.length() == 1;
     List<Instruction> instructions = new ArrayList<>();
     instructions.add(new PushInstruction(generator.getRegister(Register.ID.LR)));
     instructions.add(new LDRInstruction(
-            generator.getRegister(Register.ID.R0), code));
+            generator.getRegister(Register.ID.R0), code).isSingleByte(isSingleByte));
     instructions.add(ArithInstruction.add(generator.getRegister(Register.ID.R0),
             generator.getRegister(Register.ID.R0), 4));
     instructions.add(new BranchInstruction(Condition.L, "puts"));
