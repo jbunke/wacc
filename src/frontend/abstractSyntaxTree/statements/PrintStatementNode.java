@@ -11,6 +11,7 @@ import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.Array;
 import frontend.symbolTable.types.BaseTypes;
+import frontend.symbolTable.types.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,7 @@ public class PrintStatementNode extends StatementNode {
   private static final String TRUE_STRING = "true\\0";
   private static final String FALSE_STRING = "false\\0";
   private static final String INT_FORMATTER = "%d\\0";
+  private static final String PAIR_FORMATTER = "%p\\0";
 
   private final ExpressionNode expression;
 
@@ -80,7 +82,31 @@ public class PrintStatementNode extends StatementNode {
         generator.addInstruction(
                 new BranchInstruction(Condition.L, "p_print_string"));
       }
+    } else if (expression.getType(symbolTable) instanceof Pair) {
+      generator.generateLabel("p_print_reference",
+              new String[] {PAIR_FORMATTER},
+              PrintStatementNode::print_reference);
+      generator.addInstruction(new BranchInstruction(
+              Condition.L, "p_print_reference"));
     }
+  }
+
+  public static List<Instruction> print_reference(AssemblyGenerator generator,
+                                                  String[] msgs) {
+    List<Instruction> instructions = new ArrayList<>();
+    instructions.add(new PushInstruction(generator.getRegister(Register.ID.LR)));
+    instructions.add(new MovInstruction(generator.getRegister(Register.ID.R1),
+            generator.getRegister(Register.ID.R0)));
+    instructions.add(new LDRInstruction(generator.getRegister(Register.ID.R0),
+            msgs[0]));
+    instructions.add(ArithInstruction.add(generator.getRegister(Register.ID.R0),
+            generator.getRegister(Register.ID.R0), 4));
+    instructions.add(new BranchInstruction(Condition.L, "printf"));
+    instructions.add(
+            new MovInstruction(generator.getRegister(Register.ID.R0), 0));
+    instructions.add(new BranchInstruction(Condition.L, "fflush"));
+    instructions.add(new PopInstruction(generator.getRegister(Register.ID.PC)));
+    return instructions;
   }
 
   public static List<Instruction> print_string(AssemblyGenerator generator,
