@@ -138,12 +138,6 @@ public class AssemblyGenerator {
     }
   }
 
-  public String labelWithoutAdd() {
-    String label = "L" + Integer.toString(lLabelCount);
-    lLabelCount++;
-    return label;
-  }
-
   public String generateNewLabel() {
     String label = "L" + Integer.toString(lLabelCount);
     lLabelCount++;
