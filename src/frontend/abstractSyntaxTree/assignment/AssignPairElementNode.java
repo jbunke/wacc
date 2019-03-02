@@ -81,9 +81,8 @@ public class AssignPairElementNode implements AssignRHS {
     Register SP = generator.getRegister(ID.SP);
     Register R0 = generator.getRegister(ID.R0);
 
-    generator.addInstruction(new STRInstruction(nextFree, SP,
-            symbolTable.fetchOffset(identifier.getName()),
-            false));
+    generator.addInstruction(new LDRInstruction(nextFree, SP,
+            symbolTable.fetchOffset(identifier.getName())));
 
     generateNullPtrCheck(generator, available);
 
