@@ -2,7 +2,6 @@ package frontend.abstractSyntaxTree.expressions;
 
 import backend.AssemblyGenerator;
 import backend.Register;
-import backend.instructions.Instruction;
 import backend.instructions.LDRInstruction;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
@@ -10,8 +9,6 @@ import frontend.symbolTable.types.Array;
 import frontend.symbolTable.types.BaseTypes;
 import frontend.symbolTable.types.Type;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Stack;
 
 public class StringLiteralExpressionNode extends ExpressionNode {
@@ -41,7 +38,7 @@ public class StringLiteralExpressionNode extends ExpressionNode {
 
   @Override
   public Type getType(SymbolTable symbolTable) {
-    return new BaseTypes(BaseTypes.base_types.STRING);
+    return new Array(new BaseTypes(BaseTypes.base_types.CHAR));
   }
 
   @Override

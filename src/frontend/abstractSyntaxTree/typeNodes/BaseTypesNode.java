@@ -31,7 +31,7 @@ public class BaseTypesNode extends TypeNode {
       case "bool":
         return new BaseTypes(BaseTypes.base_types.BOOL);
       case "string":
-        return new BaseTypes(BaseTypes.base_types.STRING);
+        return new Array(new BaseTypes(BaseTypes.base_types.CHAR));
       default:
         throw new IllegalArgumentException("Illegal type name has been given: " + type);
     }

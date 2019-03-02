@@ -1,6 +1,5 @@
 package frontend.abstractSyntaxTree.statements;
 
-
 import backend.AssemblyGenerator;
 import backend.Condition;
 import backend.Register;
@@ -69,13 +68,24 @@ public class PrintStatementNode extends StatementNode {
           generator.addInstruction(
                   new BranchInstruction(Condition.L, "putchar"));
           break;
-        case STRING:
-          generator.generateLabel("p_print_string",
-                  new String[] {TERMIN_STRING},
-                  PrintStatementNode::print_string);
-          generator.addInstruction(
-                  new BranchInstruction(Condition.L, "p_print_string"));
-          break;
+      }
+    } else if (expression.getType(symbolTable) instanceof Array) {
+      Array expType = (Array) expression.getType(symbolTable);
+      if (expType.getElementType() instanceof BaseTypes &&
+              ((BaseTypes) expType.getElementType()).getBaseType() ==
+                      BaseTypes.base_types.CHAR) {
+        // Dealing with a string
+        generator.generateLabel("p_print_string",
+                new String[] {TERMIN_STRING},
+                PrintStatementNode::print_string);
+        generator.addInstruction(
+                new BranchInstruction(Condition.L, "p_print_string"));
+      } else {
+        generator.generateLabel("p_print_reference",
+                new String[] {PAIR_FORMATTER},
+                PrintStatementNode::print_int);
+        generator.addInstruction(new BranchInstruction(
+                Condition.L, "p_print_reference"));
       }
     } else if (expression.getType(symbolTable) instanceof Pair ||
             expression.getType(symbolTable) instanceof Array) {
