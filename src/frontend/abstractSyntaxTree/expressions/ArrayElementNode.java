@@ -94,7 +94,7 @@ public class ArrayElementNode extends ExpressionNode {
     Register nextFree = generator.getRegister(available.peek());
     Register SP = generator.getRegister(ID.SP);
 
-    generator.addInstruction(ArithInstruction.add(nextFree, SP, symbolTable.fetchOffset(identifier.getName())));
+    generator.addInstruction(ArithInstruction.add(addrReg, SP, symbolTable.fetchOffset(identifier.getName())));
 
     Type t = identifier.getType(symbolTable);
 
@@ -109,8 +109,7 @@ public class ArrayElementNode extends ExpressionNode {
               {CHECK_ARRAY_LOWER, CHECK_ARRAY_UPPER}, AssemblyGenerator::check_array_bounds);
       generator.addInstruction(new BranchInstruction(Condition.L, CHECK_ARRAY_BOUNDS));
       generator.addInstruction(ArithInstruction.add(addrReg, addrReg, INT_SIZE));
-      generator.addInstruction(ArithInstruction.addReg(addrReg, addrReg, nextFree));
-      generator.addInstruction(ArithInstruction.add(addrReg, addrReg, INT_SIZE));
+      generator.addInstruction(ArithInstruction.addReg(addrReg, addrReg, nextFree, 2));
     }
 
     generator.addInstruction(new LDRInstruction(addrReg, addrReg));

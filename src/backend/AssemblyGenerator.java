@@ -234,13 +234,13 @@ public class AssemblyGenerator {
     instructions.add(new LDRInstruction(R1, R1));
     instructions.add(new CompareInstruction(R0, R1));
 
-    instructions.add(new backend.instructions.LDRInstruction(Condition.GE, R0, msgs[1]));
+    instructions.add(new backend.instructions.LDRInstruction(Condition.CS, R0, msgs[1]));
 
     generator.generateLabel("p_throw_runtime_error",
             new String[0],
             AssemblyGenerator::throw_runtime_error);
 
-    instructions.add(new BranchInstruction(List.of(Condition.L, Condition.GE),
+    instructions.add(new BranchInstruction(List.of(Condition.L, Condition.CS),
             "p_throw_runtime_error"));
 
     instructions.add(new PopInstruction(generator.getRegister(ID.PC)));

@@ -6,7 +6,10 @@ public enum Condition {
   GT, GE, // greater than, greater than or equal to
   LT, LE, // less than, less than or equal to
   AL,     // always
-  VS,     // overflow
+  VS, VC, // overflow set, overflow clear
+  CS, CC, // unsigned higher or same, unsigned lower
+  MI, PL, // negative, positive or zero
+  HI, LS, // unsigned higher, unsigned lower or same
   S;
 
   public Condition opposite() {
@@ -23,6 +26,22 @@ public enum Condition {
         return GT;
       case LT:
         return GE;
+      case VS:
+        return VC;
+      case VC:
+        return VS;
+      case CS:
+        return CC;
+      case CC:
+        return CS;
+      case MI:
+        return PL;
+      case PL:
+        return MI;
+      case HI:
+        return LS;
+      case LS:
+        return HI;
       default:
         return this;
     }
