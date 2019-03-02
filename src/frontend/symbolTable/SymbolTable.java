@@ -6,12 +6,13 @@ import java.util.*;
 
 public class SymbolTable {
 
-  private final String[] reservedWords = new String[]{
+  private static final String[] reservedWords = new String[]{
           "begin", "is", "end", "skip", "read", "free", "return", "exit",
           "print", "println", "if", "then", "else", "fi", "while", "do", "done",
           "newpair", "call", "fst", "snd", "int", "bool", "char", "string",
           "pair", "len", "ord", "chr", "true", "false", "null"
   };
+  public static final String ARG_PREFIX = "!arg_";
 
   private final SymbolTable parent;
   private final Map<String, SymbolCategory> identifierMap;
@@ -34,7 +35,10 @@ public class SymbolTable {
   public void populateOnDeclare(String identifier) {
     if (!contents.contains(identifier) &&
             (identifierMap.containsKey(identifier) ||
-                    identifier.equals("_FUNC_"))) {
+                    identifier.equals("_FUNC_") ||
+      (identifier.startsWith(ARG_PREFIX) &&
+              identifierMap.containsKey(
+                      identifier.substring(ARG_PREFIX.length()))))) {
       contents.add(identifier);
     }
   }
@@ -43,12 +47,17 @@ public class SymbolTable {
     if (!identifierMap.containsKey(identifier)) {
       return getSize() + parent.fetchOffset(identifier);
     }
+    if (contents.contains(ARG_PREFIX + identifier)) {
+      identifier = ARG_PREFIX + identifier;
+    }
     int offset = getSize();
     for (String content : contents) {
       if (content.equals("_FUNC_")) {
         offset += 4;
       } else {
-        Variable variable = (Variable) identifierMap.get(content);
+        String check = content.startsWith(ARG_PREFIX) ?
+                content.substring(ARG_PREFIX.length()) : content;
+        Variable variable = (Variable) identifierMap.get(check);
         offset -= variable.getType().size();
         if (content.equals(identifier)) break;
       }
@@ -69,13 +78,23 @@ public class SymbolTable {
     return null;
   }
 
+  private boolean contentsContains(String check) {
+    if (contents.contains(check)) {
+      return true;
+    } else if (parent != null) {
+      return parent.contentsContains(check);
+    }
+    return false;
+  }
+
   public int getSize() {
     int size = 0;
 
     Set<String> keys = identifierMap.keySet();
     for (String key : keys) {
       SymbolCategory symbol = identifierMap.get(key);
-      if (symbol instanceof Variable) {
+      if (symbol instanceof Variable &&
+              !contentsContains(ARG_PREFIX + key)) {
         Variable variable = (Variable) symbol;
         size += variable.getType().size();
       }

@@ -46,4 +46,9 @@ public class IntLiteralExpressionNode extends ExpressionNode {
   public Type getType(SymbolTable symbolTable) {
     return new BaseTypes(BaseTypes.base_types.INT);
   }
+
+  @Override
+  public String toString() {
+    return Integer.toString(value);
+  }
 }

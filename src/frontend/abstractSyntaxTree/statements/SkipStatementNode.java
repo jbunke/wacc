@@ -20,4 +20,9 @@ public class SkipStatementNode extends StatementNode {
   public void generateAssembly(AssemblyGenerator generator,
                                             SymbolTable symbolTable,
                                             Stack<Register.ID> available) { }
+
+  @Override
+  public String toString() {
+    return "skip";
+  }
 }

@@ -82,4 +82,10 @@ public class WhileStatementNode extends StatementNode {
   public boolean containsExit() {
     return doStatement.containsExit();
   }
+
+  @Override
+  public String toString() {
+    return "while " + condition.toString() + " do\n" +
+            doStatement.toString() + "\ndone";
+  }
 }

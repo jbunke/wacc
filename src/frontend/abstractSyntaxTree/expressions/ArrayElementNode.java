@@ -5,8 +5,6 @@ import backend.AssemblyGenerator;
 import backend.Register;
 import backend.Register.ID;
 import backend.Condition;
-import backend.instructions.Instruction;
-import backend.instructions.STRInstruction;
 import backend.instructions.LDRInstruction;
 import backend.instructions.BranchInstruction;
 import backend.instructions.MovInstruction;
@@ -19,7 +17,6 @@ import frontend.symbolTable.types.BaseTypes;
 import frontend.symbolTable.types.Type;
 import frontend.symbolTable.Variable;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
@@ -128,5 +125,16 @@ public class ArrayElementNode extends ExpressionNode {
     }
 
     return current.getElementType();
+  }
+
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder(identifier.getName());
+    for (ExpressionNode index : indices) {
+      sb.append("[");
+      sb.append(index.toString());
+      sb.append("]");
+    }
+    return sb.toString();
   }
 }

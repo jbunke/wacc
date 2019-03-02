@@ -41,6 +41,11 @@ public class StringLiteralExpressionNode extends ExpressionNode {
 
   @Override
   public Type getType(SymbolTable symbolTable) {
-    return new Array(new BaseTypes(BaseTypes.base_types.CHAR));
+    return new BaseTypes(BaseTypes.base_types.STRING);
+  }
+
+  @Override
+  public String toString() {
+    return "\"" + value + "\"";
   }
 }

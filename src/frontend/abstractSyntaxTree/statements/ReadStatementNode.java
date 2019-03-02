@@ -89,4 +89,9 @@ public class ReadStatementNode extends StatementNode {
     instructions.add(new PopInstruction(generator.getRegister(Register.ID.PC)));
     return instructions;
   }
+
+  @Override
+  public String toString() {
+    return "read " + lhs.toString();
+  }
 }

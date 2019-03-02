@@ -63,4 +63,9 @@ public class IdentifierNode extends ExpressionNode {
     }
     return new BaseTypes(BaseTypes.base_types.BOOL);
   }
+
+  @Override
+  public String toString() {
+    return identifier;
+  }
 }

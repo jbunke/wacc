@@ -38,4 +38,9 @@ public class PairLiteralExpressionNode extends ExpressionNode {
   public Type getType(SymbolTable symbolTable) {
     return new Pair(null, null);
   }
+
+  @Override
+  public String toString() {
+    return "null";
+  }
 }

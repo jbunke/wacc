@@ -58,8 +58,10 @@ public class IfStatementNode extends StatementNode {
 
     String falseLabel = generator.generateNewLabel();
     generator.addInstruction(new BranchInstruction(Condition.EQ, falseLabel));
+    generator.allocate(symbolTable.getChild(trueBranch));
     trueBranch.generateAssembly(generator,
             symbolTable.getChild(trueBranch), available);
+    generator.deallocate(symbolTable.getChild(trueBranch));
 
     String endLabel = generator.generateNewLabel();
     generator.addInstruction(new BranchInstruction(new ArrayList<>(), endLabel));
@@ -94,5 +96,12 @@ public class IfStatementNode extends StatementNode {
   @Override
   public boolean containsExit() {
     return trueBranch.containsExit() || falseBranch.containsExit();
+  }
+
+  @Override
+  public String toString() {
+    return "if " + condition.toString() +
+            "\nthen\n" + trueBranch.toString() +
+            "\nelse\n" + falseBranch.toString() + "\nfi";
   }
 }

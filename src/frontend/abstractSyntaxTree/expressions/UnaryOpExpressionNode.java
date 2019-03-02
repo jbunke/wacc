@@ -42,7 +42,26 @@ public class UnaryOpExpressionNode extends ExpressionNode {
     POSITIVE,
     LENGTH,
     ORD,
-    CHR
+    CHR;
+
+    public String toString() {
+      switch (this) {
+        case CHR:
+          return "chr ";
+        case LENGTH:
+          return "len ";
+        case NOT:
+          return "!";
+        case ORD:
+          return "ord ";
+        case NEGATIVE:
+          return "-";
+        case POSITIVE:
+          return "+";
+        default:
+          return "";
+      }
+    }
   }
 
   @Override
@@ -148,5 +167,10 @@ public class UnaryOpExpressionNode extends ExpressionNode {
       return stringOpMap.get(operator);
     }
     throw new IllegalArgumentException();
+  }
+
+  @Override
+  public String toString() {
+    return operatorType.toString() + operand.toString();
   }
 }

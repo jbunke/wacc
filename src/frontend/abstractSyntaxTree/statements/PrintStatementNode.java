@@ -69,51 +69,22 @@ public class PrintStatementNode extends StatementNode {
           generator.addInstruction(
                   new BranchInstruction(Condition.L, "putchar"));
           break;
-      }
-    } else if (expression.getType(symbolTable) instanceof Array) {
-      Array expType = (Array) expression.getType(symbolTable);
-      if (expType.getElementType() instanceof BaseTypes &&
-              ((BaseTypes) expType.getElementType()).getBaseType() ==
-                      BaseTypes.base_types.CHAR) {
-        // Dealing with a string
-        generator.generateLabel("p_print_string",
-                new String[] {TERMIN_STRING},
-                PrintStatementNode::print_string);
-        generator.addInstruction(
-                new BranchInstruction(Condition.L, "p_print_string"));
-      } else {
-        generator.generateLabel("p_print_reference",
-                new String[] {PAIR_FORMATTER},
-                PrintStatementNode::print_reference);
-        generator.addInstruction(new BranchInstruction(
-                Condition.L, "p_print_reference"));
+        case STRING:
+          generator.generateLabel("p_print_string",
+                  new String[] {TERMIN_STRING},
+                  PrintStatementNode::print_string);
+          generator.addInstruction(
+                  new BranchInstruction(Condition.L, "p_print_string"));
+          break;
       }
     } else if (expression.getType(symbolTable) instanceof Pair ||
             expression.getType(symbolTable) instanceof Array) {
       generator.generateLabel("p_print_reference",
               new String[] {PAIR_FORMATTER},
-              PrintStatementNode::print_reference);
+              PrintStatementNode::print_int);
       generator.addInstruction(new BranchInstruction(
               Condition.L, "p_print_reference"));
     }
-  }
-
-  private static List<Instruction> print_reference(AssemblyGenerator generator,
-                                                  String[] msgs) {
-    List<Instruction> instructions = new ArrayList<>();
-    instructions.add(new PushInstruction(generator.getRegister(Register.ID.LR)));
-    instructions.add(new MovInstruction(generator.getRegister(Register.ID.R1),
-            generator.getRegister(Register.ID.R0)));
-    instructions.add(new LDRInstruction(generator.getRegister(Register.ID.R0),
-            msgs[0]));
-    instructions.add(ArithInstruction.add(generator.getRegister(Register.ID.R0),
-            generator.getRegister(Register.ID.R0), 4));
-    instructions.add(new BranchInstruction(Condition.L, "printf"));
-    instructions.add(
-            new MovInstruction(generator.getRegister(Register.ID.R0), 0));
-    instructions.add(new BranchInstruction(Condition.L, "fflush"));
-    instructions.add(new PopInstruction(generator.getRegister(Register.ID.PC)));
-    return instructions;
   }
 
   public static List<Instruction> print_string(AssemblyGenerator generator,
@@ -174,5 +145,10 @@ public class PrintStatementNode extends StatementNode {
     instructions.add(new BranchInstruction(Condition.L, "fflush"));
     instructions.add(new PopInstruction(generator.getRegister(Register.ID.PC)));
     return instructions;
+  }
+
+  @Override
+  public String toString() {
+    return "print " + expression.toString();
   }
 }

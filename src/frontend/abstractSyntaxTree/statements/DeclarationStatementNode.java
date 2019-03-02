@@ -69,4 +69,10 @@ public class DeclarationStatementNode extends StatementNode {
   IdentifierNode getIdentifier() {
     return identifier;
   }
+
+  @Override
+  public String toString() {
+    return identifierType.toString() + " " + identifier.toString()
+            + " = " + rhs.toString();
+  }
 }

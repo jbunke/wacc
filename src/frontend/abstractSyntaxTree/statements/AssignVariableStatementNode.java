@@ -67,4 +67,9 @@ public class AssignVariableStatementNode extends StatementNode {
               generator.getRegister(Register.ID.SP), isSingleByte));
     }
   }
+
+  @Override
+  public String toString() {
+    return left.toString() + " = " + right.toString();
+  }
 }
