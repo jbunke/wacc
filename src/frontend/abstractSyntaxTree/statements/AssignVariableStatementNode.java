@@ -6,6 +6,7 @@ import backend.instructions.STRInstruction;
 import frontend.abstractSyntaxTree.assignment.AssignLHS;
 import frontend.abstractSyntaxTree.assignment.AssignRHS;
 import frontend.abstractSyntaxTree.assignment.AssignPairElementNode;
+import frontend.abstractSyntaxTree.expressions.ArrayElementNode;
 import frontend.abstractSyntaxTree.expressions.IdentifierNode;
 import frontend.symbolTable.SemanticError;
 import frontend.symbolTable.SemanticErrorList;
@@ -25,7 +26,8 @@ public class AssignVariableStatementNode extends StatementNode {
   }
 
   @Override
-  public void semanticCheck(SymbolTable symbolTable, SemanticErrorList errorList) {
+  public void semanticCheck(SymbolTable symbolTable,
+      SemanticErrorList errorList) {
     left.semanticCheck(symbolTable, errorList);
     right.semanticCheck(symbolTable, errorList);
 
@@ -37,17 +39,17 @@ public class AssignVariableStatementNode extends StatementNode {
       errorList.addError(new SemanticError("RHS type cannot be resolved"));
     } else if (!leftType.equals(rightType)) {
       errorList.addError(new SemanticError("Type on LHS \""
-              + leftType.toString()
-              + "\" does not match \""
-              + rightType.toString()
-              + "\" on RHS."));
+          + leftType.toString()
+          + "\" does not match \""
+          + rightType.toString()
+          + "\" on RHS."));
     }
   }
 
   @Override
   public void generateAssembly(AssemblyGenerator generator,
-                                            SymbolTable symbolTable,
-                                            Stack<Register.ID> available) {
+      SymbolTable symbolTable,
+      Stack<Register.ID> available) {
     boolean isSingleByte = left.getType(symbolTable).isSingleByte();
 
     right.generateAssembly(generator, symbolTable, available);
@@ -55,16 +57,19 @@ public class AssignVariableStatementNode extends StatementNode {
     if (left instanceof IdentifierNode) {
       IdentifierNode ident = (IdentifierNode) left;
       generator.addInstruction(new STRInstruction(
-              generator.getRegister(available.peek()),
-              generator.getRegister(Register.ID.SP),
-              symbolTable.fetchOffset(ident.getName()), isSingleByte));
+          generator.getRegister(available.peek()),
+          generator.getRegister(Register.ID.SP),
+          symbolTable.fetchOffset(ident.getName()), isSingleByte));
     } else if (left instanceof AssignPairElementNode) {
-        AssignPairElementNode pair = (AssignPairElementNode) left;
-        pair.generateLHSAssembly(generator, symbolTable, available);
+      AssignPairElementNode pair = (AssignPairElementNode) left;
+      pair.generateLHSAssembly(generator, symbolTable, available);
+    } else if (left instanceof ArrayElementNode) {
+      ArrayElementNode a = (ArrayElementNode) left;
+      a.generateLHSAssembly(generator, symbolTable, available, isSingleByte);
     } else {
       generator.addInstruction(new STRInstruction(
-              generator.getRegister(available.peek()),
-              generator.getRegister(Register.ID.SP), isSingleByte));
+          generator.getRegister(available.peek()),
+          generator.getRegister(Register.ID.SP), isSingleByte));
     }
   }
 }
