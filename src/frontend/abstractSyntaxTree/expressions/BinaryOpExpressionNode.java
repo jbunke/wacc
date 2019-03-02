@@ -83,6 +83,39 @@ public class BinaryOpExpressionNode extends ExpressionNode {
     OperatorType(int value) {
       this.value = value;
     }
+
+    public String toString() {
+      switch (this) {
+        case EQUAL:
+          return " == ";
+        case NOT_EQUAL:
+          return " != ";
+        case GREATER_THAN:
+          return " > ";
+        case GREATER_THAN_OR_EQUAL:
+          return " >= ";
+        case LESS_THAN:
+          return " < ";
+        case LESS_THAN_OR_EQUAL:
+          return " <= ";
+        case AND:
+          return " && ";
+        case OR:
+          return " || ";
+        case PLUS:
+          return " + ";
+        case MINUS:
+          return " - ";
+        case TIMES:
+          return " * ";
+        case DIVIDE:
+          return " / ";
+        case MOD:
+          return " % ";
+        default:
+          return " ";
+      }
+    }
   }
 
   @Override
@@ -203,6 +236,12 @@ public class BinaryOpExpressionNode extends ExpressionNode {
       case TIMES:
         generator.addInstruction(new SMULLInstruction(rg1, rg2, rg1, rg2));
         generator.addInstruction(new CompareInstruction(rg2, rg1, 31));
+        generator.generateLabel("p_throw_overflow_error",
+                new String[] {OVERFLOW},
+                AssemblyGenerator::throw_overflow_error);
+        generator.addInstruction(
+                new BranchInstruction(List.of(Condition.L, Condition.NE),
+                "p_throw_overflow_error"));
         break;
       case DIVIDE:
         generateDivByZeroCheck(generator);
@@ -295,5 +334,10 @@ public class BinaryOpExpressionNode extends ExpressionNode {
       return stringOpMap.get(operator);
     }
     throw new IllegalArgumentException();
+  }
+
+  @Override
+  public String toString() {
+    return left.toString() + operatorType.toString() + right.toString();
   }
 }

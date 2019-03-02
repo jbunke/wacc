@@ -7,4 +7,9 @@ public abstract class Instruction {
   public String getIndent() {
     return "\t\t";
   }
+
+  @Override
+  public String toString() {
+    return asString();
+  }
 }

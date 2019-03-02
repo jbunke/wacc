@@ -39,4 +39,9 @@ public class ParenthesisExpressionNode extends ExpressionNode {
   public Type getType(SymbolTable symbolTable) {
     return containedExpression.getType(symbolTable);
   }
+
+  @Override
+  public String toString() {
+    return "(" + containedExpression.toString() + ")";
+  }
 }

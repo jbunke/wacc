@@ -54,4 +54,9 @@ public class InnerScopeStatementNode extends StatementNode {
   public void matchReturnType(Type type) {
     innerStatement.matchReturnType(type);
   }
+
+  @Override
+  public String toString() {
+    return "begin\n" + innerStatement.toString() + "\nend";
+  }
 }

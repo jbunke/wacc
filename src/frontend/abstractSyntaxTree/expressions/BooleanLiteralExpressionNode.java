@@ -46,4 +46,9 @@ public class BooleanLiteralExpressionNode extends ExpressionNode {
   public Type getType(SymbolTable symbolTable) {
     return new BaseTypes(BaseTypes.base_types.BOOL);
   }
+
+  @Override
+  public String toString() {
+    return Boolean.toString(value);
+  }
 }

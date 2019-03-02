@@ -38,4 +38,9 @@ public class CharacterLiteralExpressionNode extends ExpressionNode {
   public Type getType(SymbolTable symbolTable) {
     return new BaseTypes(BaseTypes.base_types.CHAR);
   }
+
+  @Override
+  public String toString() {
+    return "'" + value + "'";
+  }
 }

@@ -55,7 +55,7 @@ public class ParameterListNode implements Node {
     symbolTable.populateOnDeclare("_FUNC_");
     for (int i = identifierList.size() - 1; i >= 0; i--) {
       String name = identifierList.get(i).getName();
-      symbolTable.populateOnDeclare(name);
+      symbolTable.populateOnDeclare(SymbolTable.ARG_PREFIX + name);
     }
   }
 

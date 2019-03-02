@@ -64,4 +64,9 @@ public class ReturnStatementNode extends StatementNode {
   public boolean endsWithReturn() {
     return true;
   }
+
+  @Override
+  public String toString() {
+    return "return " + result.toString();
+  }
 }

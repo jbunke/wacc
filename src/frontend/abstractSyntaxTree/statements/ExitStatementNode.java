@@ -58,4 +58,9 @@ public class ExitStatementNode extends StatementNode {
   public boolean containsExit() {
     return true;
   }
+
+  @Override
+  public String toString() {
+    return "exit " + exitCode.toString();
+  }
 }

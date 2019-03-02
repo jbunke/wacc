@@ -63,4 +63,9 @@ public class PrintLineStatementNode extends StatementNode {
     instructions.add(new PopInstruction(generator.getRegister(Register.ID.PC)));
     return instructions;
   }
+
+  @Override
+  public String toString() {
+    return "println " + expression.toString();
+  }
 }

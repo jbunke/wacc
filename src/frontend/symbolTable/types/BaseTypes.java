@@ -2,8 +2,8 @@ package frontend.symbolTable.types;
 
 public class BaseTypes extends Type {
 
-  public static final int BOOL_SIZE = 1;
-  public static final int CHAR_SIZE = 1;
+  private static final int BOOL_SIZE = 1;
+  private static final int CHAR_SIZE = 1;
   public static final int INT_SIZE = 4;
 
   public enum base_types {
