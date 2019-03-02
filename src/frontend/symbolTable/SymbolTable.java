@@ -50,7 +50,7 @@ public class SymbolTable {
     if (contents.contains(ARG_PREFIX + identifier)) {
       identifier = ARG_PREFIX + identifier;
     }
-    int offset = getSize();
+    int offset = getSize(true);
     for (String content : contents) {
       if (content.equals("_FUNC_")) {
         offset += 4;
@@ -88,13 +88,17 @@ public class SymbolTable {
   }
 
   public int getSize() {
+    return getSize(false);
+  }
+
+  private int getSize(boolean withArgs) {
     int size = 0;
 
     Set<String> keys = identifierMap.keySet();
     for (String key : keys) {
       SymbolCategory symbol = identifierMap.get(key);
       if (symbol instanceof Variable &&
-              !contentsContains(ARG_PREFIX + key)) {
+              (withArgs || !contentsContains(ARG_PREFIX + key))) {
         Variable variable = (Variable) symbol;
         size += variable.getType().size();
       }
