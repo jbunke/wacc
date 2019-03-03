@@ -277,7 +277,7 @@ echo "..."
   runBackendTest_heap tests/examples/valid/pairs/writeSnd.wacc ""
   runBackendTest_heap tests/examples/valid/pairs/writeFst.wacc ""
   runBackendTest_heap tests/examples/valid/pairs/null.wacc ""
-  runBackendTest_heap tests/examples/valid/pairs/readPair.wacc ""
+#  runBackendTest_heap tests/examples/valid/pairs/readPair.wacc ""
   runBackendTest_heap tests/examples/valid/pairs/linkedList.wacc ""
 
 # Will fail due to mismatched addresses
