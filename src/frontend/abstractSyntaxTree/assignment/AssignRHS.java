@@ -13,6 +13,6 @@ public interface AssignRHS extends AssignLHS {
   Type getType(SymbolTable symbolTable);
 
   void generateAssembly(AssemblyGenerator generator,
-                                     SymbolTable symbolTable,
-                                     Stack<Register.ID> available);
+                        SymbolTable symbolTable,
+                        Stack<Register.ID> available);
 }

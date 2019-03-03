@@ -26,8 +26,8 @@ public class PairTypeNode extends TypeNode {
 
   @Override
   public void generateAssembly(AssemblyGenerator generator,
-                                            SymbolTable symbolTable,
-                                            Stack<Register.ID> available) {
+                               SymbolTable symbolTable,
+                               Stack<Register.ID> available) {
   }
 
   @Override

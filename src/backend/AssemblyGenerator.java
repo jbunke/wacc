@@ -5,8 +5,15 @@ import backend.instructions.*;
 import frontend.abstractSyntaxTree.ProgramNode;
 import frontend.abstractSyntaxTree.statements.PrintStatementNode;
 import frontend.symbolTable.SymbolTable;
-import java.io.*;
-import java.util.*;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.BiFunction;
 
 public class AssemblyGenerator {
@@ -43,7 +50,8 @@ public class AssemblyGenerator {
   /**
    * generateAssembly is called from WACCCompiler (the main class)
    * the assembly generation is done in the private generateAssembly().
-   * File writing is done in writeToFile(). */
+   * File writing is done in writeToFile().
+   */
   public void generateAssembly(File file) throws IOException {
     generateAssembly();
     writeToFile(file);
@@ -62,7 +70,7 @@ public class AssemblyGenerator {
     // programInstructions.add(new LabelInstruction("main"));
     setActiveLabel("main");
     programNode.generateAssembly(this, symbolTable,
-                    Register.generalPurposeRegisters());
+            Register.generalPurposeRegisters());
 
     if (!dataDirectives.isEmpty()) {
       dataDirectives.add(new EmptyLine());
@@ -109,15 +117,17 @@ public class AssemblyGenerator {
     writer.close();
   }
 
-  /** allocate and deallocate handle the (de)allocation
-   * of stack space whenever a scope change occurs */
+  /**
+   * allocate and deallocate handle the (de)allocation
+   * of stack space whenever a scope change occurs
+   */
   public void allocate(SymbolTable symbolTable) {
     int size = symbolTable.getSize();
 
     while (size > 0) {
       addInstruction(
               ArithInstruction.sub(getRegister(Register.ID.SP),
-              getRegister(Register.ID.SP), Math.min(1024, size)));
+                      getRegister(Register.ID.SP), Math.min(1024, size)));
       size = Math.max(0, size - 1024);
     }
   }
@@ -128,7 +138,7 @@ public class AssemblyGenerator {
     while (size > 0) {
       addInstruction(
               ArithInstruction.add(getRegister(Register.ID.SP),
-              getRegister(Register.ID.SP), Math.min(1024, size)));
+                      getRegister(Register.ID.SP), Math.min(1024, size)));
       size = Math.max(0, size - 1024);
     }
   }
@@ -137,7 +147,8 @@ public class AssemblyGenerator {
    * addInstruction adds a specified instruction to
    * the instruction list of the active label
    *
-   * @param instruction the instruction to be added */
+   * @param instruction the instruction to be added
+   */
   public void addInstruction(Instruction instruction) {
     if (!instructions.containsKey(activeLabel)) {
       instructions.put(activeLabel, new ArrayList<>());
@@ -173,7 +184,8 @@ public class AssemblyGenerator {
   }
 
   /**
-   * Generates a unique new label used for conditionals and loops */
+   * Generates a unique new label used for conditionals and loops
+   */
   public String generateNewLabel() {
     String label = "L" + Integer.toString(lLabelCount);
     lLabelCount++;
@@ -183,11 +195,13 @@ public class AssemblyGenerator {
 
   /**
    * Generates helper functions
-   * @param msgs Data directives for helper functions
-   * @param function Function to call to generate instructions */
+   *
+   * @param msgs     Data directives for helper functions
+   * @param function Function to call to generate instructions
+   */
   public void generateLabel(String label,
-          String[] msgs, BiFunction<AssemblyGenerator,
-          String[],List<Instruction>> function) {
+                            String[] msgs, BiFunction<AssemblyGenerator,
+          String[], List<Instruction>> function) {
     if (!containsLabel(label)) {
       String[] retMsgs = new String[msgs.length];
       for (int i = 0; i < msgs.length; i++) {
@@ -210,9 +224,10 @@ public class AssemblyGenerator {
    * do so explicitly to match the labels that they are
    * associated with and compliant with in the reference compiler.
    * They are designed to be called through generateLabel with
-   * (bi)function lambdas. */
+   * (bi)function lambdas.
+   */
   public static List<Instruction> throw_overflow_error(AssemblyGenerator generator,
-                                                String[] msgs) {
+                                                       String[] msgs) {
     List<Instruction> instructions = new ArrayList<>();
     instructions.add(new LDRInstruction(
             generator.getRegister(Register.ID.R0), msgs[0]));
@@ -259,7 +274,7 @@ public class AssemblyGenerator {
   }
 
   public static List<Instruction> check_null_ptr(AssemblyGenerator generator,
-      String[] msgs) {
+                                                 String[] msgs) {
     List<Instruction> instructions = new ArrayList<>();
     Register R0 = generator.getRegister(ID.R0);
 
@@ -268,11 +283,11 @@ public class AssemblyGenerator {
     instructions.add(new LDRInstruction(Condition.EQ, R0, msgs[0]));
 
     generator.generateLabel("p_throw_runtime_error",
-        new String[0],
-        AssemblyGenerator::throw_runtime_error);
+            new String[0],
+            AssemblyGenerator::throw_runtime_error);
 
     instructions.add(new BranchInstruction(List.of(Condition.L, Condition.EQ),
-        "p_throw_runtime_error"));
+            "p_throw_runtime_error"));
 
     instructions.add(new PopInstruction(generator.getRegister(ID.PC)));
 
@@ -280,9 +295,9 @@ public class AssemblyGenerator {
   }
 
   private static List<Instruction> throw_runtime_error(AssemblyGenerator generator,
-                                               String[] msgs) {
+                                                       String[] msgs) {
     List<Instruction> instructions = new ArrayList<>();
-    generator.generateLabel("p_print_string", new String[] {TERMIN_STRING},
+    generator.generateLabel("p_print_string", new String[]{TERMIN_STRING},
             PrintStatementNode::print_string);
     instructions.add(new BranchInstruction(Condition.L, "p_print_string"));
     instructions.add(new MovInstruction(generator.getRegister(Register.ID.R0),
@@ -292,7 +307,7 @@ public class AssemblyGenerator {
   }
 
   public static List<Instruction> check_divide_by_zero(AssemblyGenerator generator,
-                                                        String[] msgName){
+                                                       String[] msgName) {
     Register r0 = generator.getRegister(Register.ID.R0);
     Register r1 = generator.getRegister(Register.ID.R1);
 

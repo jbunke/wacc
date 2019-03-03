@@ -3,7 +3,9 @@ package frontend.abstractSyntaxTree.expressions;
 import backend.AssemblyGenerator;
 import backend.Condition;
 import backend.Register;
-import backend.instructions.*;
+import backend.instructions.BranchInstruction;
+import backend.instructions.ExOrInstruction;
+import backend.instructions.RSBSInstruction;
 import frontend.symbolTable.SemanticError;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
@@ -130,8 +132,8 @@ public class UnaryOpExpressionNode extends ExpressionNode {
 
   @Override
   public void generateAssembly(AssemblyGenerator generator,
-                                            SymbolTable symbolTable,
-                                            Stack<Register.ID> available) {
+                               SymbolTable symbolTable,
+                               Stack<Register.ID> available) {
     switch (operatorType) {
       case NOT:
         addNotInstructions(generator, symbolTable, available);
@@ -146,7 +148,7 @@ public class UnaryOpExpressionNode extends ExpressionNode {
         generator.addInstruction(new RSBSInstruction(first, first, 0));
         List<Condition> blvs = List.of(Condition.L, Condition.VS);
         generator.generateLabel("p_throw_overflow_error",
-                new String[] {OVERFLOW}, AssemblyGenerator::throw_overflow_error);
+                new String[]{OVERFLOW}, AssemblyGenerator::throw_overflow_error);
         generator.addInstruction(new BranchInstruction(blvs,
                 "p_throw_overflow_error"));
         break;

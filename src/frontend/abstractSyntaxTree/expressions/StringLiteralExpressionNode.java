@@ -29,8 +29,8 @@ public class StringLiteralExpressionNode extends ExpressionNode {
 
   @Override
   public void generateAssembly(AssemblyGenerator generator,
-                                            SymbolTable symbolTable,
-                                            Stack<Register.ID> available) {
+                               SymbolTable symbolTable,
+                               Stack<Register.ID> available) {
     Register first = new Register(available.peek());
 
     generator.addInstruction(new LDRInstruction(first, generator.addMsg(value)));

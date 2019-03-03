@@ -44,8 +44,8 @@ public class WhileStatementNode extends StatementNode {
 
   @Override
   public void generateAssembly(AssemblyGenerator generator,
-                                            SymbolTable symbolTable,
-                                            Stack<Register.ID> available) {
+                               SymbolTable symbolTable,
+                               Stack<Register.ID> available) {
     String label = generator.generateNewLabel();
     String trueLabel = generator.generateNewLabel();
 

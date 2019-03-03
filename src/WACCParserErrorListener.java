@@ -1,16 +1,15 @@
+import org.antlr.v4.runtime.BaseErrorListener;
+import org.antlr.v4.runtime.RecognitionException;
+import org.antlr.v4.runtime.Recognizer;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import org.antlr.v4.runtime.BaseErrorListener;
-import org.antlr.v4.runtime.Recognizer;
-import org.antlr.v4.runtime.RecognitionException;
-
-/*
+/**
  * Class maintains a log of syntax errors which are caught during parsing.
  * This log can be queried to detect the presence of syntax errors and
  * retrieve the cause of said errors.
  */
-
 public class WACCParserErrorListener extends BaseErrorListener {
 
   private List<String> syntaxErrors = new ArrayList<>();
@@ -25,11 +24,11 @@ public class WACCParserErrorListener extends BaseErrorListener {
             + charPositionInLine + " -> " + msg);
   }
 
-  public boolean hasError() {
+  boolean hasError() {
     return !syntaxErrors.isEmpty();
   }
 
-  public List<String> getSyntaxErrors() {
+  List<String> getSyntaxErrors() {
     return syntaxErrors;
   }
 }

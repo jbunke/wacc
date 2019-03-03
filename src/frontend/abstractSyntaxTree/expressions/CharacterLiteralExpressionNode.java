@@ -28,8 +28,8 @@ public class CharacterLiteralExpressionNode extends ExpressionNode {
 
   @Override
   public void generateAssembly(AssemblyGenerator generator,
-                                            SymbolTable symbolTable,
-                                            Stack<Register.ID> available) {
+                               SymbolTable symbolTable,
+                               Stack<Register.ID> available) {
     Register next = generator.getRegister(available.peek());
     generator.addInstruction(new MovInstruction(next, value));
   }

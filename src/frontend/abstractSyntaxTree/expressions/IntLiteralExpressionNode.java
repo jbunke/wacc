@@ -3,15 +3,12 @@ package frontend.abstractSyntaxTree.expressions;
 
 import backend.AssemblyGenerator;
 import backend.Register;
-import backend.instructions.Instruction;
 import backend.instructions.LDRInstruction;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.BaseTypes;
 import frontend.symbolTable.types.Type;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Stack;
 
 public class IntLiteralExpressionNode extends ExpressionNode {
@@ -36,8 +33,8 @@ public class IntLiteralExpressionNode extends ExpressionNode {
 
   @Override
   public void generateAssembly(AssemblyGenerator generator,
-                                            SymbolTable symbolTable,
-                                            Stack<Register.ID> available) {
+                               SymbolTable symbolTable,
+                               Stack<Register.ID> available) {
     Register next = generator.getRegister(available.peek());
     generator.addInstruction(new LDRInstruction(next, value));
   }

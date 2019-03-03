@@ -9,11 +9,7 @@ import backend.instructions.MovInstruction;
 import backend.instructions.STRInstruction;
 import frontend.abstractSyntaxTree.expressions.ExpressionNode;
 import frontend.abstractSyntaxTree.expressions.IdentifierNode;
-import frontend.symbolTable.Function;
-import frontend.symbolTable.SymbolCategory;
-import frontend.symbolTable.SemanticError;
-import frontend.symbolTable.SemanticErrorList;
-import frontend.symbolTable.SymbolTable;
+import frontend.symbolTable.*;
 import frontend.symbolTable.types.Type;
 
 import java.util.List;
@@ -79,7 +75,7 @@ public class FunctionCallNode implements AssignRHS {
 
   @Override
   public void generateAssembly(AssemblyGenerator generator,
-          SymbolTable symbolTable, Stack<Register.ID> available) {
+                               SymbolTable symbolTable, Stack<Register.ID> available) {
     // Arguments stored in negative stack addresses
     int totalSize = 0;
     for (int i = arguments.size() - 1; i >= 0; i--) {

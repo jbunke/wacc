@@ -23,7 +23,7 @@ public class Register {
     return regID.name().toLowerCase();
   }
 
-  public static Stack<Register.ID> generalPurposeRegisters() {
+  static Stack<Register.ID> generalPurposeRegisters() {
     Stack<Register.ID> genRegs = new Stack<>();
 
     genRegs.push(ID.R12);

@@ -15,7 +15,7 @@ public class BranchInstruction extends Instruction {
     this.label = label;
   }
 
-  public BranchInstruction(List<Condition> conditions, String label){
+  public BranchInstruction(List<Condition> conditions, String label) {
     this.conditions = conditions;
     this.label = label;
   }

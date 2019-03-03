@@ -2,7 +2,7 @@ package backend.instructions;
 
 import backend.Register;
 
-public class SMULLInstruction extends Instruction{
+public class SMULLInstruction extends Instruction {
 
   private Register rdLoRegister;
   private Register rdHiRegister;

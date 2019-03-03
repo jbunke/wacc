@@ -53,7 +53,7 @@ public class LDRInstruction extends Instruction {
     return this;
   }
 
-  public LDRInstruction isSingleByte(boolean isSingleByte){
+  public LDRInstruction isSingleByte(boolean isSingleByte) {
     this.isSingleByte = isSingleByte;
     return this;
   }

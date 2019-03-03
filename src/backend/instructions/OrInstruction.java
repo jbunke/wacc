@@ -8,7 +8,7 @@ public class OrInstruction extends Instruction {
   private final Register op2;
 
   public OrInstruction(Register destRegister,
-                        Register op1, Register op2) {
+                       Register op1, Register op2) {
     this.destRegister = destRegister;
     this.op1 = op1;
     this.op2 = op2;

@@ -9,8 +9,8 @@ import frontend.abstractSyntaxTree.typeNodes.TypeNode;
 import frontend.symbolTable.SemanticError;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
-import frontend.symbolTable.types.Type;
 import frontend.symbolTable.Variable;
+import frontend.symbolTable.types.Type;
 
 import java.util.Stack;
 
@@ -51,8 +51,8 @@ public class DeclarationStatementNode extends StatementNode {
 
   @Override
   public void generateAssembly(AssemblyGenerator generator,
-                                            SymbolTable symbolTable,
-                                            Stack<Register.ID> available) {
+                               SymbolTable symbolTable,
+                               Stack<Register.ID> available) {
     boolean isSingleByte = identifier.getType(symbolTable).isSingleByte();
 
     rhs.generateAssembly(generator, symbolTable, available);

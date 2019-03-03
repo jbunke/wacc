@@ -49,8 +49,8 @@ public class StatementListNode extends StatementNode {
 
   @Override
   public void generateAssembly(AssemblyGenerator generator,
-                                            SymbolTable symbolTable,
-                                            Stack<Register.ID> available) {
+                               SymbolTable symbolTable,
+                               Stack<Register.ID> available) {
     for (StatementNode statement : statements) {
       statement.generateAssembly(generator, symbolTable, available);
     }

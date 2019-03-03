@@ -5,7 +5,7 @@ public abstract class Type {
 
   public abstract int size();
 
-  public boolean isSingleByte(){
+  public boolean isSingleByte() {
     return size() == 1;
   }
 }

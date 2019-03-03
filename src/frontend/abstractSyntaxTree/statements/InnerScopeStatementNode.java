@@ -2,7 +2,6 @@ package frontend.abstractSyntaxTree.statements;
 
 import backend.AssemblyGenerator;
 import backend.Register;
-import backend.instructions.ArithInstruction;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.Type;
@@ -24,8 +23,8 @@ public class InnerScopeStatementNode extends StatementNode {
 
   @Override
   public void generateAssembly(AssemblyGenerator generator,
-                                            SymbolTable symbolTable,
-                                            Stack<Register.ID> available) {
+                               SymbolTable symbolTable,
+                               Stack<Register.ID> available) {
     SymbolTable innerTable = symbolTable.getChild(innerStatement);
 
     generator.allocate(innerTable);

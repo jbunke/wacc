@@ -32,8 +32,8 @@ public class PrintLineStatementNode extends StatementNode {
 
   @Override
   public void generateAssembly(AssemblyGenerator generator,
-                                            SymbolTable symbolTable,
-                                            Stack<Register.ID> available) {
+                               SymbolTable symbolTable,
+                               Stack<Register.ID> available) {
     new PrintStatementNode(expression).generateAssembly(
             generator, symbolTable, available);
 

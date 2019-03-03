@@ -50,8 +50,8 @@ public class IfStatementNode extends StatementNode {
 
   @Override
   public void generateAssembly(AssemblyGenerator generator,
-                                            SymbolTable symbolTable,
-                                            Stack<Register.ID> available) {
+                               SymbolTable symbolTable,
+                               Stack<Register.ID> available) {
     condition.generateAssembly(generator, symbolTable, available);
     generator.addInstruction(new CompareInstruction(
             generator.getRegister(available.peek()), 0));

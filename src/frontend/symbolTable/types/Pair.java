@@ -33,7 +33,7 @@ public class Pair extends Type {
       Pair pair = (Pair) other;
 
       return checkElementEquality(first, pair.first) &&
-          checkElementEquality(second, pair.second);
+              checkElementEquality(second, pair.second);
     }
 
     //obj not an instance of pair

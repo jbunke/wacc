@@ -13,7 +13,9 @@ public class Directive extends Instruction {
   public Directive(ID did, String argument) {
     this.did = did;
     this.argument = argument;
-    if (did == ID.ASCII) { this.argument = "\"" + argument + "\""; }
+    if (did == ID.ASCII) {
+      this.argument = "\"" + argument + "\"";
+    }
   }
 
   public enum ID {

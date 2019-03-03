@@ -50,8 +50,8 @@ public class ParameterListNode implements Node {
 
   @Override
   public void generateAssembly(AssemblyGenerator generator,
-                                            SymbolTable symbolTable,
-                                            Stack<Register.ID> available) {
+                               SymbolTable symbolTable,
+                               Stack<Register.ID> available) {
     for (int i = identifierList.size() - 1; i >= 0; i--) {
       String name = identifierList.get(i).getName();
       symbolTable.populateOnDeclare(SymbolTable.ARG_PREFIX + name);

@@ -1,18 +1,13 @@
 import antlr.WACCLexer;
 import antlr.WACCParser;
-
 import backend.AssemblyGenerator;
 import frontend.Visitor;
 import frontend.abstractSyntaxTree.ProgramNode;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
-import java.io.File;
-import org.antlr.v4.runtime.CharStream;
-import org.antlr.v4.runtime.CharStreams;
-import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.TokenStream;
-import org.antlr.v4.runtime.RecognitionException;
+import org.antlr.v4.runtime.*;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -97,7 +92,7 @@ public class WACCCompiler {
       }
 
       String assFileName = file.substring(file.lastIndexOf("/") + 1,
-                           file.lastIndexOf(".wacc")) + ".s";
+              file.lastIndexOf(".wacc")) + ".s";
       File assFile = new File(assFileName);
 
       if (!assFile.createNewFile()) {

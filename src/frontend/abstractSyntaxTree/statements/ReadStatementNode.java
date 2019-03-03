@@ -41,8 +41,8 @@ public class ReadStatementNode extends StatementNode {
 
   @Override
   public void generateAssembly(AssemblyGenerator generator,
-                                            SymbolTable symbolTable,
-                                            Stack<Register.ID> available) {
+                               SymbolTable symbolTable,
+                               Stack<Register.ID> available) {
     Register first = generator.getRegister(available.peek());
     if (lhs instanceof IdentifierNode) {
       String identifier = ((IdentifierNode) lhs).getName();
@@ -83,7 +83,7 @@ public class ReadStatementNode extends StatementNode {
   }
 
   private static List<Instruction> read(AssemblyGenerator generator,
-                                             String intMsg) {
+                                        String intMsg) {
     List<Instruction> instructions = new ArrayList<>();
     instructions.add(new PushInstruction(generator.getRegister(Register.ID.LR)));
     instructions.add(new MovInstruction(generator.getRegister(Register.ID.R1),

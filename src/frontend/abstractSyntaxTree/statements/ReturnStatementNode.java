@@ -35,8 +35,8 @@ public class ReturnStatementNode extends StatementNode {
 
   @Override
   public void generateAssembly(AssemblyGenerator generator,
-                                            SymbolTable symbolTable,
-                                            Stack<Register.ID> available) {
+                               SymbolTable symbolTable,
+                               Stack<Register.ID> available) {
     result.generateAssembly(generator, symbolTable, available);
 
     /* Move result (housed in first available general purpose register)

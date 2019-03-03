@@ -2,17 +2,17 @@ package frontend.abstractSyntaxTree.expressions;
 
 
 import backend.AssemblyGenerator;
+import backend.Condition;
 import backend.Register;
 import backend.Register.ID;
-import backend.Condition;
 import backend.instructions.*;
 import frontend.symbolTable.SemanticError;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
+import frontend.symbolTable.Variable;
 import frontend.symbolTable.types.Array;
 import frontend.symbolTable.types.BaseTypes;
 import frontend.symbolTable.types.Type;
-import frontend.symbolTable.Variable;
 
 import java.util.List;
 import java.util.Stack;
@@ -24,16 +24,16 @@ public class ArrayElementNode extends ExpressionNode {
 
   private static final String CHECK_ARRAY_BOUNDS = "p_check_array_bounds";
   private static final String CHECK_ARRAY_LOWER =
-      "ArrayIndexOutOfBoundsError: " +
-          "negative index\\n\\0";
+          "ArrayIndexOutOfBoundsError: " +
+                  "negative index\\n\\0";
   private static final String CHECK_ARRAY_UPPER =
-      "ArrayIndexOutOfBoundsError: " +
-          "index too large\\n\\0";
+          "ArrayIndexOutOfBoundsError: " +
+                  "index too large\\n\\0";
   private final IdentifierNode identifier;
   private final List<ExpressionNode> indices;
 
   public ArrayElementNode(List<ExpressionNode> indices,
-      IdentifierNode identifier) {
+                          IdentifierNode identifier) {
     this.indices = indices;
     this.identifier = identifier;
   }
@@ -51,14 +51,14 @@ public class ArrayElementNode extends ExpressionNode {
 
   @Override
   public void semanticCheck(SymbolTable symbolTable,
-      SemanticErrorList errorList) {
+                            SemanticErrorList errorList) {
     for (ExpressionNode node : indices) {
       final Type nodeType = node.getType(symbolTable);
       if (!nodeType.equals(new BaseTypes(BaseTypes.base_types.INT))) {
         errorList.addError(new SemanticError(
-            "Error: Index used for array is not an integer!" + "" +
-                "Expression supplied was of type \"" + nodeType.toString()
-                + "\"."
+                "Error: Index used for array is not an integer!" + "" +
+                        "Expression supplied was of type \"" + nodeType.toString()
+                        + "\"."
         ));
       }
     }
@@ -66,8 +66,8 @@ public class ArrayElementNode extends ExpressionNode {
     final Type identifierType = identifier.getType(symbolTable);
     if (!(identifierType instanceof Array)) {
       errorList.addError(new SemanticError(
-          "Error: Tried to index a variable of non-array type. " +
-              "Variable is of type \"" + identifierType.toString() + "\"."
+              "Error: Tried to index a variable of non-array type. " +
+                      "Variable is of type \"" + identifierType.toString() + "\"."
       ));
     }
 
@@ -80,16 +80,16 @@ public class ArrayElementNode extends ExpressionNode {
 
     if (indices.size() > dimensions) {
       errorList.addError(new SemanticError(
-          "Error: Too many indices! Array only has" + dimensions
-              + " dimensions, " +
-              "but has been supplied" + indices.size() + " indices."
+              "Error: Too many indices! Array only has" + dimensions
+                      + " dimensions, " +
+                      "but has been supplied" + indices.size() + " indices."
       ));
     }
   }
 
   @Override
   public void generateAssembly(AssemblyGenerator generator,
-      SymbolTable symbolTable, Stack<Register.ID> available) {
+                               SymbolTable symbolTable, Stack<Register.ID> available) {
     Register addrReg = generator.getRegister(available.pop());
 
     getAddrOfElem(generator, symbolTable, available, addrReg);
@@ -100,14 +100,14 @@ public class ArrayElementNode extends ExpressionNode {
   }
 
   private void getAddrOfElem(AssemblyGenerator generator, SymbolTable symbolTable,
-      Stack<Register.ID> available, Register addrReg) {
+                             Stack<Register.ID> available, Register addrReg) {
     Register R0 = generator.getRegister(ID.R0);
     Register R1 = generator.getRegister(ID.R1);
     Register nextFree = generator.getRegister(available.peek());
     Register SP = generator.getRegister(ID.SP);
 
     generator.addInstruction(ArithInstruction
-        .add(addrReg, SP, symbolTable.fetchOffset(identifier.getName())));
+            .add(addrReg, SP, symbolTable.fetchOffset(identifier.getName())));
 
     for (ExpressionNode e : indices) {
       e.generateAssembly(generator, symbolTable, available);
@@ -117,20 +117,20 @@ public class ArrayElementNode extends ExpressionNode {
       generator.addInstruction(new MovInstruction(R1, addrReg));
 
       generator.generateLabel(CHECK_ARRAY_BOUNDS, new String[]
-              {CHECK_ARRAY_LOWER, CHECK_ARRAY_UPPER},
-          AssemblyGenerator::check_array_bounds);
+                      {CHECK_ARRAY_LOWER, CHECK_ARRAY_UPPER},
+              AssemblyGenerator::check_array_bounds);
       generator.addInstruction(
-          new BranchInstruction(Condition.L, CHECK_ARRAY_BOUNDS));
+              new BranchInstruction(Condition.L, CHECK_ARRAY_BOUNDS));
       generator
-          .addInstruction(ArithInstruction.add(addrReg, addrReg, INT_SIZE));
+              .addInstruction(ArithInstruction.add(addrReg, addrReg, INT_SIZE));
       generator.addInstruction(
-          ArithInstruction.addReg(addrReg, addrReg, nextFree, LEFT_SHIFT_ARR));
+              ArithInstruction.addReg(addrReg, addrReg, nextFree, LEFT_SHIFT_ARR));
     }
   }
 
   public void generateLHSAssembly(AssemblyGenerator generator,
-      SymbolTable symbolTable,
-      Stack<Register.ID> available, boolean isSingleByte) {
+                                  SymbolTable symbolTable,
+                                  Stack<Register.ID> available, boolean isSingleByte) {
 
     Register RHSResult = generator.getRegister(available.pop());
     Register addrReg = generator.getRegister(available.pop());

@@ -25,8 +25,8 @@ public class ProgramNode implements Node {
 
   @Override
   public void generateAssembly(AssemblyGenerator generator,
-                                            SymbolTable symbolTable,
-                                            Stack<Register.ID> available) {
+                               SymbolTable symbolTable,
+                               Stack<Register.ID> available) {
     generator.addInstruction(new LabelInstruction("main"));
     generator.addInstruction(new PushInstruction(
             generator.getRegister(Register.ID.LR)));

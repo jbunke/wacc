@@ -2,10 +2,10 @@ package frontend;
 
 import antlr.WACCParser;
 import antlr.WACCParserBaseVisitor;
+import frontend.abstractSyntaxTree.Node;
 import frontend.abstractSyntaxTree.ProgramNode;
 import frontend.abstractSyntaxTree.assignment.*;
 import frontend.abstractSyntaxTree.expressions.*;
-import frontend.abstractSyntaxTree.Node;
 import frontend.abstractSyntaxTree.statements.*;
 import frontend.abstractSyntaxTree.typeNodes.*;
 

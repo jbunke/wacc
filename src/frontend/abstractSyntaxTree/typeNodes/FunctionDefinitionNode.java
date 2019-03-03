@@ -2,7 +2,10 @@ package frontend.abstractSyntaxTree.typeNodes;
 
 import backend.AssemblyGenerator;
 import backend.Register;
-import backend.instructions.*;
+import backend.instructions.Directive;
+import backend.instructions.LabelInstruction;
+import backend.instructions.PopInstruction;
+import backend.instructions.PushInstruction;
 import frontend.abstractSyntaxTree.Node;
 import frontend.abstractSyntaxTree.expressions.IdentifierNode;
 import frontend.abstractSyntaxTree.statements.StatementNode;

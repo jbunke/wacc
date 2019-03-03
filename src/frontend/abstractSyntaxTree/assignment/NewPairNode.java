@@ -27,7 +27,7 @@ public class NewPairNode implements AssignRHS {
   private final ExpressionNode rightExpression;
 
   public NewPairNode(ExpressionNode leftExpression,
-      ExpressionNode rightExpression) {
+                     ExpressionNode rightExpression) {
     this.leftExpression = leftExpression;
     this.rightExpression = rightExpression;
   }
@@ -38,15 +38,15 @@ public class NewPairNode implements AssignRHS {
 
   @Override
   public void generateAssembly(AssemblyGenerator generator,
-      SymbolTable symbolTable,
-      Stack<Register.ID> available) {
+                               SymbolTable symbolTable,
+                               Stack<Register.ID> available) {
     generator.addInstruction(new LDRInstruction(generator.getRegister(ID.R0),
-        NUM_PAIR_ELEMENTS * ADDR_SIZE));
+            NUM_PAIR_ELEMENTS * ADDR_SIZE));
     generator.addInstruction(new BranchInstruction(Condition.L, "malloc"));
 
     Register ptrReg = generator.getRegister(available.pop());
     generator.addInstruction(new MovInstruction(ptrReg,
-        generator.getRegister(ID.R0)));
+            generator.getRegister(ID.R0)));
 
     allocElem(generator, symbolTable, available, LEFT_ELEM, ptrReg);
     allocElem(generator, symbolTable, available, RIGHT_ELEM, ptrReg);
@@ -55,7 +55,7 @@ public class NewPairNode implements AssignRHS {
   }
 
   private void allocElem(AssemblyGenerator generator, SymbolTable symbolTable,
-      Stack<Register.ID> available, int elem, Register ptrReg) {
+                         Stack<Register.ID> available, int elem, Register ptrReg) {
     ExpressionNode exp;
     if (elem == LEFT_ELEM) {
       exp = leftExpression;
@@ -72,17 +72,17 @@ public class NewPairNode implements AssignRHS {
 
     boolean isSingleByte = typeSize == BYTE_SIZE;
     generator.addInstruction(
-        new STRInstruction(generator.getRegister(available.peek()),
-            r0, isSingleByte));
+            new STRInstruction(generator.getRegister(available.peek()),
+                    r0, isSingleByte));
 
     generator.addInstruction(new STRInstruction(r0, ptrReg,
-        (elem - 1) * ADDR_SIZE, false));
+            (elem - 1) * ADDR_SIZE, false));
   }
 
 
   @Override
   public Type getType(SymbolTable symbolTable) {
     return new Pair(leftExpression.getType(symbolTable),
-        rightExpression.getType(symbolTable));
+            rightExpression.getType(symbolTable));
   }
 }

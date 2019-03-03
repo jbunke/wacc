@@ -40,8 +40,8 @@ public class PrintStatementNode extends StatementNode {
 
   @Override
   public void generateAssembly(AssemblyGenerator generator,
-                                            SymbolTable symbolTable,
-                                            Stack<Register.ID> available) {
+                               SymbolTable symbolTable,
+                               Stack<Register.ID> available) {
     expression.generateAssembly(generator,
             symbolTable, available);
     Register first = generator.getRegister(available.peek());
@@ -53,13 +53,13 @@ public class PrintStatementNode extends StatementNode {
       switch (expType.getBaseType()) {
         case INT:
           generator.generateLabel("p_print_int",
-                  new String[] {INT_FORMATTER}, PrintStatementNode::print_int);
+                  new String[]{INT_FORMATTER}, PrintStatementNode::print_int);
           generator.addInstruction(
                   new BranchInstruction(Condition.L, "p_print_int"));
           break;
         case BOOL:
           generator.generateLabel("p_print_bool",
-                  new String[] {TRUE_STRING, FALSE_STRING},
+                  new String[]{TRUE_STRING, FALSE_STRING},
                   PrintStatementNode::print_bool);
           generator.addInstruction(
                   new BranchInstruction(Condition.L, "p_print_bool"));
@@ -76,13 +76,13 @@ public class PrintStatementNode extends StatementNode {
                       BaseTypes.base_types.CHAR) {
         // Dealing with a string
         generator.generateLabel("p_print_string",
-                new String[] {TERMIN_STRING},
+                new String[]{TERMIN_STRING},
                 PrintStatementNode::print_string);
         generator.addInstruction(
                 new BranchInstruction(Condition.L, "p_print_string"));
       } else {
         generator.generateLabel("p_print_reference",
-                new String[] {PAIR_FORMATTER},
+                new String[]{PAIR_FORMATTER},
                 PrintStatementNode::print_int);
         generator.addInstruction(new BranchInstruction(
                 Condition.L, "p_print_reference"));
@@ -90,7 +90,7 @@ public class PrintStatementNode extends StatementNode {
     } else if (expression.getType(symbolTable) instanceof Pair ||
             expression.getType(symbolTable) instanceof Array) {
       generator.generateLabel("p_print_reference",
-              new String[] {PAIR_FORMATTER},
+              new String[]{PAIR_FORMATTER},
               PrintStatementNode::print_int);
       generator.addInstruction(new BranchInstruction(
               Condition.L, "p_print_reference"));
@@ -98,7 +98,7 @@ public class PrintStatementNode extends StatementNode {
   }
 
   public static List<Instruction> print_string(AssemblyGenerator generator,
-                                                String[] msgs) {
+                                               String[] msgs) {
     List<Instruction> instructions = new ArrayList<>();
     instructions.add(new PushInstruction(generator.getRegister(Register.ID.LR)));
     instructions.add(new LDRInstruction(generator.getRegister(Register.ID.R1),
@@ -139,7 +139,7 @@ public class PrintStatementNode extends StatementNode {
   }
 
   private static List<Instruction> print_int(AssemblyGenerator generator,
-                                              String[] intMsg) {
+                                             String[] intMsg) {
     List<Instruction> instructions = new ArrayList<>();
     instructions.add(new PushInstruction(generator.getRegister(Register.ID.LR)));
     instructions.add(new MovInstruction(generator.getRegister(Register.ID.R1),

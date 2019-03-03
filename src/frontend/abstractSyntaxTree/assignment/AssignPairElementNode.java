@@ -5,10 +5,9 @@ import backend.Condition;
 import backend.Register;
 import backend.Register.ID;
 import backend.instructions.BranchInstruction;
-import backend.instructions.Instruction;
 import backend.instructions.LDRInstruction;
-import backend.instructions.STRInstruction;
 import backend.instructions.MovInstruction;
+import backend.instructions.STRInstruction;
 import frontend.abstractSyntaxTree.expressions.IdentifierNode;
 import frontend.symbolTable.SemanticError;
 import frontend.symbolTable.SemanticErrorList;
@@ -16,15 +15,13 @@ import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.Pair;
 import frontend.symbolTable.types.Type;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Stack;
 
 public class AssignPairElementNode implements AssignRHS {
 
   private static final String NULL_PTR_CHECK = "p_check_null_pointer";
   private static final String NULL_PTR = "NullReferenceError: dereference "
-      + "a null reference\\n\\0";
+          + "a null reference\\n\\0";
 
   public static final int FST_POSITION = 0;
   public static final int SND_POSITION = 1;
@@ -47,8 +44,8 @@ public class AssignPairElementNode implements AssignRHS {
 
   @Override
   public void generateAssembly(AssemblyGenerator generator,
-      SymbolTable symbolTable,
-      Stack<Register.ID> available) {
+                               SymbolTable symbolTable,
+                               Stack<Register.ID> available) {
 
     Register nextFree = generator.getRegister(available.peek());
     Register R0 = generator.getRegister(ID.R0);

@@ -19,7 +19,7 @@ public class CompareInstruction extends Instruction {
     asrConst = null;
   }
 
-  public CompareInstruction(Register operand1, Register operand2, int asrConst){
+  public CompareInstruction(Register operand1, Register operand2, int asrConst) {
     this.operand1 = operand1;
     this.operand2 = operand2.toString();
     this.asrConst = Integer.toString(asrConst);
@@ -27,8 +27,8 @@ public class CompareInstruction extends Instruction {
 
   @Override
   public String asString() {
-    if(asrConst != null) {
-      return "CMP " + operand1.toString() + ", " + operand2 + ", ASR #"+asrConst;
+    if (asrConst != null) {
+      return "CMP " + operand1.toString() + ", " + operand2 + ", ASR #" + asrConst;
     }
     return "CMP " + operand1.toString() + ", " + operand2;
   }

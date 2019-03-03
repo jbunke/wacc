@@ -43,7 +43,7 @@ public class MovInstruction extends Instruction {
     return value ? "1" : "0";
   }
 
-  public MovInstruction withCondition(Condition condition){
+  public MovInstruction withCondition(Condition condition) {
     this.condition = condition;
     return this;
   }

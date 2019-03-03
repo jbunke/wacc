@@ -1,4 +1,4 @@
 package frontend.symbolTable;
 
-public class Reserved extends SymbolCategory {
+class Reserved extends SymbolCategory {
 }

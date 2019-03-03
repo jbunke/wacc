@@ -37,13 +37,13 @@ public class BinaryOpExpressionNode extends ExpressionNode {
 
   private final static Map<OperatorType, Condition> equivalent =
           Map.ofEntries(
-          Map.entry(OperatorType.EQUAL, Condition.EQ),
-          Map.entry(OperatorType.NOT_EQUAL, Condition.NE),
-          Map.entry(OperatorType.GREATER_THAN_OR_EQUAL, Condition.GE),
-          Map.entry(OperatorType.GREATER_THAN, Condition.GT),
-          Map.entry(OperatorType.LESS_THAN_OR_EQUAL, Condition.LE),
-          Map.entry(OperatorType.LESS_THAN, Condition.LT)
-  );
+                  Map.entry(OperatorType.EQUAL, Condition.EQ),
+                  Map.entry(OperatorType.NOT_EQUAL, Condition.NE),
+                  Map.entry(OperatorType.GREATER_THAN_OR_EQUAL, Condition.GE),
+                  Map.entry(OperatorType.GREATER_THAN, Condition.GT),
+                  Map.entry(OperatorType.LESS_THAN_OR_EQUAL, Condition.LE),
+                  Map.entry(OperatorType.LESS_THAN, Condition.LT)
+          );
 
   private final ExpressionNode left;
   private final ExpressionNode right;
@@ -74,9 +74,9 @@ public class BinaryOpExpressionNode extends ExpressionNode {
     AND(0),
     OR(0);
 
-        /* 0 - Boolean operators that take boolean arguments
-         * 1 - Boolean operators that take arithmetic arguments
-         * 2 - Arithmetic operators */
+    /* 0 - Boolean operators that take boolean arguments
+     * 1 - Boolean operators that take arithmetic arguments
+     * 2 - Arithmetic operators */
 
     public final int value;
 
@@ -186,8 +186,8 @@ public class BinaryOpExpressionNode extends ExpressionNode {
 
   @Override
   public void generateAssembly(AssemblyGenerator generator,
-                                            SymbolTable symbolTable,
-                                            Stack<Register.ID> available) {
+                               SymbolTable symbolTable,
+                               Stack<Register.ID> available) {
     Stack<Register.ID> originalRegState = new Stack<>();
     originalRegState.addAll(available);
 
@@ -209,7 +209,7 @@ public class BinaryOpExpressionNode extends ExpressionNode {
   }
 
   private void generateOperation(Register rg1, Register rg2,
-                                              AssemblyGenerator generator) {
+                                 AssemblyGenerator generator) {
     Register r0 = generator.getRegister(Register.ID.R0);
     Register r1 = generator.getRegister(Register.ID.R1);
     switch (operatorType) {
@@ -237,11 +237,11 @@ public class BinaryOpExpressionNode extends ExpressionNode {
         generator.addInstruction(new SMULLInstruction(rg1, rg2, rg1, rg2));
         generator.addInstruction(new CompareInstruction(rg2, rg1, 31));
         generator.generateLabel("p_throw_overflow_error",
-                new String[] {OVERFLOW},
+                new String[]{OVERFLOW},
                 AssemblyGenerator::throw_overflow_error);
         generator.addInstruction(
                 new BranchInstruction(List.of(Condition.L, Condition.NE),
-                "p_throw_overflow_error"));
+                        "p_throw_overflow_error"));
         break;
       case DIVIDE:
         generateDivByZeroCheck(generator);
@@ -267,7 +267,7 @@ public class BinaryOpExpressionNode extends ExpressionNode {
         generator.addInstruction(ArithInstruction.addReg(rg1, rg1, rg2).withS());
         List<Condition> blvs = List.of(Condition.L, Condition.VS);
         generator.generateLabel("p_throw_overflow_error",
-                new String[] {OVERFLOW}, AssemblyGenerator::throw_overflow_error);
+                new String[]{OVERFLOW}, AssemblyGenerator::throw_overflow_error);
         generator.addInstruction(new BranchInstruction(blvs,
                 "p_throw_overflow_error"));
         break;
@@ -275,23 +275,23 @@ public class BinaryOpExpressionNode extends ExpressionNode {
         generator.addInstruction(ArithInstruction.subReg(rg1, rg1, rg2).withS());
         blvs = List.of(Condition.L, Condition.VS);
         generator.generateLabel("p_throw_overflow_error",
-                new String[] {OVERFLOW}, AssemblyGenerator::throw_overflow_error);
+                new String[]{OVERFLOW}, AssemblyGenerator::throw_overflow_error);
         generator.addInstruction(new BranchInstruction(blvs,
                 "p_throw_overflow_error"));
         break;
     }
   }
 
-  private static void generateDivByZeroCheck(AssemblyGenerator generator){
+  private static void generateDivByZeroCheck(AssemblyGenerator generator) {
     generator.generateLabel("p_check_divide_by_zero",
-            new String[] {DIV_BY_ZERO_ERR},
+            new String[]{DIV_BY_ZERO_ERR},
             AssemblyGenerator::check_divide_by_zero);
   }
 
   private void generateOperands(ExpressionNode op1,
-          ExpressionNode op2, Register rg1, Register rg2,
-          AssemblyGenerator generator, SymbolTable symbolTable,
-          Stack<Register.ID> available) {
+                                ExpressionNode op2, Register rg1, Register rg2,
+                                AssemblyGenerator generator, SymbolTable symbolTable,
+                                Stack<Register.ID> available) {
     available.push(rg1.getRegID());
     available.push(rg2.getRegID());
     op1.generateAssembly(generator, symbolTable, available);
