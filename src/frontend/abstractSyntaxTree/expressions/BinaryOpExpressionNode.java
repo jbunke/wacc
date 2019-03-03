@@ -194,7 +194,7 @@ public class BinaryOpExpressionNode extends ExpressionNode {
     Register first = generator.getRegister(available.pop());
     Register second = generator.getRegister(available.pop());
 
-    if (left.weight() > right.weight()) {
+    if (left.weight() <= right.weight()) {
       generateOperands(left, right, second, first,
               generator, symbolTable, available);
     } else {

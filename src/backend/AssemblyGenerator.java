@@ -4,7 +4,6 @@ import backend.Register.ID;
 import backend.instructions.*;
 import frontend.abstractSyntaxTree.ProgramNode;
 import frontend.abstractSyntaxTree.statements.PrintStatementNode;
-import frontend.abstractSyntaxTree.statements.StatementNode;
 import frontend.symbolTable.SymbolTable;
 import java.io.*;
 import java.util.*;
@@ -26,7 +25,6 @@ public class AssemblyGenerator {
 
   private int lLabelCount;
   private String activeLabel;
-  private Stack<String> lastLabels;
 
   public AssemblyGenerator(ProgramNode programNode,
                            SymbolTable symbolTable) {
@@ -40,7 +38,6 @@ public class AssemblyGenerator {
     this.additionals = new ArrayList<>();
 
     this.lLabelCount = 0;
-    this.lastLabels = new Stack<>();
   }
 
   /**
@@ -157,7 +154,6 @@ public class AssemblyGenerator {
   }
 
   public void setActiveLabel(String activeLabel) {
-    lastLabels.push(this.activeLabel);
     this.activeLabel = activeLabel;
     if (!labels.contains(activeLabel)) {
       labels.add(0, activeLabel);
