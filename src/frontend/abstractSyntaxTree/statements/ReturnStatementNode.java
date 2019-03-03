@@ -3,6 +3,7 @@ package frontend.abstractSyntaxTree.statements;
 import backend.AssemblyGenerator;
 import backend.Register;
 import backend.instructions.MovInstruction;
+import backend.instructions.PopInstruction;
 import frontend.abstractSyntaxTree.expressions.ExpressionNode;
 import frontend.symbolTable.SemanticError;
 import frontend.symbolTable.SemanticErrorList;
@@ -43,6 +44,9 @@ public class ReturnStatementNode extends StatementNode {
     generator.addInstruction(new MovInstruction(
             generator.getRegister(Register.ID.R0),
             generator.getRegister(available.peek())));
+    generator.deallocate(symbolTable.functionTable());
+    generator.addInstruction(new PopInstruction(
+            generator.getRegister(Register.ID.PC)));
   }
 
   @Override

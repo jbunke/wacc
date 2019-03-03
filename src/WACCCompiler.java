@@ -72,7 +72,7 @@ public class WACCCompiler {
       Visitor visitor = new Visitor();
       ProgramNode AST = (ProgramNode) visitor.visit(parseTree);
 
-      SymbolTable topLevelSymbolTable = new SymbolTable(null);
+      SymbolTable topLevelSymbolTable = new SymbolTable(null, AST);
       SemanticErrorList semErrors = new SemanticErrorList();
 
       List<String> synErrors = AST.syntaxCheck();

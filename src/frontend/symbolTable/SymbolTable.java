@@ -1,6 +1,7 @@
 package frontend.symbolTable;
 
 import frontend.abstractSyntaxTree.Node;
+import frontend.abstractSyntaxTree.typeNodes.FunctionDefinitionNode;
 
 import java.util.*;
 
@@ -14,13 +15,15 @@ public class SymbolTable {
   };
   public static final String ARG_PREFIX = "!arg_";
 
+  private final Node scope;
   private final SymbolTable parent;
   private final Map<String, SymbolCategory> identifierMap;
   private final List<String> contents;
   private final Map<Node, SymbolTable> childrenMap;
 
-  public SymbolTable(SymbolTable parent) {
+  public SymbolTable(SymbolTable parent, Node scope) {
     this.parent = parent;
+    this.scope = scope;
     identifierMap = new HashMap<>();
     childrenMap = new HashMap<>();
     contents = new ArrayList<>();
@@ -102,6 +105,13 @@ public class SymbolTable {
     return size;
   }
 
+  public SymbolTable functionTable() {
+    if (scope instanceof FunctionDefinitionNode) {
+      return this;
+    }
+    return parent.functionTable();
+  }
+
   public SymbolTable getChild(Node scope) {
     if (childrenMap.containsKey(scope)) {
       return childrenMap.get(scope);
@@ -110,7 +120,7 @@ public class SymbolTable {
   }
 
   public SymbolTable newChild(Node scope) {
-    SymbolTable child = new SymbolTable(this);
+    SymbolTable child = new SymbolTable(this, scope);
     childrenMap.put(scope, child);
     return child;
   }
