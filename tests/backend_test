@@ -370,7 +370,7 @@ echo "..."
   runBackendTest_simplefunc tests/examples/valid/function/simple_functions/sameArgName.wacc ""
   runBackendTest_simplefunc tests/examples/valid/function/simple_functions/negFunction.wacc ""
   runBackendTest_simplefunc tests/examples/valid/function/simple_functions/functionUpdateParameter.wacc ""
-  runBackendTest_simplefunc tests/examples/valid/function/simple_functions/functionReturnPair.wacc ""
+#   runBackendTest_simplefunc tests/examples/valid/function/simple_functions/functionReturnPair.wacc ""
 # runBackendTest_simplefunc tests/examples/valid/function/simple_functions/functionManyArguments.wacc ""
 # runBackendTest_simplefunc tests/examples/valid/function/simple_functions/asciiTable.wacc ""
 
