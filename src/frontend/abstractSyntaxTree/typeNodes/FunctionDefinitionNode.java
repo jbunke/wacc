@@ -63,7 +63,7 @@ public class FunctionDefinitionNode implements Node {
     parameters.generateAssembly(generator, symbolTable, available);
     generator.allocate(symbolTable);
     body.generateAssembly(generator, symbolTable, available);
-    
+
     generator.addInstruction(new PopInstruction(generator
             .getRegister(Register.ID.PC)));
     generator.addInstruction(new Directive(Directive.ID.LTORG));

@@ -5,6 +5,7 @@ import backend.Condition;
 import backend.Register;
 import backend.instructions.*;
 import frontend.abstractSyntaxTree.assignment.AssignLHS;
+import frontend.abstractSyntaxTree.expressions.IdentifierNode;
 import frontend.symbolTable.SemanticError;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
@@ -42,10 +43,16 @@ public class ReadStatementNode extends StatementNode {
   public void generateAssembly(AssemblyGenerator generator,
                                             SymbolTable symbolTable,
                                             Stack<Register.ID> available) {
-    lhs.generateAssembly(generator, symbolTable, available);
     Register first = generator.getRegister(available.peek());
-    generator.addInstruction(ArithInstruction.add(first,
-            generator.getRegister(Register.ID.SP), 0));
+    if (lhs instanceof IdentifierNode) {
+      String identifier = ((IdentifierNode) lhs).getName();
+      generator.addInstruction(ArithInstruction.add(first,
+              generator.getRegister(Register.ID.SP),
+              symbolTable.fetchOffset(identifier)));
+    } else {
+      generator.addInstruction(ArithInstruction.add(first,
+              generator.getRegister(Register.ID.SP), 0));
+    }
     generator.addInstruction(new MovInstruction(
             generator.getRegister(Register.ID.R0), first));
 
