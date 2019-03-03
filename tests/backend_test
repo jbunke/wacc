@@ -4,21 +4,6 @@ bash tests/runRefCompile.sh
 javac BackendTest.java
 
 failed=0
-
-basic=7
-sequence=8
-input/output=18
-variable=14
-expression=42
-array=10
-conditional=10
-loop=12
-scope=10
-simple_function=10
-nested_function=7
-runtime=21
-heap=16
-
 total=0
 
 runBackendTest(){
