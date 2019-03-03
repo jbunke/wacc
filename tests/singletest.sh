@@ -17,7 +17,7 @@
      echo "Reference Output: Created " ${NAME}.out    javac BackendTest.java
 
     javac BackendTest.java
-    java BackendTest "$1"
+    java BackendTest "$1" $2
     code=$?
     ((total=total+1))
     if [ $code -ne 0 ]; then
