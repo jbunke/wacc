@@ -33,4 +33,9 @@ public class ArrayTypeNode extends TypeNode {
     // System.out.println("Array type: " + arrayType.getType());
     return new Array(arrayType.getType());
   }
+
+  @Override
+  public String toString() {
+    return arrayType.toString().toLowerCase();
+  }
 }

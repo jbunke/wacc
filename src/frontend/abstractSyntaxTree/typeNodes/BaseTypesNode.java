@@ -46,4 +46,9 @@ public class BaseTypesNode extends TypeNode {
                                             SymbolTable symbolTable,
                                             Stack<Register.ID> available) {
   }
+
+  @Override
+  public String toString() {
+    return type.toString().toLowerCase();
+  }
 }

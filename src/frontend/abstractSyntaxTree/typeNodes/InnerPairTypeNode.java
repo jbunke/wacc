@@ -28,4 +28,9 @@ public class InnerPairTypeNode extends TypeNode {
                                             Stack<Register.ID> available) {
 
   }
+
+  @Override
+  public String toString() {
+    return "pair";
+  }
 }

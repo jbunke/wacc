@@ -34,4 +34,10 @@ public class PairTypeNode extends TypeNode {
   public Type getType() {
     return new Pair(firstType.getType(), secondType.getType());
   }
+
+  @Override
+  public String toString() {
+    return "pair(" + firstType.toString().toLowerCase() +
+            ", " + secondType.toString().toLowerCase() + ")";
+  }
 }
