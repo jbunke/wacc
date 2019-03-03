@@ -21,6 +21,8 @@ public class SymbolTable {
   private final List<String> contents;
   private final Map<Node, SymbolTable> childrenMap;
 
+  private int argLoadingOffset;
+
   public SymbolTable(SymbolTable parent, Node scope) {
     this.parent = parent;
     this.scope = scope;
@@ -33,6 +35,8 @@ public class SymbolTable {
         identifierMap.put(keyword, new Reserved());
       }
     }
+
+    argLoadingOffset = 0;
   }
 
   public void populateOnDeclare(String identifier) {
@@ -60,7 +64,8 @@ public class SymbolTable {
       offset -= variable.getType().size();
       if (content.equals(identifier)) break;
     }
-    return identifier.startsWith(ARG_PREFIX) ? (offset + 4) : offset;
+    return identifier.startsWith(ARG_PREFIX) ? (offset + 4 + argLoadingOffset)
+            : offset + argLoadingOffset;
   }
 
   public void add(String identifier, SymbolCategory type) {
@@ -103,6 +108,14 @@ public class SymbolTable {
     }
 
     return size;
+  }
+
+  public void incrementArgLoadingOffset(int increment) {
+    argLoadingOffset += increment;
+  }
+
+  public void resetArgLoadingOffset() {
+    argLoadingOffset = 0;
   }
 
   public SymbolTable functionTable() {

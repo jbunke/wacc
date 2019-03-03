@@ -50,6 +50,7 @@ public class ReadStatementNode extends StatementNode {
               generator.getRegister(Register.ID.SP),
               symbolTable.fetchOffset(identifier)));
     } else {
+      lhs.generateAssembly(generator, symbolTable, available);
       generator.addInstruction(ArithInstruction.add(first,
               generator.getRegister(Register.ID.SP), 0));
     }

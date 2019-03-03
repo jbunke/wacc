@@ -16,7 +16,6 @@ import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.Type;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
@@ -91,8 +90,10 @@ public class FunctionCallNode implements AssignRHS {
               generator.getRegister(available.peek()),
               generator.getRegister(Register.ID.SP), -size, size == 1
       ).addExclamation());
+      symbolTable.incrementArgLoadingOffset(size);
       totalSize += size;
     }
+    symbolTable.resetArgLoadingOffset();
 
     // Branch to function
     String funcLabel = "f_" + functionIdentifier.getName();
