@@ -5,8 +5,25 @@ import frontend.abstractSyntaxTree.typeNodes.FunctionDefinitionNode;
 
 import java.util.*;
 
+/**
+ * A table of all of the symbols in the scope of a WACC program.
+ *
+ * The SymbolTable(s) associated with a WACC program and their
+ * children are created and populated from the root (ProgramNode ST)
+ * down in the front-end phase of the compiler.
+ *
+ * Relevant STs are accessed for the back-end by calls to getChild() with the
+ * Node for which the ST is responsible.
+ *
+ * The field contents is populated during the backend by function calls
+ * (for arguments) and by declaration statements (for variables).
+ * */
 public class SymbolTable {
 
+  /**
+   * The reserved keywords of the WACC language.
+   * These are populated as Reserved symbols in the constructor
+   * if the SymbolTable is root level (has no parent). */
   private static final String[] reservedWords = new String[]{
           "begin", "is", "end", "skip", "read", "free", "return", "exit",
           "print", "println", "if", "then", "else", "fi", "while", "do", "done",
@@ -23,6 +40,14 @@ public class SymbolTable {
 
   private int argLoadingOffset;
 
+  /**
+   * @param parent The SymbolTable associated with the
+   *               immediately outer scope of the current SymbolTable
+   *
+   * @param scope Represented as a Node:
+   *              Designed to be ProgramNode, FunctionDeclarationNode,
+   *              InnerScopeStatementNode, etc.
+   * */
   public SymbolTable(SymbolTable parent, Node scope) {
     this.parent = parent;
     this.scope = scope;
@@ -39,6 +64,14 @@ public class SymbolTable {
     argLoadingOffset = 0;
   }
 
+  /**
+   * @param identifier The symbol to populate; either a variable or a
+   *                   function argument
+   *
+   * ARG_PREFIX is defined as "!arg_", which cannot be replicated as
+   * an identifier name in WACC as it violates the grammar. This allows
+   * for the symbol table to effectively distinguish between variables
+   * and function arguments for allocating stack offsets. */
   public void populateOnDeclare(String identifier) {
     if (!contents.contains(identifier) &&
             (identifierMap.containsKey(identifier) ||
@@ -94,6 +127,12 @@ public class SymbolTable {
     return getSize(false);
   }
 
+  /**
+   * @param withArgs Flag for whether size of variables in ST scope
+   *                 should include function arguments
+   *
+   * @return The sum of the size of the types of all of the Variables
+   * in the identifierMap */
   private int getSize(boolean withArgs) {
     int size = 0;
 
@@ -125,6 +164,11 @@ public class SymbolTable {
     return parent.functionTable();
   }
 
+  /**
+   * @param scope The scope of child ST that should have been created in
+   *              the front-end
+   *
+   * @return Allows us to get pre-populated child ST from the front-end */
   public SymbolTable getChild(Node scope) {
     if (childrenMap.containsKey(scope)) {
       return childrenMap.get(scope);

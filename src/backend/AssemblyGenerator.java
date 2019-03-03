@@ -205,6 +205,12 @@ public class AssemblyGenerator {
     }
   }
 
+  /**
+   * The methods that violate the Java camel case convention
+   * do so explicitly to match the labels that they are
+   * associated with and compliant with in the reference compiler.
+   * They are designed to be called through generateLabel with
+   * (bi)function lambdas. */
   public static List<Instruction> throw_overflow_error(AssemblyGenerator generator,
                                                 String[] msgs) {
     List<Instruction> instructions = new ArrayList<>();
@@ -300,7 +306,8 @@ public class AssemblyGenerator {
             "p_throw_runtime_error"));
     instructions.add(new PopInstruction(generator.getRegister(Register.ID.PC)));
 
-    generator.generateLabel("p_throw_runtime_error", new String[0],AssemblyGenerator::throw_runtime_error);
+    generator.generateLabel("p_throw_runtime_error", new String[0],
+            AssemblyGenerator::throw_runtime_error);
 
     return instructions;
   }
@@ -366,8 +373,6 @@ public class AssemblyGenerator {
     return labels.contains(label);
   }
 
-  /* Checks for escaped characters and counts them as having a
-   * length of 1 instead of two */
   private int realStringLength(String s) {
     int baseLength = s.length();
     int subtract = 0;
