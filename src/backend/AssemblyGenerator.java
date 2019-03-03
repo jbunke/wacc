@@ -201,6 +201,14 @@ public class AssemblyGenerator {
     }
   }
 
+  public void putAfterActiveLabel(String nextLabel) {
+    if (labels.contains(nextLabel)) {
+      labels.remove(nextLabel);
+      int index = labels.indexOf(activeLabel) + 1;
+      labels.add(index, nextLabel);
+    }
+  }
+
   public static List<Instruction> throw_overflow_error(AssemblyGenerator generator,
                                                 String[] msgs) {
     List<Instruction> instructions = new ArrayList<>();

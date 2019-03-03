@@ -47,13 +47,17 @@ public class WhileStatementNode extends StatementNode {
                                             SymbolTable symbolTable,
                                             Stack<Register.ID> available) {
     String label = generator.generateNewLabel();
+    String trueLabel = generator.generateNewLabel();
+
+    generator.putAfterActiveLabel(label);
+    generator.putAfterActiveLabel(trueLabel);
+
     generator.addInstruction(new BranchInstruction(new ArrayList<>(), label));
     generator.setActiveLabel(label);
     generator.addInstruction(new LabelInstruction(label));
     condition.generateAssembly(generator, symbolTable, available);
     generator.addInstruction(new CompareInstruction(
             generator.getRegister(available.peek()), 1));
-    String trueLabel = generator.generateNewLabel();
     generator.addInstruction(new BranchInstruction(Condition.EQ, trueLabel));
     generator.setActiveLabel(trueLabel);
     generator.addInstruction(new LabelInstruction(trueLabel));

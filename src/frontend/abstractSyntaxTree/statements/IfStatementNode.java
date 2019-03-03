@@ -66,6 +66,10 @@ public class IfStatementNode extends StatementNode {
     String endLabel = generator.generateNewLabel();
     generator.addInstruction(new BranchInstruction(new ArrayList<>(), endLabel));
 
+    // end, false
+    generator.putAfterActiveLabel(endLabel);
+    generator.putAfterActiveLabel(falseLabel);
+
     generator.setActiveLabel(falseLabel);
     generator.addInstruction(new LabelInstruction(falseLabel));
     generator.allocate(symbolTable.getChild(falseBranch));
