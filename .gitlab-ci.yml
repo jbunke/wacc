@@ -4,7 +4,7 @@ stages:
 
 build:
   stage: build
-  script: make
+  script: echo "build stage empty"
   artifacts:
     paths:
     - src/
@@ -12,4 +12,4 @@ build:
 
 test:
   stage: test
-  script: bash tests/frontend_test ; bash tests/backend_test
+  script: echo "test stage empty"
