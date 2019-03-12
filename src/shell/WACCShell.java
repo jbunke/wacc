@@ -47,7 +47,7 @@ public class WACCShell {
         } catch (IOException e) {
           e.printStackTrace();
         }
-      } else if (!line.isEmpty()) {
+      } else if (!line.isEmpty() && !line.startsWith("#")) {
         processCommand(line);
       }
       prompt();
