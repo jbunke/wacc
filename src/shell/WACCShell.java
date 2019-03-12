@@ -4,7 +4,9 @@ import antlr.WACCLexer;
 import antlr.WACCParser;
 import frontend.Visitor;
 import frontend.WACCParserErrorListener;
+import frontend.abstractSyntaxTree.Node;
 import frontend.abstractSyntaxTree.expressions.ExpressionNode;
+import frontend.abstractSyntaxTree.statements.StatementNode;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
 import org.antlr.v4.runtime.CharStream;
@@ -60,21 +62,41 @@ public class WACCShell {
     }
 
     Visitor visitor = new Visitor();
-    ExpressionNode expression = (ExpressionNode) visitor.visit(parseTree);
-    SemanticErrorList semErrors = new SemanticErrorList();
+    Node command = visitor.visit(parseTree);
 
-    if (symbolTable == null) {
-      symbolTable = new SymbolTable(null, expression);
+    if (command instanceof ExpressionNode) {
+      processExpression((ExpressionNode) command);
+    } else if (command instanceof StatementNode) {
+      processStatement((StatementNode) command);
     }
-    expression.semanticCheck(symbolTable, semErrors);
+  }
 
-    if (semErrors.errorsExist()) {
-      semErrors.printErrors(System.out);
-      return;
-    }
+  private static void processStatement(StatementNode statement) {
+    if (semErrorCheck(statement)) return;
+
+    // TODO
+  }
+
+  private static void processExpression(ExpressionNode expression) {
+    if (semErrorCheck(expression)) return;
 
     Object evaluated = expression.evaluate(symbolTable);
     System.out.println(evaluated);
+  }
+
+  private static boolean semErrorCheck(Node node) {
+    SemanticErrorList semErrors = new SemanticErrorList();
+
+    if (symbolTable == null) {
+      symbolTable = new SymbolTable(null, node);
+    }
+    node.semanticCheck(symbolTable, semErrors);
+
+    if (semErrors.errorsExist()) {
+      semErrors.printErrors(System.out);
+      return true;
+    }
+    return false;
   }
 
   private static void prompt() {
