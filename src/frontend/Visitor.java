@@ -13,11 +13,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Visitor extends WACCParserBaseVisitor<Node> {
+  @Override
+  public Node visitExprInput(WACCParser.ExprInputContext ctx) {
+    ExpressionNode expr = (ExpressionNode) visit(ctx.expr());
+    return expr;
+  }
+
+  @Override
+  public Node visitStatInput(WACCParser.StatInputContext ctx) {
+    StatementNode stat = (StatementNode) visit(ctx.stat());
+    return stat;
+  }
 
   @Override
   public Node visitCommand(WACCParser.CommandContext ctx) {
-    ExpressionNode expr = (ExpressionNode) visit(ctx.expr());
-    return expr;
+    return visit(ctx.input());
   }
 
   @Override
