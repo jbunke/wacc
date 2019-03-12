@@ -15,4 +15,6 @@ public interface AssignRHS extends AssignLHS {
   void generateAssembly(AssemblyGenerator generator,
                         SymbolTable symbolTable,
                         Stack<Register.ID> available);
+
+  Object evaluate(SymbolTable symbolTable);
 }

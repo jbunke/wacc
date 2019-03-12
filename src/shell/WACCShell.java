@@ -5,8 +5,10 @@ import antlr.WACCParser;
 import frontend.Visitor;
 import frontend.WACCParserErrorListener;
 import frontend.abstractSyntaxTree.Node;
+import frontend.abstractSyntaxTree.assignment.AssignRHS;
 import frontend.abstractSyntaxTree.expressions.ExpressionNode;
 import frontend.abstractSyntaxTree.statements.StatementNode;
+import frontend.abstractSyntaxTree.typeNodes.FunctionDefinitionNode;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
 import org.antlr.v4.runtime.CharStream;
@@ -117,11 +119,19 @@ public class WACCShell {
     Visitor visitor = new Visitor();
     Node command = visitor.visit(parseTree);
 
-    if (command instanceof ExpressionNode) {
-      processExpression((ExpressionNode) command);
+    if (command instanceof AssignRHS) {
+      processRHS((AssignRHS) command);
     } else if (command instanceof StatementNode) {
       processStatement((StatementNode) command);
+    } else if (command instanceof FunctionDefinitionNode) {
+      processFunction((FunctionDefinitionNode) command);
     }
+  }
+
+  private static void processFunction(FunctionDefinitionNode function) {
+    if (semErrorCheck(function)) return;
+
+
   }
 
   private static void processStatement(StatementNode statement) {
@@ -132,12 +142,10 @@ public class WACCShell {
     statement.applyStatement(symbolTable);
   }
 
-  private static void processExpression(ExpressionNode expression) {
-    if (semErrorCheck(expression)) {
-      return;
-    }
+  private static void processRHS(AssignRHS rhs) {
+    if (semErrorCheck(rhs)) return;
 
-    Object evaluated = expression.evaluate(symbolTable);
+    Object evaluated = rhs.evaluate(symbolTable);
     System.out.println(evaluated);
   }
 

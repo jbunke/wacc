@@ -84,6 +84,12 @@ public class ArrayLiteralNode implements AssignRHS {
   }
 
   @Override
+  public Object evaluate(SymbolTable symbolTable) {
+    // TODO
+    return null;
+  }
+
+  @Override
   public Type getType(SymbolTable symbolTable) {
 
     if (arrayElements.size() == 0) {

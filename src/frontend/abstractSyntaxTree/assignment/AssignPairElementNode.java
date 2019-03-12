@@ -58,6 +58,12 @@ public class AssignPairElementNode implements AssignRHS {
     generator.addInstruction(new LDRInstruction(nextFree, nextFree).isSingleByte(isSingleByte(symbolTable)));
   }
 
+  @Override
+  public Object evaluate(SymbolTable symbolTable) {
+    // TODO
+    return null;
+  }
+
   private static void generateNullPtrCheck(AssemblyGenerator generator, Stack<Register.ID> available) {
     Register R0 = generator.getRegister(ID.R0);
     Register nextFree = generator.getRegister(available.peek());

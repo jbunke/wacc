@@ -54,6 +54,12 @@ public class NewPairNode implements AssignRHS {
     available.push(ptrReg.getRegID());
   }
 
+  @Override
+  public Object evaluate(SymbolTable symbolTable) {
+    // TODO
+    return null;
+  }
+
   private void allocElem(AssemblyGenerator generator, SymbolTable symbolTable,
                          Stack<Register.ID> available, int elem, Register ptrReg) {
     ExpressionNode exp;

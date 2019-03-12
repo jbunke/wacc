@@ -108,4 +108,10 @@ public class FunctionCallNode implements AssignRHS {
             generator.getRegister(available.peek()),
             generator.getRegister(Register.ID.R0)));
   }
+
+  @Override
+  public Object evaluate(SymbolTable symbolTable) {
+    // TODO
+    return null;
+  }
 }

@@ -14,9 +14,15 @@ import java.util.List;
 
 public class Visitor extends WACCParserBaseVisitor<Node> {
   @Override
-  public Node visitExprInput(WACCParser.ExprInputContext ctx) {
-    ExpressionNode expr = (ExpressionNode) visit(ctx.expr());
-    return expr;
+  public Node visitFuncInput(WACCParser.FuncInputContext ctx) {
+    FunctionDefinitionNode func = (FunctionDefinitionNode) visit(ctx.func());
+    return func;
+  }
+
+  @Override
+  public Node visitAssignRHSInput(WACCParser.AssignRHSInputContext ctx) {
+    AssignRHS rhs = (AssignRHS) visit(ctx.assignRhs());
+    return rhs;
   }
 
   @Override
