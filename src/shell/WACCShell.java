@@ -27,6 +27,12 @@ public class WACCShell {
   private final static String THEN_TOK = "then";
   private final static String ELSE_TOK = "else";
   private final static String FI_TOK = "fi";
+
+  private final static String WHILE_TOK = "while";
+  private final static String DO_TOK = "do";
+  private final static String DONE_TOK = "done";
+
+
   private final static String SEMI_COLON_TOK = ";";
 
   private static SymbolTable symbolTable;
@@ -52,10 +58,41 @@ public class WACCShell {
 
     if (line.startsWith(IF_TOK + " ") && line.endsWith(" " + THEN_TOK)) {
       res = acquireIfCommand(line, level + 1);
+    } else if (line.startsWith(WHILE_TOK + " ") && line.endsWith(" " + DO_TOK)) {
+      res = acquireWhileCommand(line, level + 1);
     }
 
     return res;
   }
+
+  private static String acquireWhileCommand(String startLine, int level) {
+    StringBuilder commandBuilder = new StringBuilder(startLine);
+    String line;
+    boolean done = false;
+
+    do {
+      promptWithIndent(level);
+      line = acquireCommand(in.nextLine(), level);
+      commandBuilder.append(" ");
+      commandBuilder.append(line);
+
+      if (!line.endsWith(SEMI_COLON_TOK)) {
+        done = true;
+        commandBuilder.append(" ");
+        commandBuilder.append(DONE_TOK);
+        promptWithIndent(level - 1);
+        System.out.print(DONE_TOK);
+      }
+    } while (!done);
+
+    line = in.nextLine();
+    if (line.equals(SEMI_COLON_TOK)) {
+      commandBuilder.append(line);
+    }
+
+    return commandBuilder.toString();
+  }
+
 
   private static String acquireIfCommand(String startLine, int level) {
     StringBuilder commandBuilder = new StringBuilder(startLine);
@@ -94,6 +131,7 @@ public class WACCShell {
 
     return commandBuilder.toString();
   }
+
 
   private static void processCommand(String line) {
     CharStream input = CharStreams.fromString(line);
