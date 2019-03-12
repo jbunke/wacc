@@ -4,6 +4,7 @@ import backend.AssemblyGenerator;
 import backend.Register;
 import backend.instructions.STRInstruction;
 import frontend.abstractSyntaxTree.assignment.AssignRHS;
+import frontend.abstractSyntaxTree.expressions.ExpressionNode;
 import frontend.abstractSyntaxTree.expressions.IdentifierNode;
 import frontend.abstractSyntaxTree.typeNodes.TypeNode;
 import frontend.symbolTable.SemanticError;
@@ -74,5 +75,19 @@ public class DeclarationStatementNode extends StatementNode {
   public String toString() {
     return identifierType.toString() + " " + identifier.toString()
             + " = " + rhs.toString();
+  }
+
+  @Override
+  public void applyStatement(SymbolTable symbolTable) {
+    Object value = null;
+
+    // Get value
+    if (rhs instanceof ExpressionNode) {
+      ExpressionNode exprRHS = (ExpressionNode) rhs;
+      value = exprRHS.evaluate(symbolTable);
+
+    }
+
+    symbolTable.setValue(identifier.getName(), value);
   }
 }

@@ -182,4 +182,26 @@ public class SymbolTable {
     childrenMap.put(scope, child);
     return child;
   }
+
+  public void setValue(String identifier, Object value) {
+    if (identifierMap.containsKey(identifier)) {
+      SymbolCategory symbol = identifierMap.get(identifier);
+      if (symbol instanceof Variable) {
+        Variable variable = (Variable) symbol;
+        variable.setValue(value);
+      }
+    }
+  }
+
+  public Object getValue(String identifier) {
+    if (identifierMap.containsKey(identifier)) {
+      SymbolCategory symbol = identifierMap.get(identifier);
+      if (symbol instanceof Variable) {
+        Variable variable = (Variable) symbol;
+        return variable.getValue();
+      }
+      return null;
+    }
+    return null;
+  }
 }

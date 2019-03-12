@@ -59,4 +59,8 @@ public class FreeStatementNode extends StatementNode {
     generator.addInstruction(new BranchInstruction(Condition.L, FREE_PAIR));
   }
 
+  @Override
+  public void applyStatement(SymbolTable symbolTable) {
+    // TODO
+  }
 }

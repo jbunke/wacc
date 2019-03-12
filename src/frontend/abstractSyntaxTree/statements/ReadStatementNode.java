@@ -102,4 +102,9 @@ public class ReadStatementNode extends StatementNode {
   public String toString() {
     return "read " + lhs.toString();
   }
+
+  @Override
+  public void applyStatement(SymbolTable symbolTable) {
+    // TODO
+  }
 }

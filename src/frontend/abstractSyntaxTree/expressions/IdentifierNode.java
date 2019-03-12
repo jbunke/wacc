@@ -66,8 +66,7 @@ public class IdentifierNode extends ExpressionNode {
 
   @Override
   public Object evaluate(SymbolTable symbolTable) {
-    // TODO: Store value in symbol table
-    return null;
+    return symbolTable.getValue(identifier);
   }
 
   @Override

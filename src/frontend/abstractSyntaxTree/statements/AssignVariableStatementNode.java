@@ -7,6 +7,7 @@ import frontend.abstractSyntaxTree.assignment.AssignLHS;
 import frontend.abstractSyntaxTree.assignment.AssignPairElementNode;
 import frontend.abstractSyntaxTree.assignment.AssignRHS;
 import frontend.abstractSyntaxTree.expressions.ArrayElementNode;
+import frontend.abstractSyntaxTree.expressions.ExpressionNode;
 import frontend.abstractSyntaxTree.expressions.IdentifierNode;
 import frontend.symbolTable.SemanticError;
 import frontend.symbolTable.SemanticErrorList;
@@ -76,5 +77,24 @@ public class AssignVariableStatementNode extends StatementNode {
   @Override
   public String toString() {
     return left.toString() + " = " + right.toString();
+  }
+
+  @Override
+  public void applyStatement(SymbolTable symbolTable) {
+    Object value = null;
+    String identifier = "";
+
+    // Get value
+    if (right instanceof ExpressionNode) {
+      ExpressionNode exprRHS = (ExpressionNode) right;
+      value = exprRHS.evaluate(symbolTable);
+    }
+
+    // Get identifier
+    if (left instanceof IdentifierNode) {
+      identifier = ((IdentifierNode) left).getName();
+    }
+
+    symbolTable.setValue(identifier, value);
   }
 }

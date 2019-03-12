@@ -68,4 +68,9 @@ public class PrintLineStatementNode extends StatementNode {
   public String toString() {
     return "println " + expression.toString();
   }
+
+  @Override
+  public void applyStatement(SymbolTable symbolTable) {
+    System.out.println(expression.evaluate(symbolTable));
+  }
 }
