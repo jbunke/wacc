@@ -127,11 +127,11 @@ public class WACCShell {
   }
 
   private static void processStatement(StatementNode statement) {
-    if (semErrorCheck(statement)) {
-      return;
-    }
+    if (semErrorCheck(statement)) return;
+    /* symbol table should now have populated any variables
+     * declared in statement */
 
-    // TODO
+    statement.applyStatement(symbolTable);
   }
 
   private static void processExpression(ExpressionNode expression) {

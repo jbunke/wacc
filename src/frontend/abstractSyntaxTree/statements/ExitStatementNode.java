@@ -60,6 +60,11 @@ public class ExitStatementNode extends StatementNode {
   }
 
   @Override
+  public void applyStatement(SymbolTable symbolTable) {
+
+  }
+
+  @Override
   public String toString() {
     return "exit " + exitCode.toString();
   }

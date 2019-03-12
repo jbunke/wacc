@@ -23,4 +23,9 @@ public class SkipStatementNode extends StatementNode {
   public String toString() {
     return "skip";
   }
+
+  @Override
+  public void applyStatement(SymbolTable symbolTable) {
+
+  }
 }

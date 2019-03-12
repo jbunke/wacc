@@ -81,6 +81,13 @@ public class StatementListNode extends StatementNode {
     }
   }
 
+  @Override
+  public void applyStatement(SymbolTable symbolTable) {
+    for (StatementNode statement : statements) {
+      statement.applyStatement(symbolTable);
+    }
+  }
+
   // statement list contains exit if any of its sub-statements do
   @Override
   public boolean containsExit() {

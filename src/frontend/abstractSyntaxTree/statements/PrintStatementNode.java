@@ -161,4 +161,9 @@ public class PrintStatementNode extends StatementNode {
   public String toString() {
     return "print " + expression.toString();
   }
+
+  @Override
+  public void applyStatement(SymbolTable symbolTable) {
+    System.out.print(expression.evaluate(symbolTable));
+  }
 }

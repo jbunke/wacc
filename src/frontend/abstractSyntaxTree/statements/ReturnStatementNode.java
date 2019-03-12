@@ -60,6 +60,11 @@ public class ReturnStatementNode extends StatementNode {
     returnType = type;
   }
 
+  @Override
+  public void applyStatement(SymbolTable symbolTable) {
+    // TODO
+  }
+
   public Type getType(SymbolTable symbolTable) {
     return result.getType(symbolTable);
   }
