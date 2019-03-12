@@ -54,10 +54,6 @@ public class WACCShell {
       res = acquireIfCommand(line, level + 1);
     }
 
-    if (res.isEmpty()) {
-      return "";
-    }
-
     return res;
   }
 

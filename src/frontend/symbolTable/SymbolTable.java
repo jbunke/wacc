@@ -190,6 +190,8 @@ public class SymbolTable {
         Variable variable = (Variable) symbol;
         variable.setValue(value);
       }
+    } else if (parent != null) {
+      parent.setValue(identifier, value);
     }
   }
 
@@ -201,6 +203,8 @@ public class SymbolTable {
         return variable.getValue();
       }
       return null;
+    } else if (parent != null) {
+      return parent.getValue(identifier);
     }
     return null;
   }

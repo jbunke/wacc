@@ -80,7 +80,7 @@ public class WhileStatementNode extends StatementNode {
   @Override
   public void applyStatement(SymbolTable symbolTable) {
     while ((Boolean) condition.evaluate(symbolTable)) {
-      doStatement.applyStatement(symbolTable);
+      doStatement.applyStatement(symbolTable.getChild(doStatement));
     }
   }
 
