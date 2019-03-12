@@ -6,7 +6,6 @@ import frontend.Visitor;
 import frontend.WACCParserErrorListener;
 import frontend.abstractSyntaxTree.Node;
 import frontend.abstractSyntaxTree.assignment.AssignRHS;
-import frontend.abstractSyntaxTree.expressions.ExpressionNode;
 import frontend.abstractSyntaxTree.statements.StatementNode;
 import frontend.abstractSyntaxTree.typeNodes.FunctionDefinitionNode;
 import frontend.symbolTable.SemanticErrorList;
@@ -25,23 +24,8 @@ public class WACCShell {
   private final static String TAB_CHAR = "\t";
   private final static String CONTINUE = "| ";
 
-  private final static String IF_TOK = "if";
-  private final static String THEN_TOK = "then";
-  private final static String ELSE_TOK = "else";
-  private final static String FI_TOK = "fi";
-
-  private final static String WHILE_TOK = "while";
-  private final static String DO_TOK = "do";
-  private final static String DONE_TOK = "done";
-
-  private final static String IS_TOK = "is";
-  private final static String END_TOK = "end";
-
-
-  private final static String SEMI_COLON_TOK = ";";
-
   private static SymbolTable symbolTable;
-  private static Scanner in;
+  static Scanner in;
 
   public static void main(String[] args) {
     symbolTable = null;
@@ -49,124 +33,13 @@ public class WACCShell {
     in = new Scanner(System.in);
 
     prompt();
-    String line = acquireCommand(in.nextLine(), 0);
+    String line = CommandProcessing.acquireCommand(in.nextLine(), 0);
     while(!line.equals(QUIT_STRING)) {
       processCommand(line);
-
       prompt();
-      line = acquireCommand(in.nextLine(), 0);
+      line = CommandProcessing.acquireCommand(in.nextLine(), 0);
     }
   }
-
-  private static String acquireCommand(String line, int level) {
-    String res = line.trim();
-
-    if (line.startsWith(IF_TOK + " ") && line.endsWith(" " + THEN_TOK)) {
-      res = acquireIfCommand(line, level + 1);
-    } else if (line.startsWith(WHILE_TOK + " ") && line.endsWith(" " + DO_TOK)) {
-      res = acquireWhileCommand(line, level + 1);
-    } else if (line.endsWith(" " + IS_TOK)) {
-      res = acquireFunctionCommand(line, level  + 1);
-    }
-
-    return res;
-  }
-
-  private static String acquireFunctionCommand(String startLine, int level) {
-    StringBuilder commandBuilder = new StringBuilder(startLine);
-    String line;
-    boolean end = false;
-
-    do {
-      promptWithIndent(level);
-      line = acquireCommand(in.nextLine(), level);
-      commandBuilder.append(" ");
-      commandBuilder.append(line);
-
-      if (!line.endsWith(SEMI_COLON_TOK)) {
-        end = true;
-        commandBuilder.append(" ");
-        commandBuilder.append(END_TOK);
-        promptWithIndent(level - 1);
-        System.out.print(END_TOK);
-      }
-    } while (!end);
-
-    line = in.nextLine();
-    if (line.equals(SEMI_COLON_TOK)) {
-      commandBuilder.append(line);
-    }
-
-    return commandBuilder.toString();
-  }
-
-  private static String acquireWhileCommand(String startLine, int level) {
-    StringBuilder commandBuilder = new StringBuilder(startLine);
-    String line;
-    boolean done = false;
-
-    do {
-      promptWithIndent(level);
-      line = acquireCommand(in.nextLine(), level);
-      commandBuilder.append(" ");
-      commandBuilder.append(line);
-
-      if (!line.endsWith(SEMI_COLON_TOK)) {
-        done = true;
-        commandBuilder.append(" ");
-        commandBuilder.append(DONE_TOK);
-        promptWithIndent(level - 1);
-        System.out.print(DONE_TOK);
-      }
-    } while (!done);
-
-    line = in.nextLine();
-    if (line.equals(SEMI_COLON_TOK)) {
-      commandBuilder.append(line);
-    }
-
-    return commandBuilder.toString();
-  }
-
-
-  private static String acquireIfCommand(String startLine, int level) {
-    StringBuilder commandBuilder = new StringBuilder(startLine);
-    String line;
-    boolean elseIncluded = false;
-    boolean fiIncluded = false;
-
-    do {
-      promptWithIndent(level);
-      line = acquireCommand(in.nextLine(), level);
-      commandBuilder.append(" ");
-      commandBuilder.append(line);
-
-      if (elseIncluded && !fiIncluded && !line.endsWith(SEMI_COLON_TOK)) {
-        fiIncluded = true;
-        commandBuilder.append(" ");
-        commandBuilder.append(FI_TOK);
-        promptWithIndent(level - 1);
-        System.out.print(FI_TOK);
-      }
-
-      if (!elseIncluded && !line.endsWith(SEMI_COLON_TOK)) {
-        elseIncluded = true;
-        commandBuilder.append(" ");
-        commandBuilder.append(ELSE_TOK);
-        promptWithIndent(level - 1);
-        System.out.println(ELSE_TOK);
-      }
-
-    } while (!fiIncluded);
-
-    line = in.nextLine();
-    if (line.equals(SEMI_COLON_TOK)) {
-      commandBuilder.append(line);
-    }
-
-    return commandBuilder.toString();
-  }
-
 
   private static void processCommand(String line) {
     CharStream input = CharStreams.fromString(line);
@@ -241,7 +114,7 @@ public class WACCShell {
     System.out.print(PROMPTER);
   }
 
-  private static void promptWithIndent(int level) {
+  static void promptWithIndent(int level) {
     StringBuilder builder = new StringBuilder(CONTINUE);
 
     for (int i = 0; i < level; i++) {
