@@ -17,27 +17,82 @@ import org.antlr.v4.runtime.TokenStream;
 import java.util.Scanner;
 
 public class WACCShell {
+
   private final static String QUIT_STRING = ":q";
   private final static String PROMPTER = "> ";
+  private final static String TAB_CHAR = "\t";
   private final static String CONTINUE = "| ";
 
+  private final static String IF_TOK = "if";
+  private final static String THEN_TOK = "then";
+  private final static String ELSE_TOK = "else";
+  private final static String FI_TOK = "fi";
+  private final static String SEMI_COLON_TOK = ";";
+
   private static SymbolTable symbolTable;
+  private static Scanner in;
 
   public static void main(String[] args) {
     symbolTable = null;
 
-    Scanner in = new Scanner(System.in);
-    prompt();
-    String line = in.nextLine();
+    in = new Scanner(System.in);
+    String line;
 
-    while (!line.equals(QUIT_STRING)) {
-      if (!line.isEmpty()) {
-        processCommand(line);
+    do {
+      prompt();
+      line = acquireCommand(in.nextLine(), 0);
+      processCommand(line);
+
+    } while (!line.equals(QUIT_STRING));
+  }
+
+  private static String acquireCommand(String line, int level) {
+    String res = line.trim();
+
+    if (line.startsWith(IF_TOK) && line.endsWith(THEN_TOK)) {
+      res = acquireIfCommand(line, level + 1);
+    }
+
+    if (res.isEmpty()) {
+      return "";
+    }
+
+    return res;
+  }
+
+  private static String acquireIfCommand(String startLine, int level) {
+    StringBuilder commandBuilder = new StringBuilder(startLine);
+    String line;
+    boolean elseIncluded = false;
+    boolean fiIncluded = false;
+
+    do {
+      promptWithIndent(level);
+      line = acquireCommand(in.nextLine(), level);
+      commandBuilder.append(" ");
+      commandBuilder.append(line);
+
+      if (elseIncluded && !fiIncluded && !line.endsWith(SEMI_COLON_TOK)) {
+        fiIncluded = true;
+        autoCompleteMultiLineCommand(commandBuilder, FI_TOK, level);
       }
 
-      prompt();
-      line = in.nextLine();
-    }
+      if (!elseIncluded && !line.endsWith(SEMI_COLON_TOK)) {
+        elseIncluded = true;
+        autoCompleteMultiLineCommand(commandBuilder, ELSE_TOK, level);
+      }
+
+    } while (!fiIncluded);
+
+    return commandBuilder.toString();
+  }
+
+  private static void autoCompleteMultiLineCommand(StringBuilder commandBuilder,
+      String auto, int level) {
+    commandBuilder.append(" ");
+    commandBuilder.append(auto);
+    promptWithIndent(level - 1);
+    System.out.println(auto);
   }
 
   private static void processCommand(String line) {
@@ -49,7 +104,7 @@ public class WACCShell {
     parser.removeErrorListeners();
 
     WACCParserErrorListener synErrors =
-            new WACCParserErrorListener();
+        new WACCParserErrorListener();
     parser.addErrorListener(synErrors);
 
     WACCParser.CommandContext parseTree = parser.command();
@@ -72,13 +127,17 @@ public class WACCShell {
   }
 
   private static void processStatement(StatementNode statement) {
-    if (semErrorCheck(statement)) return;
+    if (semErrorCheck(statement)) {
+      return;
+    }
 
     // TODO
   }
 
   private static void processExpression(ExpressionNode expression) {
-    if (semErrorCheck(expression)) return;
+    if (semErrorCheck(expression)) {
+      return;
+    }
 
     Object evaluated = expression.evaluate(symbolTable);
     System.out.println(evaluated);
@@ -101,5 +160,15 @@ public class WACCShell {
 
   private static void prompt() {
     System.out.print(PROMPTER);
+  }
+
+  private static void promptWithIndent(int level) {
+    StringBuilder builder = new StringBuilder(CONTINUE);
+
+    for (int i = 0; i < level; i++) {
+      builder.append(TAB_CHAR);
+    }
+
+    System.out.print(builder.toString());
   }
 }
