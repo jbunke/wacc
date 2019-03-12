@@ -12,6 +12,7 @@ import redsquaregl.drawing.instructions.DrawImage;
 import redsquaregl.games._2D.Point;
 import redsquaregl.games._2D.Size;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;

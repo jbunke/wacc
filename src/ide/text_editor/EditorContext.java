@@ -14,10 +14,13 @@ public class EditorContext {
   private List<String> lines;
   private Cursor cursor;
 
+  private int size;
+
   public EditorContext() {
     filepath = UNTITLED_FILE_PATH;
     initialiseLinesNewFile();
     cursor = new Cursor();
+    size = 12;
   }
 
   public EditorContext(String filepath) {
@@ -50,5 +53,17 @@ public class EditorContext {
     lines.set(cursor.getLine(), line.substring(0,
             cursor.getColumn()) + toAdd + line.substring(cursor.getColumn()));
     cursor.increment(toAdd.length());
+  }
+
+  public List<String> getLines() {
+    return lines;
+  }
+
+  public Cursor getCursor() {
+    return cursor;
+  }
+
+  public int getSize() {
+    return size;
   }
 }
