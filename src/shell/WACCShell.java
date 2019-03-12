@@ -15,7 +15,7 @@ import org.antlr.v4.runtime.TokenStream;
 import java.util.Scanner;
 
 public class WACCShell {
-  private final static String QUIT_STRING = "!q";
+  private final static String QUIT_STRING = ":q";
   private final static String PROMPTER = "> ";
   private final static String CONTINUE = "| ";
 
