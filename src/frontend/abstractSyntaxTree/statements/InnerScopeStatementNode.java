@@ -57,7 +57,7 @@ public class InnerScopeStatementNode extends StatementNode {
   @Override
   public void applyStatement(SymbolTable symbolTable) {
     // TODO
-    innerStatement.applyStatement(symbolTable.newChild(innerStatement));
+    innerStatement.applyStatement(symbolTable.getChild(innerStatement));
   }
 
   @Override

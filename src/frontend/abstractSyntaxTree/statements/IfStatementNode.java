@@ -95,9 +95,9 @@ public class IfStatementNode extends StatementNode {
   @Override
   public void applyStatement(SymbolTable symbolTable) {
     if ((Boolean) condition.evaluate(symbolTable)) {
-      trueBranch.applyStatement(symbolTable);
+      trueBranch.applyStatement(symbolTable.getChild(trueBranch));
     } else {
-      falseBranch.applyStatement(symbolTable);
+      falseBranch.applyStatement(symbolTable.getChild(falseBranch));
     }
   }
 
