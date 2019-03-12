@@ -3,6 +3,7 @@ package frontend.abstractSyntaxTree.expressions;
 import backend.AssemblyGenerator;
 import backend.Register;
 import backend.instructions.LDRInstruction;
+import frontend.abstractSyntaxTree.typeNodes.FunctionDefinitionNode;
 import frontend.symbolTable.*;
 import frontend.symbolTable.types.BaseTypes;
 import frontend.symbolTable.types.Type;
@@ -58,8 +59,8 @@ public class IdentifierNode extends ExpressionNode {
 
     if (symbolCategory instanceof Variable) {
       return ((Variable) symbolCategory).getType();
-    } else if (symbolCategory instanceof Function) {
-      return ((Function) symbolCategory).getReturnType();
+    } else if (symbolCategory instanceof FunctionDefinitionNode) {
+      return ((FunctionDefinitionNode) symbolCategory).getReturnType();
     }
     return new BaseTypes(BaseTypes.base_types.BOOL);
   }

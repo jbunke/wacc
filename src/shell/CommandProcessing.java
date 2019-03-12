@@ -22,11 +22,11 @@ class CommandProcessing {
   static String acquireCommand(String line, int level) {
     String res = line.trim();
 
-    if (line.startsWith(IF_TOK + " ") && line.endsWith(" " + THEN_TOK)) {
+    if (res.startsWith(IF_TOK + " ") && line.endsWith(" " + THEN_TOK)) {
       res = acquireIfCommand(line, level + 1);
-    } else if (line.startsWith(WHILE_TOK + " ") && line.endsWith(" " + DO_TOK)) {
+    } else if (res.startsWith(WHILE_TOK + " ") && line.endsWith(" " + DO_TOK)) {
       res = acquireWhileCommand(line, level + 1);
-    } else if (line.endsWith(" " + IS_TOK)) {
+    } else if (res.endsWith(" " + IS_TOK)) {
       res = acquireFunctionCommand(line, level  + 1);
     }
 

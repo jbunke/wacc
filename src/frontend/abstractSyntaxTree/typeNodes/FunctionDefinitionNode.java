@@ -10,12 +10,13 @@ import frontend.abstractSyntaxTree.Node;
 import frontend.abstractSyntaxTree.expressions.IdentifierNode;
 import frontend.abstractSyntaxTree.statements.StatementNode;
 import frontend.symbolTable.SemanticErrorList;
+import frontend.symbolTable.SymbolCategory;
 import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.Type;
 
 import java.util.Stack;
 
-public class FunctionDefinitionNode implements Node {
+public class FunctionDefinitionNode extends SymbolCategory implements Node {
   private final IdentifierNode identifier;
   private final StatementNode body;
   private final ParameterListNode parameters;
