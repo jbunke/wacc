@@ -41,7 +41,9 @@ public class WACCShell {
     do {
       prompt();
       line = acquireCommand(in.nextLine(), 0);
-      processCommand(line);
+      if (!line.isEmpty()) {
+        processCommand(line);
+      }
 
     } while (!line.equals(QUIT_STRING));
   }
@@ -51,10 +53,6 @@ public class WACCShell {
 
     if (line.startsWith(IF_TOK) && line.endsWith(THEN_TOK)) {
       res = acquireIfCommand(line, level + 1);
-    }
-
-    if (res.isEmpty()) {
-      return "";
     }
 
     return res;
