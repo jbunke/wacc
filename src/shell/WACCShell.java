@@ -65,7 +65,9 @@ public class WACCShell {
 
     while (bufferedReader.ready()) {
       String line = bufferedReader.readLine();
-      System.out.println(line);
+      line = line.contains("//") ? line.substring(0, line.indexOf("//")) : line;
+      if (!line.isEmpty()) System.out.println(line);
+      if (line.endsWith(";")) System.out.println();
     }
   }
 

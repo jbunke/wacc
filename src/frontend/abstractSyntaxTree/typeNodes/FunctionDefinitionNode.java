@@ -38,7 +38,6 @@ public class FunctionDefinitionNode implements Node {
     return identifier.getName();
   }
 
-
   public ParameterListNode getParameterList() {
     return parameters;
   }
