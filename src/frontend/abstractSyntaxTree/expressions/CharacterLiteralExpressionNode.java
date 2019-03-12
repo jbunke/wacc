@@ -40,6 +40,11 @@ public class CharacterLiteralExpressionNode extends ExpressionNode {
   }
 
   @Override
+  public Object evaluate(SymbolTable symbolTable) {
+    return value;
+  }
+
+  @Override
   public String toString() {
     return "'" + value + "'";
   }

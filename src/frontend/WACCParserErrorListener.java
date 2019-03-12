@@ -1,3 +1,5 @@
+package frontend;
+
 import org.antlr.v4.runtime.BaseErrorListener;
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Recognizer;
@@ -24,11 +26,11 @@ public class WACCParserErrorListener extends BaseErrorListener {
             + charPositionInLine + " -> " + msg);
   }
 
-  boolean hasError() {
+  public boolean hasError() {
     return !syntaxErrors.isEmpty();
   }
 
-  List<String> getSyntaxErrors() {
+  public List<String> getSyntaxErrors() {
     return syntaxErrors;
   }
 }

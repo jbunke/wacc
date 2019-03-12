@@ -12,6 +12,7 @@ import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.Array;
 import frontend.symbolTable.types.BaseTypes;
 import frontend.symbolTable.types.Type;
+import org.antlr.v4.runtime.CharStreams;
 
 import java.util.List;
 import java.util.Map;
@@ -82,6 +83,31 @@ public class UnaryOpExpressionNode extends ExpressionNode {
         return new BaseTypes(BaseTypes.base_types.CHAR);
     }
     return null;
+  }
+
+  @Override
+  public Object evaluate(SymbolTable symbolTable) {
+    Object operand = this.operand.evaluate(symbolTable);
+    switch (operatorType) {
+      case LENGTH:
+        if (operand instanceof String) {
+          return ((String) operand).length();
+        }
+        // TODO
+        return null;
+      case CHR:
+        return (char) ((Integer) operand).intValue();
+      case ORD:
+        char opChar = (char) operand;
+        return (int) opChar;
+      case NOT:
+        return !((Boolean) operand);
+      case NEGATIVE:
+        return -((Integer) operand);
+      case POSITIVE:
+      default:
+        return operand;
+    }
   }
 
   private Type getOperandType() {

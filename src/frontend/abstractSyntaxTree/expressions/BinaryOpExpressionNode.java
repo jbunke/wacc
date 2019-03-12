@@ -329,6 +329,42 @@ public class BinaryOpExpressionNode extends ExpressionNode {
     }
   }
 
+  @Override
+  public Object evaluate(SymbolTable symbolTable) {
+    Object left = this.left.evaluate(symbolTable);
+    Object right = this.right.evaluate(symbolTable);
+    switch (operatorType) {
+      case PLUS:
+        return (Integer) left + (Integer) right;
+      case MINUS:
+        return (Integer) left - (Integer) right;
+      case TIMES:
+        return (Integer) left * (Integer) right;
+      case DIVIDE:
+        return (Integer) left / (Integer) right;
+      case MOD:
+        return (Integer) left % (Integer) right;
+      case AND:
+        return (Boolean) left && (Boolean) right;
+      case OR:
+        return (Boolean) left || (Boolean) right;
+      case EQUAL:
+        return left == right;
+      case NOT_EQUAL:
+        return left != right;
+      case GREATER_THAN:
+        return (Integer) left > (Integer) right;
+      case GREATER_THAN_OR_EQUAL:
+        return (Integer) left >= (Integer) right;
+      case LESS_THAN:
+        return (Integer) left < (Integer) right;
+      case LESS_THAN_OR_EQUAL:
+        return (Integer) left <= (Integer) right;
+      default:
+        return null;
+    }
+  }
+
   private static OperatorType stringToType(String operator) {
     if (stringOpMap.containsKey(operator)) {
       return stringOpMap.get(operator);

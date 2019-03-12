@@ -35,6 +35,12 @@ public class PairLiteralExpressionNode extends ExpressionNode {
   }
 
   @Override
+  public Object evaluate(SymbolTable symbolTable) {
+    // TODO
+    return null;
+  }
+
+  @Override
   public String toString() {
     return "null";
   }

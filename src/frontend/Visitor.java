@@ -15,6 +15,12 @@ import java.util.List;
 public class Visitor extends WACCParserBaseVisitor<Node> {
 
   @Override
+  public Node visitCommand(WACCParser.CommandContext ctx) {
+    ExpressionNode expr = (ExpressionNode) visit(ctx.expr());
+    return expr;
+  }
+
+  @Override
   public Node visitIdentifierExp(WACCParser.IdentifierExpContext ctx) {
     return new IdentifierNode(ctx.ident().IDENTIFIER().getText());
   }

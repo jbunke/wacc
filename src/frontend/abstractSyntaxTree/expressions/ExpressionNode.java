@@ -12,4 +12,6 @@ public abstract class ExpressionNode implements AssignRHS {
   public abstract void semanticCheck(SymbolTable symbolTable, SemanticErrorList errorList);
 
   public abstract Type getType(SymbolTable symbolTable);
+
+  public abstract Object evaluate(SymbolTable symbolTable);
 }

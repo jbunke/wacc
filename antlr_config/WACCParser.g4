@@ -99,3 +99,6 @@ assignRhs: expr                                                               # 
 
 // EOF indicates that the program must consume to the end of the input.
 prog: BEGIN func* stat END EOF ;
+
+// root-level rule for interactive shell
+command: expr EOF ;

@@ -156,6 +156,11 @@ public class ArrayElementNode extends ExpressionNode {
   }
 
   @Override
+  public Object evaluate(SymbolTable symbolTable) {
+    return null;
+  }
+
+  @Override
   public String toString() {
     StringBuilder sb = new StringBuilder(identifier.getName());
     for (ExpressionNode index : indices) {
