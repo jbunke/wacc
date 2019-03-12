@@ -56,14 +56,9 @@ class CommandProcessing {
       if (!line.endsWith(SEMI_COLON_TOK)) {
         end = true;
         generalisedAutocomplete(commandBuilder, END_TOK,
-                System.out::print, level);
+                System.out::println, level);
       }
     } while (!end);
-
-    line = WACCShell.in.nextLine();
-    if (line.equals(SEMI_COLON_TOK)) {
-      commandBuilder.append(line);
-    }
 
     return commandBuilder.toString();
   }

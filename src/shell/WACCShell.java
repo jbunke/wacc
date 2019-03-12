@@ -15,11 +15,14 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.TokenStream;
 
+import java.io.*;
 import java.util.Scanner;
 
 public class WACCShell {
 
   private final static String QUIT_STRING = ":q";
+  private final static String HELP_STRING = ":h";
+  private final static String GRAMMAR_STRING = ":g";
   private final static String PROMPTER = "> ";
   private final static String TAB_CHAR = "\t";
   private final static String CONTINUE = "| ";
@@ -32,13 +35,50 @@ public class WACCShell {
 
     in = new Scanner(System.in);
 
+    startUp();
     prompt();
     String line = CommandProcessing.acquireCommand(in.nextLine(), 0);
     while(!line.equals(QUIT_STRING)) {
-      processCommand(line);
+      if (line.equals(HELP_STRING)) {
+        help();
+      } else if (line.equals(GRAMMAR_STRING)) {
+        try {
+          printGrammar();
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      } else if (!line.isEmpty()) {
+        processCommand(line);
+      }
       prompt();
       line = CommandProcessing.acquireCommand(in.nextLine(), 0);
     }
+  }
+
+  private static void printGrammar() throws IOException {
+    System.out.println("\n-- WACC LANGUAGE GRAMMAR --\n");
+    System.out.println("The root rule for the shell is \"command\"\n");
+
+    File parser = new File("antlr_config/WACCParser.g4");
+    FileReader fileReader = new FileReader(parser);
+    BufferedReader bufferedReader = new BufferedReader(fileReader);
+
+    while (bufferedReader.ready()) {
+      String line = bufferedReader.readLine();
+      System.out.println(line);
+    }
+  }
+
+  private static void help() {
+    System.out.println("Type any valid WACC expression, statement or function");
+    System.out.println("Type \":g\" to see the grammar for the language");
+    System.out.println("Type \":q\" to quit\n");
+  }
+
+  private static void startUp() {
+    System.out.println("\n-- WELCOME TO THE WACC INTERACTIVE SHELL --\n");
+    System.out.println("Type \":h\" for help");
+    System.out.println("Type \":q\" to quit\n");
   }
 
   private static void processCommand(String line) {
