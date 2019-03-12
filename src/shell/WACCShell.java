@@ -36,20 +36,21 @@ public class WACCShell {
     symbolTable = null;
 
     in = new Scanner(System.in);
-    String line;
 
-    do {
-      prompt();
-      line = acquireCommand(in.nextLine(), 0);
+    prompt();
+    String line = acquireCommand(in.nextLine(), 0);
+    while(!line.equals(QUIT_STRING)) {
       processCommand(line);
 
-    } while (!line.equals(QUIT_STRING));
+      prompt();
+      line = acquireCommand(in.nextLine(), 0);
+    }
   }
 
   private static String acquireCommand(String line, int level) {
     String res = line.trim();
 
-    if (line.startsWith(IF_TOK) && line.endsWith(THEN_TOK)) {
+    if (line.startsWith(IF_TOK + " ") && line.endsWith(" " + THEN_TOK)) {
       res = acquireIfCommand(line, level + 1);
     }
 
@@ -74,25 +75,28 @@ public class WACCShell {
 
       if (elseIncluded && !fiIncluded && !line.endsWith(SEMI_COLON_TOK)) {
         fiIncluded = true;
-        autoCompleteMultiLineCommand(commandBuilder, FI_TOK, level);
+        commandBuilder.append(" ");
+        commandBuilder.append(FI_TOK);
+        promptWithIndent(level - 1);
+        System.out.print(FI_TOK);
       }
 
       if (!elseIncluded && !line.endsWith(SEMI_COLON_TOK)) {
         elseIncluded = true;
-        autoCompleteMultiLineCommand(commandBuilder, ELSE_TOK, level);
+        commandBuilder.append(" ");
+        commandBuilder.append(ELSE_TOK);
+        promptWithIndent(level - 1);
+        System.out.println(ELSE_TOK);
       }
 
     } while (!fiIncluded);
 
-    return commandBuilder.toString();
-  }
+    line = in.nextLine();
+    if (line.equals(SEMI_COLON_TOK)) {
+      commandBuilder.append(line);
+    }
 
-  private static void autoCompleteMultiLineCommand(StringBuilder commandBuilder,
-      String auto, int level) {
-    commandBuilder.append(" ");
-    commandBuilder.append(auto);
-    promptWithIndent(level - 1);
-    System.out.println(auto);
+    return commandBuilder.toString();
   }
 
   private static void processCommand(String line) {
