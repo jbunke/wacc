@@ -34,6 +34,9 @@ public class WACCShell {
   private final static String DO_TOK = "do";
   private final static String DONE_TOK = "done";
 
+  private final static String IS_TOK = "is";
+  private final static String END_TOK = "end";
+
 
   private final static String SEMI_COLON_TOK = ";";
 
@@ -62,9 +65,39 @@ public class WACCShell {
       res = acquireIfCommand(line, level + 1);
     } else if (line.startsWith(WHILE_TOK + " ") && line.endsWith(" " + DO_TOK)) {
       res = acquireWhileCommand(line, level + 1);
+    } else if (line.endsWith(" " + IS_TOK)) {
+      res = acquireFunctionCommand(line, level  + 1);
     }
 
     return res;
+  }
+
+  private static String acquireFunctionCommand(String startLine, int level) {
+    StringBuilder commandBuilder = new StringBuilder(startLine);
+    String line;
+    boolean end = false;
+
+    do {
+      promptWithIndent(level);
+      line = acquireCommand(in.nextLine(), level);
+      commandBuilder.append(" ");
+      commandBuilder.append(line);
+
+      if (!line.endsWith(SEMI_COLON_TOK)) {
+        end = true;
+        commandBuilder.append(" ");
+        commandBuilder.append(END_TOK);
+        promptWithIndent(level - 1);
+        System.out.print(END_TOK);
+      }
+    } while (!end);
+
+    line = in.nextLine();
+    if (line.equals(SEMI_COLON_TOK)) {
+      commandBuilder.append(line);
+    }
+
+    return commandBuilder.toString();
   }
 
   private static String acquireWhileCommand(String startLine, int level) {
