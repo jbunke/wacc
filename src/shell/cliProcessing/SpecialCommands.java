@@ -255,7 +255,8 @@ public class SpecialCommands {
     System.out.println("Type \"" + RESET_STRING + "\" to reset the shell");
     System.out.println("Type \"" + RUN_FILE_STRING + " FILEPATH.wacc\"" +
         " to execute a WACC file");
-    System.out.println("Type \"" + SCRIPT_STRING + " FILEPATH.sacc\"" +
+    System.out.println("Type \"" + SCRIPT_STRING + " FILEPATH" +
+            SCRIPT_FILE_EXTENSION + "\"" +
             " to execute a script for the shell");
     System.out.println("Type \"" + VARIABLES_STRING +
         "\" for variables in scope");
