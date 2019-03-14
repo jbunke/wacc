@@ -1,9 +1,19 @@
 package shell.cliProcessing;
 
+import antlr.WACCLexer;
+import antlr.WACCParser;
+import frontend.Visitor;
+import frontend.WACCParserErrorListener;
+import frontend.abstractSyntaxTree.Node;
+import frontend.abstractSyntaxTree.ProgramNode;
 import frontend.abstractSyntaxTree.typeNodes.FunctionDefinitionNode;
 import frontend.symbolTable.SymbolCategory;
 import frontend.symbolTable.Variable;
 import frontend.symbolTable.types.Type;
+import org.antlr.v4.runtime.CharStream;
+import org.antlr.v4.runtime.CharStreams;
+import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.TokenStream;
 import shell.WACCShell;
 
 import java.io.BufferedReader;
@@ -46,10 +56,45 @@ public class SpecialCommands {
         return false;
       default:
         if (line.startsWith(RUN_FILE_STRING)) {
-          
+          String filepath = line.substring(line.indexOf(" ") + 1);
+          try {
+            runFile(filepath);
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+          return false;
         }
         return true;
     }
+  }
+
+  private static void runFile(String filepath) throws IOException {
+    CharStream input = CharStreams.fromFileName(filepath);
+    WACCLexer lexer = new WACCLexer(input);
+    lexer.removeErrorListeners();
+    TokenStream tokens = new CommonTokenStream(lexer);
+    WACCParser parser = new WACCParser(tokens);
+    parser.removeErrorListeners();
+
+    WACCParserErrorListener synErrors =
+            new WACCParserErrorListener();
+    parser.addErrorListener(synErrors);
+
+    WACCParser.ProgContext parseTree = parser.prog();
+
+    if (synErrors.hasError()) {
+      for (String error : synErrors.getSyntaxErrors()) {
+        System.out.println(error);
+      }
+      return;
+    }
+
+    Visitor visitor = new Visitor();
+    ProgramNode program = (ProgramNode) visitor.visit(parseTree);
+
+    if (WACCShell.semErrorCheck(program)) return;
+
+    program.execute(WACCShell.symbolTable);
   }
 
   private static void functions() {
@@ -132,6 +177,8 @@ public class SpecialCommands {
     System.out.println("Type \"" + INFO_STRING +
             "\" for project information");
     System.out.println("Type \":q\" to quit\n");
+    System.out.println("Type \"" + RUN_FILE_STRING + " FILEPATH.wacc\"" +
+            " to execute a WACC file");
     System.out.println("Type \"" + VARIABLES_STRING +
             "\" for variables in scope");
   }

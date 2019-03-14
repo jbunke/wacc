@@ -89,4 +89,8 @@ public class ProgramNode implements Node {
 
     return errors;
   }
+
+  public void execute(SymbolTable symbolTable) {
+    stat.applyStatement(symbolTable);
+  }
 }

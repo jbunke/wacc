@@ -113,7 +113,7 @@ public class WACCShell {
     System.out.println(evaluated);
   }
 
-  private static boolean semErrorCheck(Node node) {
+  public static boolean semErrorCheck(Node node) {
     SemanticErrorList semErrors = new SemanticErrorList();
 
     if (symbolTable == null) {
