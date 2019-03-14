@@ -8,6 +8,7 @@ import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.Type;
 
 import java.util.Stack;
+import shell.Heap;
 
 public class ParenthesisExpressionNode extends ExpressionNode {
   private final ExpressionNode containedExpression;
@@ -39,8 +40,8 @@ public class ParenthesisExpressionNode extends ExpressionNode {
   }
 
   @Override
-  public Object evaluate(SymbolTable symbolTable) {
-    return containedExpression.evaluate(symbolTable);
+  public Object evaluate(SymbolTable symbolTable, Heap heap) {
+    return containedExpression.evaluate(symbolTable, heap);
   }
 
   @Override

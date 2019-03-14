@@ -12,11 +12,11 @@ import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.Array;
 import frontend.symbolTable.types.BaseTypes;
 import frontend.symbolTable.types.Type;
-import org.antlr.v4.runtime.CharStreams;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
+import shell.Heap;
 
 public class UnaryOpExpressionNode extends ExpressionNode {
   private final static String OVERFLOW = "OverflowError: the result is too " +
@@ -86,8 +86,8 @@ public class UnaryOpExpressionNode extends ExpressionNode {
   }
 
   @Override
-  public Object evaluate(SymbolTable symbolTable) {
-    Object operand = this.operand.evaluate(symbolTable);
+  public Object evaluate(SymbolTable symbolTable, Heap heap) {
+    Object operand = this.operand.evaluate(symbolTable, heap);
     switch (operatorType) {
       case LENGTH:
         if (operand instanceof String) {

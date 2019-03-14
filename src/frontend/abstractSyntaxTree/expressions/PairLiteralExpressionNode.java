@@ -10,6 +10,7 @@ import frontend.symbolTable.types.Pair;
 import frontend.symbolTable.types.Type;
 
 import java.util.Stack;
+import shell.Heap;
 
 public class PairLiteralExpressionNode extends ExpressionNode {
   @Override
@@ -35,7 +36,7 @@ public class PairLiteralExpressionNode extends ExpressionNode {
   }
 
   @Override
-  public Object evaluate(SymbolTable symbolTable) {
+  public Object evaluate(SymbolTable symbolTable, Heap heap) {
     // TODO
     return null;
   }

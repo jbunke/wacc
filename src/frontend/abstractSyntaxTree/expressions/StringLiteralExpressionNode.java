@@ -10,6 +10,7 @@ import frontend.symbolTable.types.BaseTypes;
 import frontend.symbolTable.types.Type;
 
 import java.util.Stack;
+import shell.Heap;
 
 public class StringLiteralExpressionNode extends ExpressionNode {
   private final String value;
@@ -42,7 +43,7 @@ public class StringLiteralExpressionNode extends ExpressionNode {
   }
 
   @Override
-  public Object evaluate(SymbolTable symbolTable) {
+  public Object evaluate(SymbolTable symbolTable, Heap heap) {
     return value;
   }
 

@@ -9,6 +9,7 @@ import frontend.abstractSyntaxTree.expressions.IdentifierNode;
 import frontend.symbolTable.*;
 import frontend.symbolTable.types.BaseTypes;
 import frontend.symbolTable.types.Type;
+import shell.Heap;
 import shell.ShellStatementControl;
 
 import java.util.ArrayList;
@@ -105,7 +106,8 @@ public class ReadStatementNode extends StatementNode {
   }
 
   @Override
-  public ShellStatementControl applyStatement(SymbolTable symbolTable) {
+  public ShellStatementControl applyStatement(SymbolTable symbolTable,
+      Heap heap) {
     Scanner in = new Scanner(System.in);
 
     String input = in.nextLine();

@@ -29,11 +29,13 @@ public class WACCShell {
   private final static String CONTINUE = "| ";
 
   public static SymbolTable symbolTable;
+  private static Heap heap;
 
   public static Scanner in;
 
   public static void main(String[] args) {
     symbolTable = null;
+    heap = new Heap();
 
     in = new Scanner(System.in);
 
@@ -100,13 +102,13 @@ public class WACCShell {
     /* symbol table should now have populated any variables
      * declared in statement */
 
-    statement.applyStatement(symbolTable);
+    statement.applyStatement(symbolTable, heap);
   }
 
   private static void processRHS(AssignRHS rhs) {
     if (semErrorCheck(rhs)) return;
 
-    Object evaluated = rhs.evaluate(symbolTable);
+    Object evaluated = rhs.evaluate(symbolTable, heap);
     System.out.println(evaluated);
   }
 

@@ -12,6 +12,7 @@ import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.BaseTypes;
 import frontend.symbolTable.types.Type;
+import shell.Heap;
 import shell.ShellStatementControl;
 
 import java.util.ArrayList;
@@ -79,10 +80,11 @@ public class WhileStatementNode extends StatementNode {
   }
 
   @Override
-  public ShellStatementControl applyStatement(SymbolTable symbolTable) {
+  public ShellStatementControl applyStatement(SymbolTable symbolTable,
+      Heap heap) {
     ShellStatementControl status = ShellStatementControl.cont();
-    while ((Boolean) condition.evaluate(symbolTable)) {
-      status = doStatement.applyStatement(symbolTable.getChild(doStatement));
+    while ((Boolean) condition.evaluate(symbolTable, heap)) {
+      status = doStatement.applyStatement(symbolTable.getChild(doStatement), heap);
       if (status.toExit) break;
     }
     return status;

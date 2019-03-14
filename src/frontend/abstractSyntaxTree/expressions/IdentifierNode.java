@@ -9,6 +9,7 @@ import frontend.symbolTable.types.BaseTypes;
 import frontend.symbolTable.types.Type;
 
 import java.util.Stack;
+import shell.Heap;
 
 public class IdentifierNode extends ExpressionNode {
   private final String identifier;
@@ -66,7 +67,7 @@ public class IdentifierNode extends ExpressionNode {
   }
 
   @Override
-  public Object evaluate(SymbolTable symbolTable) {
+  public Object evaluate(SymbolTable symbolTable, Heap heap) {
     return symbolTable.getValue(identifier);
   }
 

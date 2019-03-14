@@ -11,6 +11,7 @@ import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.Variable;
 import frontend.symbolTable.types.Type;
+import shell.Heap;
 import shell.ShellStatementControl;
 
 import java.util.Stack;
@@ -78,9 +79,10 @@ public class DeclarationStatementNode extends StatementNode {
   }
 
   @Override
-  public ShellStatementControl applyStatement(SymbolTable symbolTable) {
+  public ShellStatementControl applyStatement(SymbolTable symbolTable,
+      Heap heap) {
     // Get value
-    Object value = rhs.evaluate(symbolTable);
+    Object value = rhs.evaluate(symbolTable, heap);
 
     symbolTable.setValue(identifier.getName(), value);
 

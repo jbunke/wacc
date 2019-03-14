@@ -5,6 +5,7 @@ import backend.Register;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.Type;
+import shell.Heap;
 import shell.ShellStatementControl;
 
 import java.util.Stack;
@@ -56,9 +57,10 @@ public class InnerScopeStatementNode extends StatementNode {
   }
 
   @Override
-  public ShellStatementControl applyStatement(SymbolTable symbolTable) {
+  public ShellStatementControl applyStatement(SymbolTable symbolTable,
+      Heap heap) {
     // TODO: check validity
-    return innerStatement.applyStatement(symbolTable.getChild(innerStatement));
+    return innerStatement.applyStatement(symbolTable.getChild(innerStatement), heap);
   }
 
   @Override
