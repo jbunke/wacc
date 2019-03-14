@@ -21,6 +21,7 @@ public class SpecialCommands {
   private final static String INFO_STRING = ":i";
   private final static String VARIABLES_STRING = ":v";
   private final static String FUNCTIONS_STRING = ":f";
+  private final static String RUN_FILE_STRING = ":run";
 
   public static boolean commandMatchCheck(String line) {
     switch (line) {
@@ -44,6 +45,9 @@ public class SpecialCommands {
         functions();
         return false;
       default:
+        if (line.startsWith(RUN_FILE_STRING)) {
+          
+        }
         return true;
     }
   }

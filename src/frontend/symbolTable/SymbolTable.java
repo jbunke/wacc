@@ -2,7 +2,6 @@ package frontend.symbolTable;
 
 import frontend.abstractSyntaxTree.Node;
 import frontend.abstractSyntaxTree.typeNodes.FunctionDefinitionNode;
-import javafx.util.Pair;
 
 import java.util.*;
 
