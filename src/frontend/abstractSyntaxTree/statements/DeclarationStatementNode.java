@@ -79,14 +79,8 @@ public class DeclarationStatementNode extends StatementNode {
 
   @Override
   public void applyStatement(SymbolTable symbolTable) {
-    Object value = null;
-
     // Get value
-    if (rhs instanceof ExpressionNode) {
-      ExpressionNode exprRHS = (ExpressionNode) rhs;
-      value = exprRHS.evaluate(symbolTable);
-
-    }
+    Object value = rhs.evaluate(symbolTable);
 
     symbolTable.setValue(identifier.getName(), value);
   }

@@ -12,6 +12,7 @@ import frontend.symbolTable.types.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
+import java.util.stream.Collectors;
 
 public class ParameterListNode implements Node {
   private final List<IdentifierNode> identifierList;
@@ -58,5 +59,8 @@ public class ParameterListNode implements Node {
     }
   }
 
-
+  public List<String> getIdentifiers() {
+    return identifierList.parallelStream().map(IdentifierNode::getName).
+            collect(Collectors.toList());
+  }
 }

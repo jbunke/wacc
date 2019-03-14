@@ -13,6 +13,7 @@ import frontend.abstractSyntaxTree.typeNodes.FunctionDefinitionNode;
 import frontend.symbolTable.*;
 import frontend.symbolTable.types.Type;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
@@ -113,6 +114,28 @@ public class FunctionCallNode implements AssignRHS {
   @Override
   public Object evaluate(SymbolTable symbolTable) {
     // TODO
+    // get function
+//    try {
+//      FunctionDefinitionNode function =
+//              (FunctionDefinitionNode) symbolTable.find(functionIdentifier.getName());
+//    } catch (ClassCastException e) {
+//      return null;
+//    }
+
+    List<Object> argValues = new ArrayList<>();
+
+    for (ExpressionNode expression : arguments) {
+      argValues.add(expression.evaluate(symbolTable));
+    }
+
+    SymbolTable functionTable = symbolTable.getChild(function);
+
+    List<String> parameters = function.getParameterList().getIdentifiers();
+
+    for (int i = 0; i < argValues.size(); i++) {
+      functionTable.setValue(parameters.get(i), argValues.get(i));
+    }
+
     return null;
   }
 }

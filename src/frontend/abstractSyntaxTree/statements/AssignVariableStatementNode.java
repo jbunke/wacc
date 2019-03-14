@@ -81,14 +81,10 @@ public class AssignVariableStatementNode extends StatementNode {
 
   @Override
   public void applyStatement(SymbolTable symbolTable) {
-    Object value = null;
     String identifier = "";
 
     // Get value
-    if (right instanceof ExpressionNode) {
-      ExpressionNode exprRHS = (ExpressionNode) right;
-      value = exprRHS.evaluate(symbolTable);
-    }
+    Object value = right.evaluate(symbolTable);
 
     // Get identifier
     if (left instanceof IdentifierNode) {

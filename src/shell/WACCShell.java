@@ -119,7 +119,7 @@ public class WACCShell {
   private static void processFunction(FunctionDefinitionNode function) {
     if (semErrorCheck(function)) return;
 
-
+    symbolTable.add(function.getIdentifier(), function);
   }
 
   private static void processStatement(StatementNode statement) {
