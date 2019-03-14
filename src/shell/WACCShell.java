@@ -17,10 +17,12 @@ import org.antlr.v4.runtime.TokenStream;
 import shell.cliProcessing.CommandProcessing;
 import shell.cliProcessing.SpecialCommands;
 
+import java.io.*;
+import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class WACCShell {
-
   public static final String ANSI_RESET = "\u001B[0m";
   public static final String ANSI_RED = "\u001B[31m";
   public static final String ANSI_GREEN = "\u001B[32m";
@@ -33,6 +35,8 @@ public class WACCShell {
   private final static String TAB_CHAR = "\t";
   private final static String CONTINUE = "| ";
 
+  public static String username = "";
+
   public static SymbolTable symbolTable;
   public static Heap heap;
 
@@ -41,6 +45,8 @@ public class WACCShell {
   public static void main(String[] args) {
     symbolTable = null;
     heap = new Heap();
+
+    loadUsername();
 
     in = new Scanner(System.in);
 
@@ -58,6 +64,29 @@ public class WACCShell {
     System.out.print(ANSI_GREEN);
     System.out.print("\nThank you for using our interactive shell!");
     System.out.println(ANSI_RESET);
+    saveUsername();
+  }
+
+  public static void saveUsername() {
+    try {
+      FileWriter writer = new FileWriter(
+              new File("res/username"), false);
+      writer.write(username);
+      writer.close();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  private static void loadUsername()  {
+    try {
+      FileReader reader = new FileReader(new File("res/username"));
+      BufferedReader br = new BufferedReader(reader);
+      List<String> lines = br.lines().collect(Collectors.toList());
+      if (lines.size() > 0) username = lines.get(0).trim();
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    }
   }
 
   private static void startUp() {
@@ -139,7 +168,7 @@ public class WACCShell {
   }
 
   private static void prompt() {
-    System.out.print(PROMPTER);
+    System.out.print(ANSI_PURPLE + username + ANSI_RESET + PROMPTER);
   }
 
   public static void promptWithIndent(int level) {

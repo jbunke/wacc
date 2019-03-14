@@ -36,6 +36,7 @@ public class SpecialCommands {
   private final static String FUNCTIONS_STRING = ":f";
   private final static String RUN_FILE_STRING = ":run";
   private final static String RESET_STRING = ":reset";
+  private final static String ME_STRING = ":me";
 
   public static boolean commandMatchCheck(String line) {
     switch (line) {
@@ -55,6 +56,10 @@ public class SpecialCommands {
       case VARIABLES_STRING:
         variables();
         return false;
+      case ME_STRING:
+        System.out.println(ANSI_GREEN + "Username: " +
+                WACCShell.username + ANSI_RESET);
+        return false;
       case FUNCTIONS_STRING:
         functions();
         return false;
@@ -62,13 +67,17 @@ public class SpecialCommands {
         reset();
         return false;
       default:
-        if (line.startsWith(RUN_FILE_STRING)) {
+        if (line.startsWith(RUN_FILE_STRING + " ")) {
           String filepath = line.substring(line.indexOf(" ") + 1);
           try {
             runFile(filepath);
           } catch (IOException e) {
             e.printStackTrace();
           }
+          return false;
+        } else if (line.startsWith(ME_STRING + " ")) {
+          WACCShell.username = line.substring(line.indexOf(" ") + 1);
+          WACCShell.saveUsername();
           return false;
         }
         return true;
