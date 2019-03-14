@@ -87,6 +87,9 @@ public class SpecialCommands {
   private static void reset() {
     WACCShell.symbolTable = null;
     WACCShell.heap.reset();
+    WACCShell.username = "user";
+    WACCShell.saveUsername();
+
     System.out.print(ANSI_GREEN);
     System.out.println("Shell has been reset\n");
     System.out.print(ANSI_RESET);
@@ -216,6 +219,8 @@ public class SpecialCommands {
         "\" to see the grammar for the language");
     System.out.println("Type \"" + INFO_STRING +
         "\" for project information");
+    System.out.println("Type \"" + ME_STRING + "\" to see username and \"" +
+            ME_STRING + " USERNAME\" to set a new username");
     System.out.println("Type \":q\" to quit");
     System.out.println("Type \"" + RESET_STRING + "\" to reset the shell");
     System.out.println("Type \"" + RUN_FILE_STRING + " FILEPATH.wacc\"" +
