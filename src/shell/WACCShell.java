@@ -26,7 +26,7 @@ public class WACCShell {
   public static final String ANSI_RESET = "\u001B[0m";
   public static final String ANSI_RED = "\u001B[31m";
   public static final String ANSI_GREEN = "\u001B[32m";
-  public static final String ANSI_PURPLE = "\u001B[35m";
+  private static final String ANSI_PURPLE = "\u001B[35m";
 
   private final static String QUIT_STRING = ":q";
 
@@ -83,12 +83,19 @@ public class WACCShell {
   }
 
   public static void loadUsername()  {
+    File file = new File("res/username");
+
     try {
-      FileReader reader = new FileReader(new File("res/username"));
-      BufferedReader br = new BufferedReader(reader);
-      List<String> lines = br.lines().collect(Collectors.toList());
-      if (lines.size() > 0) username = lines.get(0).trim();
-    } catch (FileNotFoundException e) {
+      if (!file.createNewFile()) {
+        FileReader reader = new FileReader(file);
+        BufferedReader br = new BufferedReader(reader);
+        List<String> lines = br.lines().collect(Collectors.toList());
+        if (lines.size() > 0) username = lines.get(0).trim();
+      } else {
+        username = "user";
+        saveUsername();
+      }
+    } catch (IOException e) {
       e.printStackTrace();
     }
   }
