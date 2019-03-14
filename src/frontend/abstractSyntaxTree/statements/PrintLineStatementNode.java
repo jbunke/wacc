@@ -9,6 +9,7 @@ import frontend.abstractSyntaxTree.expressions.ExpressionNode;
 import frontend.symbolTable.SemanticError;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
+import shell.ShellStatementControl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,7 +71,8 @@ public class PrintLineStatementNode extends StatementNode {
   }
 
   @Override
-  public void applyStatement(SymbolTable symbolTable) {
+  public ShellStatementControl applyStatement(SymbolTable symbolTable) {
     System.out.println(expression.evaluate(symbolTable));
+    return ShellStatementControl.cont();
   }
 }

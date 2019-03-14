@@ -9,6 +9,7 @@ import frontend.symbolTable.SemanticError;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.Type;
+import shell.ShellStatementControl;
 
 import java.util.Stack;
 
@@ -61,8 +62,9 @@ public class ReturnStatementNode extends StatementNode {
   }
 
   @Override
-  public void applyStatement(SymbolTable symbolTable) {
+  public ShellStatementControl applyStatement(SymbolTable symbolTable) {
     // TODO
+    return ShellStatementControl.returnValue(result.evaluate(symbolTable));
   }
 
   public Type getType(SymbolTable symbolTable) {

@@ -4,6 +4,7 @@ package frontend.abstractSyntaxTree.statements;
 import frontend.abstractSyntaxTree.Node;
 import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.Type;
+import shell.ShellStatementControl;
 
 public abstract class StatementNode implements Node {
   public boolean endsWithReturn() {
@@ -21,5 +22,5 @@ public abstract class StatementNode implements Node {
   public void matchReturnType(Type type) {
   }
 
-  public abstract void applyStatement(SymbolTable symbolTable);
+  public abstract ShellStatementControl applyStatement(SymbolTable symbolTable);
 }

@@ -7,12 +7,12 @@ import frontend.abstractSyntaxTree.assignment.AssignLHS;
 import frontend.abstractSyntaxTree.assignment.AssignPairElementNode;
 import frontend.abstractSyntaxTree.assignment.AssignRHS;
 import frontend.abstractSyntaxTree.expressions.ArrayElementNode;
-import frontend.abstractSyntaxTree.expressions.ExpressionNode;
 import frontend.abstractSyntaxTree.expressions.IdentifierNode;
 import frontend.symbolTable.SemanticError;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.Type;
+import shell.ShellStatementControl;
 
 import java.util.Stack;
 
@@ -80,7 +80,7 @@ public class AssignVariableStatementNode extends StatementNode {
   }
 
   @Override
-  public void applyStatement(SymbolTable symbolTable) {
+  public ShellStatementControl applyStatement(SymbolTable symbolTable) {
     String identifier = "";
 
     // Get value
@@ -92,5 +92,7 @@ public class AssignVariableStatementNode extends StatementNode {
     }
 
     symbolTable.setValue(identifier, value);
+
+    return ShellStatementControl.cont();
   }
 }

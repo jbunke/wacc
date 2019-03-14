@@ -31,6 +31,10 @@ public class FunctionDefinitionNode extends SymbolCategory implements Node {
     this.body = stat;
   }
 
+  public StatementNode getBody() {
+    return body;
+  }
+
   public Type getReturnType() {
     return returnType.getType();
   }

@@ -4,7 +4,6 @@ import backend.AssemblyGenerator;
 import backend.Register;
 import backend.instructions.STRInstruction;
 import frontend.abstractSyntaxTree.assignment.AssignRHS;
-import frontend.abstractSyntaxTree.expressions.ExpressionNode;
 import frontend.abstractSyntaxTree.expressions.IdentifierNode;
 import frontend.abstractSyntaxTree.typeNodes.TypeNode;
 import frontend.symbolTable.SemanticError;
@@ -12,6 +11,7 @@ import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.Variable;
 import frontend.symbolTable.types.Type;
+import shell.ShellStatementControl;
 
 import java.util.Stack;
 
@@ -78,10 +78,12 @@ public class DeclarationStatementNode extends StatementNode {
   }
 
   @Override
-  public void applyStatement(SymbolTable symbolTable) {
+  public ShellStatementControl applyStatement(SymbolTable symbolTable) {
     // Get value
     Object value = rhs.evaluate(symbolTable);
 
     symbolTable.setValue(identifier.getName(), value);
+
+    return ShellStatementControl.cont();
   }
 }

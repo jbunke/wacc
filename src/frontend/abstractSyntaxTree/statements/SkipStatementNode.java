@@ -4,6 +4,7 @@ import backend.AssemblyGenerator;
 import backend.Register;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
+import shell.ShellStatementControl;
 
 import java.util.Stack;
 
@@ -25,7 +26,7 @@ public class SkipStatementNode extends StatementNode {
   }
 
   @Override
-  public void applyStatement(SymbolTable symbolTable) {
-
+  public ShellStatementControl applyStatement(SymbolTable symbolTable) {
+    return ShellStatementControl.cont();
   }
 }

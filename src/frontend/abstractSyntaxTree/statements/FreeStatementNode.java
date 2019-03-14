@@ -13,6 +13,7 @@ import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.Array;
 import frontend.symbolTable.types.Pair;
 import frontend.symbolTable.types.Type;
+import shell.ShellStatementControl;
 
 import java.util.Stack;
 
@@ -60,7 +61,8 @@ public class FreeStatementNode extends StatementNode {
   }
 
   @Override
-  public void applyStatement(SymbolTable symbolTable) {
+  public ShellStatementControl applyStatement(SymbolTable symbolTable) {
     // TODO
+    return ShellStatementControl.cont();
   }
 }

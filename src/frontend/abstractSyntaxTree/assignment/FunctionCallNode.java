@@ -114,13 +114,6 @@ public class FunctionCallNode implements AssignRHS {
   @Override
   public Object evaluate(SymbolTable symbolTable) {
     // TODO
-    // get function
-//    try {
-//      FunctionDefinitionNode function =
-//              (FunctionDefinitionNode) symbolTable.find(functionIdentifier.getName());
-//    } catch (ClassCastException e) {
-//      return null;
-//    }
 
     List<Object> argValues = new ArrayList<>();
 
@@ -136,6 +129,6 @@ public class FunctionCallNode implements AssignRHS {
       functionTable.setValue(parameters.get(i), argValues.get(i));
     }
 
-    return null;
+    return function.getBody().applyStatement(functionTable).value;
   }
 }

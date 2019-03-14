@@ -11,6 +11,7 @@ import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.Array;
 import frontend.symbolTable.types.BaseTypes;
 import frontend.symbolTable.types.Pair;
+import shell.ShellStatementControl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -163,7 +164,8 @@ public class PrintStatementNode extends StatementNode {
   }
 
   @Override
-  public void applyStatement(SymbolTable symbolTable) {
+  public ShellStatementControl applyStatement(SymbolTable symbolTable) {
     System.out.print(expression.evaluate(symbolTable));
+    return ShellStatementControl.cont();
   }
 }

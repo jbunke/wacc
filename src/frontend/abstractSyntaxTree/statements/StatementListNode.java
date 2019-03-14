@@ -6,6 +6,7 @@ import frontend.symbolTable.SemanticError;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.Type;
+import shell.ShellStatementControl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,10 +83,13 @@ public class StatementListNode extends StatementNode {
   }
 
   @Override
-  public void applyStatement(SymbolTable symbolTable) {
+  public ShellStatementControl applyStatement(SymbolTable symbolTable) {
+    ShellStatementControl status = ShellStatementControl.cont();
     for (StatementNode statement : statements) {
-      statement.applyStatement(symbolTable);
+      status = statement.applyStatement(symbolTable);
+      if (status.toExit) break;
     }
+    return status;
   }
 
   // statement list contains exit if any of its sub-statements do
