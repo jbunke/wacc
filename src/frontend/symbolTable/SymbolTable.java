@@ -2,6 +2,7 @@ package frontend.symbolTable;
 
 import frontend.abstractSyntaxTree.Node;
 import frontend.abstractSyntaxTree.typeNodes.FunctionDefinitionNode;
+import javafx.util.Pair;
 
 import java.util.*;
 
@@ -207,5 +208,15 @@ public class SymbolTable {
       return parent.getValue(identifier);
     }
     return null;
+  }
+
+  public List<Map.Entry<String, SymbolCategory>> getEntries() {
+    List<Map.Entry<String, SymbolCategory>> entries = new ArrayList<>();
+
+    for (String key : identifierMap.keySet()) {
+      entries.add(new AbstractMap.SimpleEntry<>(key, identifierMap.get(key)));
+    }
+
+    return entries;
   }
 }

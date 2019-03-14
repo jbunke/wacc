@@ -28,7 +28,7 @@ public class WACCShell {
   private final static String TAB_CHAR = "\t";
   private final static String CONTINUE = "| ";
 
-  private static SymbolTable symbolTable;
+  public static SymbolTable symbolTable;
 
   public static Scanner in;
 

@@ -1,15 +1,26 @@
 package shell.cliProcessing;
 
+import frontend.abstractSyntaxTree.typeNodes.FunctionDefinitionNode;
+import frontend.symbolTable.SymbolCategory;
+import frontend.symbolTable.Variable;
+import frontend.symbolTable.types.Type;
+import shell.WACCShell;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class SpecialCommands {
 
   private final static String HELP_STRING = ":h";
   private final static String GRAMMAR_STRING = ":g";
   private final static String INFO_STRING = ":i";
+  private final static String VARIABLES_STRING = ":v";
+  private final static String FUNCTIONS_STRING = ":f";
 
   public static boolean commandMatchCheck(String line) {
     switch (line) {
@@ -26,9 +37,76 @@ public class SpecialCommands {
       case INFO_STRING:
         info();
         return false;
+      case VARIABLES_STRING:
+        variables();
+        return false;
+      case FUNCTIONS_STRING:
+        functions();
+        return false;
       default:
         return true;
     }
+  }
+
+  private static void functions() {
+    if (WACCShell.symbolTable == null ||
+            WACCShell.symbolTable.getEntries().size() == 0) {
+      System.out.println("No functions in scope\n");
+      return;
+    }
+
+    System.out.println("Functions in scope:\n");
+
+    List<Map.Entry<String, SymbolCategory>> entries =
+            WACCShell.symbolTable.getEntries();
+    entries = entries.parallelStream().
+            filter(x -> x.getValue() instanceof FunctionDefinitionNode).
+            collect(Collectors.toList());
+    for (Map.Entry<String, SymbolCategory> entry : entries) {
+      FunctionDefinitionNode function =
+              (FunctionDefinitionNode) entry.getValue();
+
+      System.out.print(function.getIdentifier() + "(");
+
+      List<Type> paramTypes = function.getParameterList().getParamTypes();
+      for (int i = 0; i < paramTypes.size(); i++) {
+        System.out.print(paramTypes.get(i).toString());
+        if (i < paramTypes.size() - 1) System.out.print(", ");
+      }
+
+      System.out.println(") -> " + function.getReturnType().toString());
+    }
+    System.out.println();
+  }
+
+  private static void variables() {
+    if (WACCShell.symbolTable == null ||
+            WACCShell.symbolTable.getEntries().size() == 0) {
+      System.out.println("No variables in scope\n");
+      return;
+    }
+
+    System.out.println("Variables in scope:\n");
+
+    List<Map.Entry<String, SymbolCategory>> entries =
+            WACCShell.symbolTable.getEntries();
+    entries = entries.parallelStream().
+            filter(x -> x.getValue() instanceof Variable).
+            collect(Collectors.toList());
+    for (Map.Entry<String, SymbolCategory> entry : entries) {
+      System.out.println(entry.getKey() + " -> " +
+              format(((Variable) entry.getValue()).getValue()));
+    }
+    System.out.println();
+  }
+
+  private static String format(Object object) {
+    if (object instanceof String) {
+      return "\"" + object + "\"";
+    } else if (object instanceof Character) {
+      return "'" + object + "'";
+    }
+    return object.toString();
   }
 
   private static void info() {
@@ -43,11 +121,15 @@ public class SpecialCommands {
 
   private static void help() {
     System.out.println("Type any valid WACC expression, statement or function");
+    System.out.println("Type \"" + FUNCTIONS_STRING +
+            "\" for functions in scope");
     System.out.println("Type \"" + GRAMMAR_STRING +
             "\" to see the grammar for the language");
     System.out.println("Type \"" + INFO_STRING +
             "\" for project information");
     System.out.println("Type \":q\" to quit\n");
+    System.out.println("Type \"" + VARIABLES_STRING +
+            "\" for variables in scope");
   }
 
   private static void printGrammar() throws IOException {
