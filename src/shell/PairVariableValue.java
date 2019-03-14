@@ -2,6 +2,7 @@ package shell;
 
 
 public class PairVariableValue {
+  private static final String NULL_ADDR = "null";
 
   private String addr;
 
@@ -28,6 +29,15 @@ public class PairVariableValue {
 
   public void setRight(Object newRight) {
     right = newRight;
+  }
+
+  public boolean free() {
+    if (addr.equals(NULL_ADDR)) {
+      return false;
+    }
+
+    addr = NULL_ADDR;
+    return true;
   }
 
   @Override

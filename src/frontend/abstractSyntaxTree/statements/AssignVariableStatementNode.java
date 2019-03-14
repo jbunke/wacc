@@ -1,5 +1,8 @@
 package frontend.abstractSyntaxTree.statements;
 
+import static shell.WACCShell.ANSI_RED;
+import static shell.WACCShell.ANSI_RESET;
+
 import backend.AssemblyGenerator;
 import backend.Register;
 import backend.instructions.STRInstruction;
@@ -20,6 +23,7 @@ import shell.ShellStatementControl;
 import java.util.Stack;
 
 public class AssignVariableStatementNode extends StatementNode {
+  private static final String RUNTIME_ERROR = "Runtime Error:";
 
   private final AssignLHS left;
   private final AssignRHS right;
@@ -90,26 +94,41 @@ public class AssignVariableStatementNode extends StatementNode {
     // Get value
     Object value = right.evaluate(symbolTable, heap);
 
-    // Get identifier
-    if (left instanceof IdentifierNode) {
+    if (isValueErroneous(value)) {
 
-      identifier = ((IdentifierNode) left).getName();
-      symbolTable.setValue(identifier, value);
+      System.out.print(ANSI_RED);
+      System.out.println(value);
+      System.out.print(ANSI_RESET);
 
-    } else if (left instanceof AssignPairElementNode) {
+    } else {
 
-      AssignPairElementNode pairNode = (AssignPairElementNode) left;
-      PairVariableValue v = (PairVariableValue)
-          symbolTable.getValue(pairNode.getIdentifier());
+      // Get identifier
+      if (left instanceof IdentifierNode) {
 
-      if (pairNode.getPosition() == AssignPairElementNode.FST_POSITION) {
-        v.setLeft(value);
-      } else if (pairNode.getPosition() == AssignPairElementNode.SND_POSITION) {
-        v.setRight(value);
+        identifier = ((IdentifierNode) left).getName();
+        symbolTable.setValue(identifier, value);
+
+      } else if (left instanceof AssignPairElementNode) {
+
+        AssignPairElementNode pairNode = (AssignPairElementNode) left;
+        PairVariableValue v = (PairVariableValue)
+            symbolTable.getValue(pairNode.getIdentifier());
+
+        if (pairNode.getPosition() == AssignPairElementNode.FST_POSITION) {
+          v.setLeft(value);
+        } else if (pairNode.getPosition()
+            == AssignPairElementNode.SND_POSITION) {
+          v.setRight(value);
+        }
+
       }
-
     }
 
     return ShellStatementControl.cont();
+  }
+
+  private boolean isValueErroneous(Object value) {
+    return (value instanceof String)
+        && ((String) value).startsWith(RUNTIME_ERROR);
   }
 }
