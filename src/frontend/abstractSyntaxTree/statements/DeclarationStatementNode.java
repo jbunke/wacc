@@ -100,7 +100,7 @@ public class DeclarationStatementNode extends StatementNode {
     return ShellStatementControl.cont();
   }
 
-  private boolean isValueErroneous(Object value) {
+  private static boolean isValueErroneous(Object value) {
     return (value instanceof String)
         && ((String) value).startsWith(RUNTIME_ERROR);
   }
