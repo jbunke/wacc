@@ -168,7 +168,7 @@ public class WACCShell {
   }
 
   private static void prompt() {
-    System.out.print(ANSI_PURPLE + username + ANSI_RESET + PROMPTER);
+    System.out.print(ANSI_PURPLE + username + " " + PROMPTER + ANSI_RESET);
   }
 
   public static void promptWithIndent(int level) {
