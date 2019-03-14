@@ -4,7 +4,6 @@ import antlr.WACCLexer;
 import antlr.WACCParser;
 import frontend.Visitor;
 import frontend.WACCParserErrorListener;
-import frontend.abstractSyntaxTree.Node;
 import frontend.abstractSyntaxTree.ProgramNode;
 import frontend.abstractSyntaxTree.typeNodes.FunctionDefinitionNode;
 import frontend.symbolTable.SymbolCategory;
