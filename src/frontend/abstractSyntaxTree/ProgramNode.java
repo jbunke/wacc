@@ -91,6 +91,6 @@ public class ProgramNode implements Node {
   }
 
   public void execute(SymbolTable symbolTable) {
-    stat.applyStatement(symbolTable);
+    stat.applyStatement(symbolTable.getChild(stat));
   }
 }

@@ -115,13 +115,15 @@ public class FunctionCallNode implements AssignRHS {
   public Object evaluate(SymbolTable symbolTable) {
     // TODO
 
+    SymbolTable rootTable = symbolTable.getParent();
+
     List<Object> argValues = new ArrayList<>();
 
     for (ExpressionNode expression : arguments) {
       argValues.add(expression.evaluate(symbolTable));
     }
 
-    SymbolTable functionTable = symbolTable.getChild(function);
+    SymbolTable functionTable = rootTable.getChild(function);
 
     List<String> parameters = function.getParameterList().getIdentifiers();
 

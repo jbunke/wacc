@@ -162,7 +162,17 @@ public class SymbolTable {
     if (scope instanceof FunctionDefinitionNode) {
       return this;
     }
+    if (parent == null) return null;
     return parent.functionTable();
+  }
+
+  public boolean matchesScope(Node scope) {
+    return scope.equals(this.scope);
+  }
+
+  public SymbolTable getParent() {
+    if (parent == null) return this;
+    return parent;
   }
 
   /**

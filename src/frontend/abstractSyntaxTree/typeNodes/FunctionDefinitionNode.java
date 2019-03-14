@@ -54,8 +54,8 @@ public class FunctionDefinitionNode extends SymbolCategory implements Node {
     /* Check to see if is using symbol table with correct scope
      * This will not be the case in the interactive shell where
      *   functions are not called from the program node */
-    symbolTable = (symbolTable.getChild(this) == null)
-            ? symbolTable.newChild(this) : symbolTable;
+    symbolTable = (symbolTable.matchesScope(this))
+            ? symbolTable : symbolTable.newChild(this);
 
     body.matchReturnType(getReturnType());
     parameters.semanticCheck(symbolTable, errorList);
