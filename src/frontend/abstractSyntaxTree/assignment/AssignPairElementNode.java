@@ -17,6 +17,7 @@ import frontend.symbolTable.types.Type;
 
 import java.util.Stack;
 import shell.Heap;
+import shell.PairVariableValue;
 
 public class AssignPairElementNode implements AssignRHS {
 
@@ -61,8 +62,13 @@ public class AssignPairElementNode implements AssignRHS {
 
   @Override
   public Object evaluate(SymbolTable symbolTable, Heap heap) {
-    // TODO
-    return null;
+    PairVariableValue v = (PairVariableValue)
+        symbolTable.getValue(identifier.getName());
+
+    if (position == FST_POSITION) {
+      return v.getLeft();
+    }
+    return v.getRight();
   }
 
   private static void generateNullPtrCheck(AssemblyGenerator generator, Stack<Register.ID> available) {
@@ -109,4 +115,11 @@ public class AssignPairElementNode implements AssignRHS {
     return position == FST_POSITION ? pair.getFirst() : pair.getSecond();
   }
 
+  public String getIdentifier() {
+    return identifier.getName();
+  }
+
+  public int getPosition() {
+    return position;
+  }
 }

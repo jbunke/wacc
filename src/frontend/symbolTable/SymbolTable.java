@@ -211,6 +211,14 @@ public class SymbolTable {
   }
 
   /**
+   * @param identifier The string key that is the identifier of the variable
+   *                   to be removed
+   */
+  public void removeEntry(String identifier) {
+    identifierMap.remove(identifier);
+  }
+
+  /**
    * @param identifier The string key used to search for the value of its
    *                   associated Variable
    * @return The value of the Variable that matches the key "identifier" in the

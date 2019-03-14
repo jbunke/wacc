@@ -1,5 +1,8 @@
 package frontend.abstractSyntaxTree.statements;
 
+import static shell.WACCShell.ANSI_RED;
+import static shell.WACCShell.ANSI_RESET;
+
 import backend.AssemblyGenerator;
 import backend.Register;
 import backend.instructions.STRInstruction;
@@ -12,12 +15,15 @@ import frontend.symbolTable.SemanticError;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.Type;
+import org.antlr.v4.analysis.LeftRecursiveRuleAnalyzer.ASSOC;
 import shell.Heap;
+import shell.PairVariableValue;
 import shell.ShellStatementControl;
 
 import java.util.Stack;
 
 public class AssignVariableStatementNode extends StatementNode {
+  private static final String RUNTIME_ERROR = "Runtime Error:";
 
   private final AssignLHS left;
   private final AssignRHS right;
@@ -88,13 +94,41 @@ public class AssignVariableStatementNode extends StatementNode {
     // Get value
     Object value = right.evaluate(symbolTable, heap);
 
-    // Get identifier
-    if (left instanceof IdentifierNode) {
-      identifier = ((IdentifierNode) left).getName();
+    if (isValueErroneous(value)) {
+
+      System.out.print(ANSI_RED);
+      System.out.println(value);
+      System.out.print(ANSI_RESET);
+
+    } else {
+
+      // Get identifier
+      if (left instanceof IdentifierNode) {
+
+        identifier = ((IdentifierNode) left).getName();
+        symbolTable.setValue(identifier, value);
+
+      } else if (left instanceof AssignPairElementNode) {
+
+        AssignPairElementNode pairNode = (AssignPairElementNode) left;
+        PairVariableValue v = (PairVariableValue)
+            symbolTable.getValue(pairNode.getIdentifier());
+
+        if (pairNode.getPosition() == AssignPairElementNode.FST_POSITION) {
+          v.setLeft(value);
+        } else if (pairNode.getPosition()
+            == AssignPairElementNode.SND_POSITION) {
+          v.setRight(value);
+        }
+
+      }
     }
 
-    symbolTable.setValue(identifier, value);
-
     return ShellStatementControl.cont();
+  }
+
+  private boolean isValueErroneous(Object value) {
+    return (value instanceof String)
+        && ((String) value).startsWith(RUNTIME_ERROR);
   }
 }
