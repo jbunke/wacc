@@ -19,6 +19,8 @@ import frontend.symbolTable.types.Type;
 
 import java.util.List;
 import java.util.Stack;
+import shell.ArrayVariableValue;
+import shell.Heap;
 
 public class ArrayLiteralNode implements AssignRHS {
 
@@ -47,14 +49,18 @@ public class ArrayLiteralNode implements AssignRHS {
     }
   }
 
+  private int getElemSize(SymbolTable symbolTable) {
+    Type elemType = ((Array) this.getType(symbolTable)).getElementType();
+    return elemType == null ? 0 : elemType.size();
+  }
+
   @Override
   public void generateAssembly(AssemblyGenerator generator,
                                SymbolTable symbolTable,
                                Stack<Register.ID> available) {
-    Type elemType = ((Array) this.getType(symbolTable)).getElementType();
-    int elemSize = elemType == null ? 0 : elemType.size();
-    boolean isSingleByte = elemSize == BYTE_SIZE;
 
+    int elemSize = getElemSize(symbolTable);
+    boolean isSingleByte = elemSize == BYTE_SIZE;
     int arraySize = elemSize * arrayElements.size() + BaseTypes.INT_SIZE;
     generator
             .addInstruction(new LDRInstruction(generator.getRegister(ID.R0), arraySize));
@@ -84,9 +90,12 @@ public class ArrayLiteralNode implements AssignRHS {
   }
 
   @Override
-  public Object evaluate(SymbolTable symbolTable) {
-    // TODO
-    return null;
+  public Object evaluate(SymbolTable symbolTable, Heap heap) {
+    long heapSize = arrayElements.size() * getElemSize(symbolTable)
+        + BaseTypes.INT_SIZE;
+    String addr = heap.allocateSpace(heapSize);
+
+    return new ArrayVariableValue(addr, arrayElements);
   }
 
   @Override

@@ -16,6 +16,8 @@ import frontend.symbolTable.types.Type;
 
 import java.util.List;
 import java.util.Stack;
+import shell.ArrayVariableValue;
+import shell.Heap;
 
 public class ArrayElementNode extends ExpressionNode {
 
@@ -156,8 +158,38 @@ public class ArrayElementNode extends ExpressionNode {
   }
 
   @Override
-  public Object evaluate(SymbolTable symbolTable) {
-    return null;
+  public Object evaluate(SymbolTable symbolTable, Heap heap) {
+    ArrayVariableValue v = (ArrayVariableValue)
+        symbolTable.getValue(identifier.getName());
+    ExpressionNode elem = null;
+    Object res = null;
+
+    for (ExpressionNode e : indices) {
+
+      int i = (int) e.evaluate(symbolTable, heap);
+
+      if (!v.indexInUpperBound(i)) {
+
+        res = "Runtime Error: array index too large!";
+        break;
+
+      } else if (!v.indexInLowerBound(i)) {
+
+        res = "Runtime Error: array index less than " + v.MIN_ARRAY_INDEX + "!";
+        break;
+
+      } else {
+
+        elem = v.getElementAtIndex(i);
+        res = elem.evaluate(symbolTable, heap);
+
+        if (res instanceof ArrayVariableValue) {
+          v = (ArrayVariableValue) res;
+        }
+      }
+    }
+
+    return res;
   }
 
   @Override

@@ -9,6 +9,7 @@ import frontend.abstractSyntaxTree.expressions.ExpressionNode;
 import frontend.symbolTable.SemanticError;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
+import shell.Heap;
 import shell.ShellStatementControl;
 
 import java.util.ArrayList;
@@ -71,8 +72,9 @@ public class PrintLineStatementNode extends StatementNode {
   }
 
   @Override
-  public ShellStatementControl applyStatement(SymbolTable symbolTable) {
-    System.out.println(expression.evaluate(symbolTable));
+  public ShellStatementControl applyStatement(SymbolTable symbolTable,
+      Heap heap) {
+    System.out.println(expression.evaluate(symbolTable, heap));
     return ShellStatementControl.cont();
   }
 }

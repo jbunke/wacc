@@ -11,6 +11,7 @@ import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.Array;
 import frontend.symbolTable.types.BaseTypes;
 import frontend.symbolTable.types.Pair;
+import shell.Heap;
 import shell.ShellStatementControl;
 
 import java.util.ArrayList;
@@ -164,8 +165,9 @@ public class PrintStatementNode extends StatementNode {
   }
 
   @Override
-  public ShellStatementControl applyStatement(SymbolTable symbolTable) {
-    System.out.print(expression.evaluate(symbolTable));
+  public ShellStatementControl applyStatement(SymbolTable symbolTable,
+      Heap heap) {
+    System.out.print(expression.evaluate(symbolTable, heap));
     return ShellStatementControl.cont();
   }
 }
