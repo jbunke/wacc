@@ -16,6 +16,7 @@ import frontend.symbolTable.types.Type;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
+import shell.ArrayVariableValue;
 import shell.Heap;
 
 public class UnaryOpExpressionNode extends ExpressionNode {
@@ -92,8 +93,9 @@ public class UnaryOpExpressionNode extends ExpressionNode {
       case LENGTH:
         if (operand instanceof String) {
           return ((String) operand).length();
+        } else if (operand instanceof ArrayVariableValue) {
+          return ((ArrayVariableValue) operand).getLength();
         }
-        // TODO
         return null;
       case CHR:
         return (char) ((Integer) operand).intValue();

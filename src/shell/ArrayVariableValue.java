@@ -30,6 +30,10 @@ public class ArrayVariableValue {
     elements.set(index, value);
   }
 
+  public int getLength() {
+    return elements.size();
+  }
+
   @Override
   public String toString() {
     return startAddr;
