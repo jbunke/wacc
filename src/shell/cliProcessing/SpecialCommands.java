@@ -77,6 +77,7 @@ public class SpecialCommands {
 
   private static void reset() {
     WACCShell.symbolTable = null;
+    WACCShell.heap.reset();
     System.out.print(ANSI_GREEN);
     System.out.println("Shell has been reset\n");
     System.out.print(ANSI_RESET);
@@ -112,7 +113,7 @@ public class SpecialCommands {
       return;
     }
 
-    program.execute(WACCShell.symbolTable);
+    program.execute(WACCShell.symbolTable, WACCShell.heap);
   }
 
   private static void functions() {

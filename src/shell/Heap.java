@@ -2,7 +2,7 @@ package shell;
 
 public class Heap {
 
-  private static final long START_ADDR = 65536; /* 0x10000 */
+  private static final long START_ADDR = 0x10000;
   private long nextFreeAddr;
 
   public Heap() {

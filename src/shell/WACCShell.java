@@ -34,7 +34,7 @@ public class WACCShell {
   private final static String CONTINUE = "| ";
 
   public static SymbolTable symbolTable;
-  private static Heap heap;
+  public static Heap heap;
 
   public static Scanner in;
 

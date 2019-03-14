@@ -8,6 +8,7 @@ import frontend.abstractSyntaxTree.typeNodes.FunctionDefinitionNode;
 import frontend.symbolTable.SemanticError;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
+import shell.Heap;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,7 +91,7 @@ public class ProgramNode implements Node {
     return errors;
   }
 
-  public void execute(SymbolTable symbolTable) {
-    stat.applyStatement(symbolTable.getChild(stat));
+  public void execute(SymbolTable symbolTable, Heap heap) {
+    stat.applyStatement(symbolTable.getChild(stat), heap);
   }
 }
