@@ -15,6 +15,7 @@ import frontend.symbolTable.types.Pair;
 import frontend.symbolTable.types.Type;
 
 import java.util.Stack;
+import shell.Heap;
 
 public class NewPairNode implements AssignRHS {
 
@@ -55,7 +56,7 @@ public class NewPairNode implements AssignRHS {
   }
 
   @Override
-  public Object evaluate(SymbolTable symbolTable) {
+  public Object evaluate(SymbolTable symbolTable, Heap heap) {
     // TODO
     return null;
   }

@@ -10,6 +10,7 @@ import frontend.symbolTable.types.BaseTypes;
 import frontend.symbolTable.types.Type;
 
 import java.util.Stack;
+import shell.Heap;
 
 public class BooleanLiteralExpressionNode extends ExpressionNode {
   private final boolean value;
@@ -48,7 +49,7 @@ public class BooleanLiteralExpressionNode extends ExpressionNode {
   }
 
   @Override
-  public Object evaluate(SymbolTable symbolTable) {
+  public Object evaluate(SymbolTable symbolTable, Heap heap) {
     return value;
   }
 

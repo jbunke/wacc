@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
+import shell.Heap;
 
 public class BinaryOpExpressionNode extends ExpressionNode {
   private final static String OVERFLOW = "OverflowError: the result is too " +
@@ -330,9 +331,9 @@ public class BinaryOpExpressionNode extends ExpressionNode {
   }
 
   @Override
-  public Object evaluate(SymbolTable symbolTable) {
-    Object left = this.left.evaluate(symbolTable);
-    Object right = this.right.evaluate(symbolTable);
+  public Object evaluate(SymbolTable symbolTable, Heap heap) {
+    Object left = this.left.evaluate(symbolTable, heap);
+    Object right = this.right.evaluate(symbolTable, heap);
     switch (operatorType) {
       case PLUS:
         return (Integer) left + (Integer) right;

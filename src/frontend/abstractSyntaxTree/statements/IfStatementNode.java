@@ -13,6 +13,7 @@ import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.BaseTypes;
 import frontend.symbolTable.types.Type;
+import shell.Heap;
 import shell.ShellStatementControl;
 
 import java.util.ArrayList;
@@ -94,13 +95,14 @@ public class IfStatementNode extends StatementNode {
   }
 
   @Override
-  public ShellStatementControl applyStatement(SymbolTable symbolTable) {
+  public ShellStatementControl applyStatement(SymbolTable symbolTable,
+      Heap heap) {
     ShellStatementControl status;
 
-    if ((Boolean) condition.evaluate(symbolTable)) {
-      status = trueBranch.applyStatement(symbolTable.getChild(trueBranch));
+    if ((Boolean) condition.evaluate(symbolTable, heap)) {
+      status = trueBranch.applyStatement(symbolTable.getChild(trueBranch), heap);
     } else {
-      status = falseBranch.applyStatement(symbolTable.getChild(falseBranch));
+      status = falseBranch.applyStatement(symbolTable.getChild(falseBranch), heap);
     }
 
     return status;

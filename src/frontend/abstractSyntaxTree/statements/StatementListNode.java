@@ -6,6 +6,7 @@ import frontend.symbolTable.SemanticError;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.Type;
+import shell.Heap;
 import shell.ShellStatementControl;
 
 import java.util.ArrayList;
@@ -83,10 +84,11 @@ public class StatementListNode extends StatementNode {
   }
 
   @Override
-  public ShellStatementControl applyStatement(SymbolTable symbolTable) {
+  public ShellStatementControl applyStatement(SymbolTable symbolTable,
+      Heap heap) {
     ShellStatementControl status = ShellStatementControl.cont();
     for (StatementNode statement : statements) {
-      status = statement.applyStatement(symbolTable);
+      status = statement.applyStatement(symbolTable, heap);
       if (status.toExit) break;
     }
     return status;

@@ -16,6 +16,7 @@ import frontend.symbolTable.types.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
+import shell.Heap;
 
 public class FunctionCallNode implements AssignRHS {
   private final IdentifierNode functionIdentifier;
@@ -112,7 +113,7 @@ public class FunctionCallNode implements AssignRHS {
   }
 
   @Override
-  public Object evaluate(SymbolTable symbolTable) {
+  public Object evaluate(SymbolTable symbolTable, Heap heap) {
     // TODO
 
     SymbolTable rootTable = symbolTable.getParent();
@@ -120,7 +121,7 @@ public class FunctionCallNode implements AssignRHS {
     List<Object> argValues = new ArrayList<>();
 
     for (ExpressionNode expression : arguments) {
-      argValues.add(expression.evaluate(symbolTable));
+      argValues.add(expression.evaluate(symbolTable, heap));
     }
 
     SymbolTable functionTable = rootTable.getChild(function);
@@ -131,6 +132,6 @@ public class FunctionCallNode implements AssignRHS {
       functionTable.setValue(parameters.get(i), argValues.get(i));
     }
 
-    return function.getBody().applyStatement(functionTable).value;
+    return function.getBody().applyStatement(functionTable, heap).value;
   }
 }
