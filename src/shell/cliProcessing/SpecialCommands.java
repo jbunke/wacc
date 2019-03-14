@@ -206,7 +206,7 @@ public class SpecialCommands {
         "\" to see the grammar for the language");
     System.out.println("Type \"" + INFO_STRING +
         "\" for project information");
-    System.out.println("Type \":q\" to quit\n");
+    System.out.println("Type \":q\" to quit");
     System.out.println("Type \"" + RESET_STRING + "\" to reset the shell");
     System.out.println("Type \"" + RUN_FILE_STRING + " FILEPATH.wacc\"" +
         " to execute a WACC file");

@@ -55,6 +55,7 @@ public class WACCShell {
     }
     System.out.print(ANSI_GREEN);
     System.out.print("\nThank you for using our interactive shell!");
+    System.out.println(ANSI_RESET);
   }
 
   private static void startUp() {
