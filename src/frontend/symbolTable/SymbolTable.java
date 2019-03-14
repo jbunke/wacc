@@ -183,6 +183,11 @@ public class SymbolTable {
     return child;
   }
 
+  /**
+   * @param identifier The string key in the symbol table to be updated
+   * @param value The value to be set to the variable matching the identifier
+   *              key
+   * */
   public void setValue(String identifier, Object value) {
     if (identifierMap.containsKey(identifier)) {
       SymbolCategory symbol = identifierMap.get(identifier);
@@ -195,6 +200,12 @@ public class SymbolTable {
     }
   }
 
+  /**
+   * @param identifier The string key used to search for the value of its
+   *                   associated Variable
+   * @return The value of the Variable that matches the key "identifier" in the
+   *         identifier map
+   * */
   public Object getValue(String identifier) {
     if (identifierMap.containsKey(identifier)) {
       SymbolCategory symbol = identifierMap.get(identifier);

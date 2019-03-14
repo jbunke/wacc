@@ -31,6 +31,7 @@ public class SpecialCommands {
   private final static String VARIABLES_STRING = ":v";
   private final static String FUNCTIONS_STRING = ":f";
   private final static String RUN_FILE_STRING = ":run";
+  private final static String RESET_STRING = ":reset";
 
   public static boolean commandMatchCheck(String line) {
     switch (line) {
@@ -53,6 +54,9 @@ public class SpecialCommands {
       case FUNCTIONS_STRING:
         functions();
         return false;
+      case RESET_STRING:
+        reset();
+        return false;
       default:
         if (line.startsWith(RUN_FILE_STRING)) {
           String filepath = line.substring(line.indexOf(" ") + 1);
@@ -65,6 +69,11 @@ public class SpecialCommands {
         }
         return true;
     }
+  }
+
+  private static void reset() {
+    WACCShell.symbolTable = null;
+    System.out.println("Shell has been reset\n");
   }
 
   private static void runFile(String filepath) throws IOException {
@@ -176,6 +185,7 @@ public class SpecialCommands {
     System.out.println("Type \"" + INFO_STRING +
             "\" for project information");
     System.out.println("Type \":q\" to quit\n");
+    System.out.println("Type \"" + RESET_STRING + "\" to reset the shell");
     System.out.println("Type \"" + RUN_FILE_STRING + " FILEPATH.wacc\"" +
             " to execute a WACC file");
     System.out.println("Type \"" + VARIABLES_STRING +
