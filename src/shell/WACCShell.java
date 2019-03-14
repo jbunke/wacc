@@ -23,6 +23,11 @@ public class WACCShell {
 
   public static final String ANSI_RESET = "\u001B[0m";
   public static final String ANSI_RED = "\u001B[31m";
+  public static final String ANSI_GREEN = "\u001B[32m";
+  public static final String ANSI_YELLOW = "\u001B[33m";
+  public static final String ANSI_BLUE = "\u001B[34m";
+  public static final String ANSI_PURPLE = "\u001B[35m";
+  public static final String ANSI_CYAN = "\u001B[36m";
 
   private final static String QUIT_STRING = ":q";
 
@@ -51,12 +56,17 @@ public class WACCShell {
       prompt();
       line = CommandProcessing.acquireCommand(in.nextLine(), 0);
     }
+    System.out.print(ANSI_GREEN);
+    System.out.print("\nThank you for using our interactive shell!");
   }
 
   private static void startUp() {
+    System.out.print(ANSI_PURPLE);
     System.out.println("\n-- WELCOME TO THE WACC INTERACTIVE SHELL --\n");
+    System.out.print(ANSI_GREEN);
     System.out.println("Type \":h\" for help");
     System.out.println("Type \"" + QUIT_STRING + "\" to quit\n");
+    System.out.print(ANSI_RESET);
   }
 
   private static void processCommand(String line) {

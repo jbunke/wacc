@@ -1,5 +1,9 @@
 package shell.cliProcessing;
 
+import static shell.WACCShell.ANSI_GREEN;
+import static shell.WACCShell.ANSI_RED;
+import static shell.WACCShell.ANSI_RESET;
+
 import antlr.WACCLexer;
 import antlr.WACCParser;
 import frontend.Visitor;
@@ -73,7 +77,9 @@ public class SpecialCommands {
 
   private static void reset() {
     WACCShell.symbolTable = null;
+    System.out.print(ANSI_GREEN);
     System.out.println("Shell has been reset\n");
+    System.out.print(ANSI_RESET);
   }
 
   private static void runFile(String filepath) throws IOException {
@@ -85,14 +91,16 @@ public class SpecialCommands {
     parser.removeErrorListeners();
 
     WACCParserErrorListener synErrors =
-            new WACCParserErrorListener();
+        new WACCParserErrorListener();
     parser.addErrorListener(synErrors);
 
     WACCParser.ProgContext parseTree = parser.prog();
 
     if (synErrors.hasError()) {
       for (String error : synErrors.getSyntaxErrors()) {
+        System.out.print(ANSI_RED);
         System.out.println(error);
+        System.out.print(ANSI_RESET);
       }
       return;
     }
@@ -100,61 +108,71 @@ public class SpecialCommands {
     Visitor visitor = new Visitor();
     ProgramNode program = (ProgramNode) visitor.visit(parseTree);
 
-    if (WACCShell.semErrorCheck(program)) return;
+    if (WACCShell.semErrorCheck(program)) {
+      return;
+    }
 
     program.execute(WACCShell.symbolTable);
   }
 
   private static void functions() {
+    System.out.print(ANSI_GREEN);
     if (WACCShell.symbolTable == null ||
-            WACCShell.symbolTable.getEntries().size() == 0) {
+        WACCShell.symbolTable.getEntries().size() == 0) {
       System.out.println("No functions in scope\n");
+      System.out.print(ANSI_RESET);
       return;
     }
 
     System.out.println("Functions in scope:\n");
 
     List<Map.Entry<String, SymbolCategory>> entries =
-            WACCShell.symbolTable.getEntries();
+        WACCShell.symbolTable.getEntries();
     entries = entries.parallelStream().
-            filter(x -> x.getValue() instanceof FunctionDefinitionNode).
-            collect(Collectors.toList());
+        filter(x -> x.getValue() instanceof FunctionDefinitionNode).
+        collect(Collectors.toList());
     for (Map.Entry<String, SymbolCategory> entry : entries) {
       FunctionDefinitionNode function =
-              (FunctionDefinitionNode) entry.getValue();
+          (FunctionDefinitionNode) entry.getValue();
 
       System.out.print(function.getIdentifier() + "(");
 
       List<Type> paramTypes = function.getParameterList().getParamTypes();
       for (int i = 0; i < paramTypes.size(); i++) {
         System.out.print(paramTypes.get(i).toString());
-        if (i < paramTypes.size() - 1) System.out.print(", ");
+        if (i < paramTypes.size() - 1) {
+          System.out.print(", ");
+        }
       }
 
       System.out.println(") -> " + function.getReturnType().toString());
     }
     System.out.println();
+    System.out.print(ANSI_RESET);
   }
 
   private static void variables() {
+    System.out.print(ANSI_GREEN);
     if (WACCShell.symbolTable == null ||
-            WACCShell.symbolTable.getEntries().size() == 0) {
+        WACCShell.symbolTable.getEntries().size() == 0) {
       System.out.println("No variables in scope\n");
+      System.out.print(ANSI_RESET);
       return;
     }
 
     System.out.println("Variables in scope:\n");
 
     List<Map.Entry<String, SymbolCategory>> entries =
-            WACCShell.symbolTable.getEntries();
+        WACCShell.symbolTable.getEntries();
     entries = entries.parallelStream().
-            filter(x -> x.getValue() instanceof Variable).
-            collect(Collectors.toList());
+        filter(x -> x.getValue() instanceof Variable).
+        collect(Collectors.toList());
     for (Map.Entry<String, SymbolCategory> entry : entries) {
       System.out.println(entry.getKey() + " -> " +
-              format(((Variable) entry.getValue()).getValue()));
+          format(((Variable) entry.getValue()).getValue()));
     }
     System.out.println();
+    System.out.print(ANSI_RESET);
   }
 
   private static String format(Object object) {
@@ -167,32 +185,38 @@ public class SpecialCommands {
   }
 
   private static void info() {
+    System.out.print(ANSI_GREEN);
     System.out.println("WACC Compiler & Interactive Shell developed for " +
-            "second-year Compilers project at\n" +
-            "Imperial College London (Department of Computing) from " +
-            "January - March 2019\n");
-    System.out.println("Authors:\nJordan Bunke (jtb17@ic.ac.uk), " +
-            "Patrick Henderson (pah17@ic.ac.uk),\nBuneme Kyakilika (bk317@ic.ac.uk), " +
-            "Kapilan Manu Neethi Cholan (km2717@ic.ac.uk)\n");
+        "second-year Compilers project at\n" +
+        "Imperial College London (Department of Computing) from " +
+        "January - March 2019\n");
+    System.out.println("Authors:\nJordan Bunke (jtb17@ic.ac.uk)\n" +
+        "Patrick Henderson (pah17@ic.ac.uk)\n" +
+        "Buneme Kyakilika (bk317@ic.ac.uk)\n" +
+        "Kapilan Manu Neethi Cholan (km2717@ic.ac.uk)\n");
+    System.out.print(ANSI_RESET);
   }
 
   private static void help() {
+    System.out.print(ANSI_GREEN);
     System.out.println("Type any valid WACC expression, statement or function");
     System.out.println("Type \"" + FUNCTIONS_STRING +
-            "\" for functions in scope");
+        "\" for functions in scope");
     System.out.println("Type \"" + GRAMMAR_STRING +
-            "\" to see the grammar for the language");
+        "\" to see the grammar for the language");
     System.out.println("Type \"" + INFO_STRING +
-            "\" for project information");
+        "\" for project information");
     System.out.println("Type \":q\" to quit\n");
     System.out.println("Type \"" + RESET_STRING + "\" to reset the shell");
     System.out.println("Type \"" + RUN_FILE_STRING + " FILEPATH.wacc\"" +
-            " to execute a WACC file");
+        " to execute a WACC file");
     System.out.println("Type \"" + VARIABLES_STRING +
-            "\" for variables in scope");
+        "\" for variables in scope");
+    System.out.print(ANSI_RESET);
   }
 
   private static void printGrammar() throws IOException {
+    System.out.print(ANSI_GREEN);
     System.out.println("\n-- WACC LANGUAGE GRAMMAR --\n");
     System.out.println("The root rule for the shell is \"command\"\n");
 
@@ -203,8 +227,13 @@ public class SpecialCommands {
     while (bufferedReader.ready()) {
       String line = bufferedReader.readLine();
       line = line.contains("//") ? line.substring(0, line.indexOf("//")) : line;
-      if (!line.isEmpty()) System.out.println(line);
-      if (line.endsWith(";")) System.out.println();
+      if (!line.isEmpty()) {
+        System.out.println(line);
+      }
+      if (line.endsWith(";")) {
+        System.out.println();
+      }
     }
+    System.out.print(ANSI_RESET);
   }
 }
