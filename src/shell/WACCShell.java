@@ -21,6 +21,9 @@ import java.util.Scanner;
 
 public class WACCShell {
 
+  public static final String ANSI_RESET = "\u001B[0m";
+  public static final String ANSI_RED = "\u001B[31m";
+
   private final static String QUIT_STRING = ":q";
 
   private final static String COMMENT = "#";
@@ -72,7 +75,7 @@ public class WACCShell {
 
     if (synErrors.hasError()) {
       for (String error : synErrors.getSyntaxErrors()) {
-        System.out.println(error);
+        System.out.println(ANSI_RED + error + ANSI_RESET);
       }
       return;
     }
