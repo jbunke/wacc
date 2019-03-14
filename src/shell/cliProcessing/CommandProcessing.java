@@ -1,8 +1,10 @@
-package shell;
+package shell.cliProcessing;
+
+import shell.WACCShell;
 
 import java.util.function.Consumer;
 
-class CommandProcessing {
+public class CommandProcessing {
   private final static String IF_TOK = "if";
   private final static String THEN_TOK = "then";
   private final static String ELSE_TOK = "else";
@@ -15,11 +17,9 @@ class CommandProcessing {
   private final static String IS_TOK = "is";
   private final static String END_TOK = "end";
 
-
   private final static String SEMI_COLON_TOK = ";";
 
-
-  static String acquireCommand(String line, int level) {
+  public static String acquireCommand(String line, int level) {
     String res = line.trim();
 
     if (res.startsWith(IF_TOK + " ") && line.endsWith(" " + THEN_TOK)) {
@@ -88,7 +88,6 @@ class CommandProcessing {
 
     return commandBuilder.toString();
   }
-
 
   private static String acquireIfCommand(String startLine, int level) {
     StringBuilder commandBuilder = new StringBuilder(startLine);

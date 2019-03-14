@@ -14,21 +14,23 @@ import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.TokenStream;
+import shell.cliProcessing.CommandProcessing;
+import shell.cliProcessing.SpecialCommands;
 
-import java.io.*;
 import java.util.Scanner;
 
 public class WACCShell {
 
   private final static String QUIT_STRING = ":q";
-  private final static String HELP_STRING = ":h";
-  private final static String GRAMMAR_STRING = ":g";
+
+  private final static String COMMENT = "#";
   private final static String PROMPTER = "> ";
   private final static String TAB_CHAR = "\t";
   private final static String CONTINUE = "| ";
 
   private static SymbolTable symbolTable;
-  static Scanner in;
+
+  public static Scanner in;
 
   public static void main(String[] args) {
     symbolTable = null;
@@ -39,15 +41,8 @@ public class WACCShell {
     prompt();
     String line = CommandProcessing.acquireCommand(in.nextLine(), 0);
     while(!line.equals(QUIT_STRING)) {
-      if (line.equals(HELP_STRING)) {
-        help();
-      } else if (line.equals(GRAMMAR_STRING)) {
-        try {
-          printGrammar();
-        } catch (IOException e) {
-          e.printStackTrace();
-        }
-      } else if (!line.isEmpty() && !line.startsWith("#")) {
+      if (!line.isEmpty() && SpecialCommands.commandMatchCheck(line) &&
+              !line.startsWith(COMMENT)) {
         processCommand(line);
       }
       prompt();
@@ -55,32 +50,10 @@ public class WACCShell {
     }
   }
 
-  private static void printGrammar() throws IOException {
-    System.out.println("\n-- WACC LANGUAGE GRAMMAR --\n");
-    System.out.println("The root rule for the shell is \"command\"\n");
-
-    File parser = new File("antlr_config/WACCParser.g4");
-    FileReader fileReader = new FileReader(parser);
-    BufferedReader bufferedReader = new BufferedReader(fileReader);
-
-    while (bufferedReader.ready()) {
-      String line = bufferedReader.readLine();
-      line = line.contains("//") ? line.substring(0, line.indexOf("//")) : line;
-      if (!line.isEmpty()) System.out.println(line);
-      if (line.endsWith(";")) System.out.println();
-    }
-  }
-
-  private static void help() {
-    System.out.println("Type any valid WACC expression, statement or function");
-    System.out.println("Type \":g\" to see the grammar for the language");
-    System.out.println("Type \":q\" to quit\n");
-  }
-
   private static void startUp() {
     System.out.println("\n-- WELCOME TO THE WACC INTERACTIVE SHELL --\n");
     System.out.println("Type \":h\" for help");
-    System.out.println("Type \":q\" to quit\n");
+    System.out.println("Type \"" + QUIT_STRING + "\" to quit\n");
   }
 
   private static void processCommand(String line) {
@@ -156,7 +129,7 @@ public class WACCShell {
     System.out.print(PROMPTER);
   }
 
-  static void promptWithIndent(int level) {
+  public static void promptWithIndent(int level) {
     StringBuilder builder = new StringBuilder(CONTINUE);
 
     for (int i = 0; i < level; i++) {
