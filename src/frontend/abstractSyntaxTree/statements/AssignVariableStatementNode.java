@@ -12,7 +12,9 @@ import frontend.symbolTable.SemanticError;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.Type;
+import org.antlr.v4.analysis.LeftRecursiveRuleAnalyzer.ASSOC;
 import shell.Heap;
+import shell.PairVariableValue;
 import shell.ShellStatementControl;
 
 import java.util.Stack;
@@ -90,10 +92,23 @@ public class AssignVariableStatementNode extends StatementNode {
 
     // Get identifier
     if (left instanceof IdentifierNode) {
-      identifier = ((IdentifierNode) left).getName();
-    }
 
-    symbolTable.setValue(identifier, value);
+      identifier = ((IdentifierNode) left).getName();
+      symbolTable.setValue(identifier, value);
+
+    } else if (left instanceof AssignPairElementNode) {
+
+      AssignPairElementNode pairNode = (AssignPairElementNode) left;
+      PairVariableValue v = (PairVariableValue)
+          symbolTable.getValue(pairNode.getIdentifier());
+
+      if (pairNode.getPosition() == AssignPairElementNode.FST_POSITION) {
+        v.setLeft(value);
+      } else if (pairNode.getPosition() == AssignPairElementNode.SND_POSITION) {
+        v.setRight(value);
+      }
+
+    }
 
     return ShellStatementControl.cont();
   }
