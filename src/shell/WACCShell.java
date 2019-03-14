@@ -23,6 +23,8 @@ import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class WACCShell {
+  private static final String RUNTIME_ERROR = "Runtime Error:";
+
   public static final String ANSI_RESET = "\u001B[0m";
   public static final String ANSI_RED = "\u001B[31m";
   public static final String ANSI_GREEN = "\u001B[32m";
@@ -166,7 +168,13 @@ public class WACCShell {
     if (semErrorCheck(rhs)) return;
 
     Object evaluated = rhs.evaluate(symbolTable, heap);
-    System.out.println(evaluated);
+    if (isRuntimeError(evaluated)) {
+      System.out.print(ANSI_RED);
+      System.out.println(evaluated);
+      System.out.print(ANSI_RESET);
+    } else {
+      System.out.println(evaluated);
+    }
   }
 
   public static boolean semErrorCheck(Node node) {
@@ -196,5 +204,10 @@ public class WACCShell {
     }
 
     System.out.print(builder.toString());
+  }
+
+  private static boolean isRuntimeError(Object value) {
+    return (value instanceof String)
+        && ((String) value).startsWith(RUNTIME_ERROR);
   }
 }

@@ -17,6 +17,7 @@ import frontend.symbolTable.types.Array;
 import frontend.symbolTable.types.BaseTypes;
 import frontend.symbolTable.types.Type;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 import shell.ArrayVariableValue;
@@ -94,8 +95,12 @@ public class ArrayLiteralNode implements AssignRHS {
     long heapSize = arrayElements.size() * getElemSize(symbolTable)
         + BaseTypes.INT_SIZE;
     String addr = heap.allocateSpace(heapSize);
+    List<Object> values = new ArrayList<>();
+    for (ExpressionNode e : arrayElements) {
+      values.add(e.evaluate(symbolTable, heap));
+    }
 
-    return new ArrayVariableValue(addr, arrayElements);
+    return new ArrayVariableValue(addr, values);
   }
 
   @Override

@@ -161,7 +161,6 @@ public class ArrayElementNode extends ExpressionNode {
   public Object evaluate(SymbolTable symbolTable, Heap heap) {
     ArrayVariableValue v = (ArrayVariableValue)
         symbolTable.getValue(identifier.getName());
-    ExpressionNode elem = null;
     Object res = null;
 
     for (ExpressionNode e : indices) {
@@ -169,19 +168,12 @@ public class ArrayElementNode extends ExpressionNode {
       int i = (int) e.evaluate(symbolTable, heap);
 
       if (!v.indexInUpperBound(i)) {
-
-        res = "Runtime Error: array index too large!";
-        break;
-
+        return "Runtime Error: array index too large!";
       } else if (!v.indexInLowerBound(i)) {
-
-        res = "Runtime Error: array index less than " + v.MIN_ARRAY_INDEX + "!";
-        break;
-
+        return "Runtime Error: array index less than " +
+            ArrayVariableValue.MIN_ARRAY_INDEX + "!";
       } else {
-
-        elem = v.getElementAtIndex(i);
-        res = elem.evaluate(symbolTable, heap);
+        res = v.getElementAtIndex(i);
 
         if (res instanceof ArrayVariableValue) {
           v = (ArrayVariableValue) res;
@@ -190,6 +182,34 @@ public class ArrayElementNode extends ExpressionNode {
     }
 
     return res;
+  }
+
+  public Object updateElement(SymbolTable symbolTable, Heap heap, Object value) {
+    ArrayVariableValue v = (ArrayVariableValue)
+        symbolTable.getValue(identifier.getName());
+    Object res;
+
+    for (int i = 0; i < indices.size(); i++) {
+      ExpressionNode e = indices.get(i);
+      int j = (int) e.evaluate(symbolTable, heap);
+
+      if (!v.indexInUpperBound(j)) {
+        return "Runtime Error: array index too large!";
+      } else if (!v.indexInLowerBound(j)) {
+        return "Runtime Error: array index less than " +
+            ArrayVariableValue.MIN_ARRAY_INDEX + "!";
+      } else {
+        /* If we have pushed as deep into the array as necessary to update */
+        if (i == indices.size() - 1) {
+          v.updateElement(j, value);
+        } else {
+          res = v.getElementAtIndex(i);
+          v = (ArrayVariableValue) res;
+        }
+      }
+    }
+
+    return value;
   }
 
   @Override

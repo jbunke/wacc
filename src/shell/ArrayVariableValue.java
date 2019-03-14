@@ -7,14 +7,14 @@ public class ArrayVariableValue {
   public static final int MIN_ARRAY_INDEX = 0;
 
   private final String startAddr;
-  private List<ExpressionNode> elements;
+  private List<Object> elements;
 
-  public ArrayVariableValue(String startAddr, List<ExpressionNode> elements) {
+  public ArrayVariableValue(String startAddr, List<Object> elements) {
     this.startAddr = startAddr;
     this.elements = elements;
   }
 
-  public ExpressionNode getElementAtIndex(int index) {
+  public Object getElementAtIndex(int index) {
     return elements.get(index);
   }
 
@@ -24,6 +24,10 @@ public class ArrayVariableValue {
 
   public boolean indexInLowerBound(int index) {
     return index >= MIN_ARRAY_INDEX;
+  }
+
+  public void updateElement(int index, Object value) {
+    elements.set(index, value);
   }
 
   @Override

@@ -121,13 +121,23 @@ public class AssignVariableStatementNode extends StatementNode {
           v.setRight(value);
         }
 
+      } else if (left instanceof ArrayElementNode) {
+        ArrayElementNode arrayNode = (ArrayElementNode) left;
+
+        Object result = arrayNode.updateElement(symbolTable, heap, value);
+
+        if (isValueErroneous(result)) {
+          System.out.print(ANSI_RED);
+          System.out.println(result);
+          System.out.print(ANSI_RESET);
+        }
       }
     }
 
     return ShellStatementControl.cont();
   }
 
-  private boolean isValueErroneous(Object value) {
+  private static boolean isValueErroneous(Object value) {
     return (value instanceof String)
         && ((String) value).startsWith(RUNTIME_ERROR);
   }
