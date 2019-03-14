@@ -45,26 +45,30 @@ public class WACCShell {
   public static void main(String[] args) {
     symbolTable = null;
     heap = new Heap();
+    in = new Scanner(System.in);
 
     loadUsername();
 
-    in = new Scanner(System.in);
-
     startUp();
-    prompt();
-    String line = CommandProcessing.acquireCommand(in.nextLine(), 0);
-    while(!line.equals(QUIT_STRING)) {
+
+    commandCycle(in, false);
+
+    shellExit();
+
+    saveUsername();
+  }
+
+  public static void commandCycle(Scanner scanner, boolean manualNewline) {
+    do {
+      prompt();
+      String line = CommandProcessing.acquireCommand(scanner.nextLine(),  0);
+      if (manualNewline) System.out.println(line);
+      if (line.equals(QUIT_STRING)) return;
       if (!line.isEmpty() && SpecialCommands.commandMatchCheck(line) &&
               !line.startsWith(COMMENT)) {
         processCommand(line);
       }
-      prompt();
-      line = CommandProcessing.acquireCommand(in.nextLine(), 0);
-    }
-    System.out.print(ANSI_GREEN);
-    System.out.print("\nThank you for using our interactive shell!");
-    System.out.println(ANSI_RESET);
-    saveUsername();
+    } while (scanner.equals(in) || scanner.hasNext());
   }
 
   public static void saveUsername() {
@@ -78,7 +82,7 @@ public class WACCShell {
     }
   }
 
-  private static void loadUsername()  {
+  public static void loadUsername()  {
     try {
       FileReader reader = new FileReader(new File("res/username"));
       BufferedReader br = new BufferedReader(reader);
@@ -87,6 +91,12 @@ public class WACCShell {
     } catch (FileNotFoundException e) {
       e.printStackTrace();
     }
+  }
+
+  private static void shellExit() {
+    System.out.print(ANSI_GREEN);
+    System.out.print("\nThank you for using our interactive shell!");
+    System.out.println(ANSI_RESET);
   }
 
   private static void startUp() {

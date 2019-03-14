@@ -1,0 +1,4 @@
+int x = 10
+if x > 8 then println x else println "unexpected" fi
+x = x + 13
+println x

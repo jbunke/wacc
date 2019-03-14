@@ -1,9 +1,5 @@
 package shell.cliProcessing;
 
-import static shell.WACCShell.ANSI_GREEN;
-import static shell.WACCShell.ANSI_RED;
-import static shell.WACCShell.ANSI_RESET;
-
 import antlr.WACCLexer;
 import antlr.WACCParser;
 import frontend.Visitor;
@@ -19,13 +15,13 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.TokenStream;
 import shell.WACCShell;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.stream.Collectors;
+
+import static shell.WACCShell.*;
 
 public class SpecialCommands {
 
@@ -36,6 +32,7 @@ public class SpecialCommands {
   private final static String FUNCTIONS_STRING = ":f";
   private final static String RUN_FILE_STRING = ":run";
   private final static String RESET_STRING = ":reset";
+  private final static String SCRIPT_STRING = ":script";
   private final static String ME_STRING = ":me";
 
   public static boolean commandMatchCheck(String line) {
@@ -75,6 +72,14 @@ public class SpecialCommands {
             e.printStackTrace();
           }
           return false;
+        } else if (line.startsWith(SCRIPT_STRING + " ")) {
+          String filepath = line.substring(line.indexOf(" ") + 1);
+          try {
+            runScript(filepath);
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+          return false;
         } else if (line.startsWith(ME_STRING + " ")) {
           WACCShell.username = line.substring(line.indexOf(" ") + 1);
           WACCShell.saveUsername();
@@ -92,6 +97,28 @@ public class SpecialCommands {
 
     System.out.print(ANSI_GREEN);
     System.out.println("Shell has been reset\n");
+    System.out.print(ANSI_RESET);
+  }
+
+  private static void runScript(String filepath) throws IOException {
+    FileInputStream stream = new FileInputStream(new File(filepath));
+
+    int lastSlash = Math.max(filepath.lastIndexOf("\\") + 1,
+            filepath.lastIndexOf("/") + 1);
+    String filename = filepath.substring(lastSlash).replaceAll(".sacc", "");
+
+    System.out.print(ANSI_GREEN);
+    System.out.println("Executing script: " + filename);
+    System.out.print(ANSI_RESET);
+
+    username = filename;
+
+    commandCycle(new Scanner(stream), true);
+
+    loadUsername();
+
+    System.out.print(ANSI_GREEN);
+    System.out.println("Finished executing script: " + filename);
     System.out.print(ANSI_RESET);
   }
 
@@ -225,6 +252,8 @@ public class SpecialCommands {
     System.out.println("Type \"" + RESET_STRING + "\" to reset the shell");
     System.out.println("Type \"" + RUN_FILE_STRING + " FILEPATH.wacc\"" +
         " to execute a WACC file");
+    System.out.println("Type \"" + SCRIPT_STRING + " FILEPATH.sacc\"" +
+            " to execute a script for the shell");
     System.out.println("Type \"" + VARIABLES_STRING +
         "\" for variables in scope");
     System.out.print(ANSI_RESET);
