@@ -35,6 +35,8 @@ public class SpecialCommands {
   private final static String SCRIPT_STRING = ":script";
   private final static String ME_STRING = ":me";
 
+  private final static String SCRIPT_FILE_EXTENSION = ".hacc";
+
   public static boolean commandMatchCheck(String line) {
     switch (line) {
       case HELP_STRING:
@@ -105,7 +107,8 @@ public class SpecialCommands {
 
     int lastSlash = Math.max(filepath.lastIndexOf("\\") + 1,
             filepath.lastIndexOf("/") + 1);
-    String filename = filepath.substring(lastSlash).replaceAll(".sacc", "");
+    String filename = filepath.substring(lastSlash).
+            replaceAll(SCRIPT_FILE_EXTENSION, "");
 
     System.out.print(ANSI_GREEN);
     System.out.println("Executing script: " + filename);

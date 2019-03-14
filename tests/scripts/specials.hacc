@@ -1,0 +1,2 @@
+:me Jordan
+:run tests/examples/valid/while/fibonacciFullIt.wacc

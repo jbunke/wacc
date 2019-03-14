@@ -7,8 +7,8 @@ rules
 target/
 antlr_config/WACCLexer.tokens
 
-#ignore resources
-res/
+#ignore certain resources
+res/username
 
 #ignore generated assembly files
 *.s
