@@ -5,10 +5,10 @@ import backend.Register;
 import backend.instructions.*;
 import frontend.abstractSyntaxTree.statements.StatementNode;
 import frontend.abstractSyntaxTree.typeNodes.FunctionDefinitionNode;
-import frontend.symbolTable.Function;
 import frontend.symbolTable.SemanticError;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
+import shell.Heap;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,8 +60,7 @@ public class ProgramNode implements Node {
         errorList.addError(new SemanticError("Attempted to redeclare" +
                 " an existing function: \"" + func.getIdentifier() + ".\""));
       }
-      symbolTable.add(func.getIdentifier(),
-              new Function(func.getReturnType(), func.getParameterList()));
+      symbolTable.add(func.getIdentifier(), func);
     }
 
     // Semantic checks for functions
@@ -90,5 +89,9 @@ public class ProgramNode implements Node {
     }
 
     return errors;
+  }
+
+  public void execute(SymbolTable symbolTable, Heap heap) {
+    stat.applyStatement(symbolTable.getChild(stat), heap);
   }
 }

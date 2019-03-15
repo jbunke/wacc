@@ -23,6 +23,6 @@ public class Cursor {
   }
 
   public void increment(int inc) {
-    line += inc;
+    column += inc;
   }
 }

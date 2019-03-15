@@ -13,6 +13,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Visitor extends WACCParserBaseVisitor<Node> {
+  @Override
+  public Node visitFuncInput(WACCParser.FuncInputContext ctx) {
+    FunctionDefinitionNode func = (FunctionDefinitionNode) visit(ctx.func());
+    return func;
+  }
+
+  @Override
+  public Node visitAssignRHSInput(WACCParser.AssignRHSInputContext ctx) {
+    AssignRHS rhs = (AssignRHS) visit(ctx.assignRhs());
+    return rhs;
+  }
+
+  @Override
+  public Node visitStatInput(WACCParser.StatInputContext ctx) {
+    StatementNode stat = (StatementNode) visit(ctx.stat());
+    return stat;
+  }
+
+  @Override
+  public Node visitCommand(WACCParser.CommandContext ctx) {
+    return visit(ctx.input());
+  }
 
   @Override
   public Node visitIdentifierExp(WACCParser.IdentifierExpContext ctx) {

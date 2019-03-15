@@ -16,6 +16,8 @@ import frontend.symbolTable.types.Type;
 
 import java.util.List;
 import java.util.Stack;
+import shell.ArrayVariableValue;
+import shell.Heap;
 
 public class ArrayElementNode extends ExpressionNode {
 
@@ -153,6 +155,61 @@ public class ArrayElementNode extends ExpressionNode {
     }
 
     return current.getElementType();
+  }
+
+  @Override
+  public Object evaluate(SymbolTable symbolTable, Heap heap) {
+    ArrayVariableValue v = (ArrayVariableValue)
+        symbolTable.getValue(identifier.getName());
+    Object res = null;
+
+    for (ExpressionNode e : indices) {
+
+      int i = (int) e.evaluate(symbolTable, heap);
+
+      if (!v.indexInUpperBound(i)) {
+        return "Runtime Error: array index too large!";
+      } else if (!v.indexInLowerBound(i)) {
+        return "Runtime Error: array index less than " +
+            ArrayVariableValue.MIN_ARRAY_INDEX + "!";
+      } else {
+        res = v.getElementAtIndex(i);
+
+        if (res instanceof ArrayVariableValue) {
+          v = (ArrayVariableValue) res;
+        }
+      }
+    }
+
+    return res;
+  }
+
+  public Object updateElement(SymbolTable symbolTable, Heap heap, Object value) {
+    ArrayVariableValue v = (ArrayVariableValue)
+        symbolTable.getValue(identifier.getName());
+    Object res;
+
+    for (int i = 0; i < indices.size(); i++) {
+      ExpressionNode e = indices.get(i);
+      int j = (int) e.evaluate(symbolTable, heap);
+
+      if (!v.indexInUpperBound(j)) {
+        return "Runtime Error: array index too large!";
+      } else if (!v.indexInLowerBound(j)) {
+        return "Runtime Error: array index less than " +
+            ArrayVariableValue.MIN_ARRAY_INDEX + "!";
+      } else {
+        /* If we have pushed as deep into the array as necessary to update */
+        if (i == indices.size() - 1) {
+          v.updateElement(j, value);
+        } else {
+          res = v.getElementAtIndex(i);
+          v = (ArrayVariableValue) res;
+        }
+      }
+    }
+
+    return value;
   }
 
   @Override

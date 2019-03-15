@@ -162,7 +162,17 @@ public class SymbolTable {
     if (scope instanceof FunctionDefinitionNode) {
       return this;
     }
+    if (parent == null) return null;
     return parent.functionTable();
+  }
+
+  public boolean matchesScope(Node scope) {
+    return scope.equals(this.scope);
+  }
+
+  public SymbolTable getParent() {
+    if (parent == null) return this;
+    return parent;
   }
 
   /**
@@ -181,5 +191,60 @@ public class SymbolTable {
     SymbolTable child = new SymbolTable(this, scope);
     childrenMap.put(scope, child);
     return child;
+  }
+
+  /**
+   * @param identifier The string key in the symbol table to be updated
+   * @param value The value to be set to the variable matching the identifier
+   *              key
+   * */
+  public void setValue(String identifier, Object value) {
+    if (identifierMap.containsKey(identifier)) {
+      SymbolCategory symbol = identifierMap.get(identifier);
+      if (symbol instanceof Variable) {
+        Variable variable = (Variable) symbol;
+        variable.setValue(value);
+      }
+    } else if (parent != null) {
+      parent.setValue(identifier, value);
+    }
+  }
+
+  /**
+   * @param identifier The string key that is the identifier of the variable
+   *                   to be removed
+   */
+  public void removeEntry(String identifier) {
+    identifierMap.remove(identifier);
+  }
+
+  /**
+   * @param identifier The string key used to search for the value of its
+   *                   associated Variable
+   * @return The value of the Variable that matches the key "identifier" in the
+   *         identifier map
+   * */
+  public Object getValue(String identifier) {
+    if (identifierMap.containsKey(identifier)) {
+      SymbolCategory symbol = identifierMap.get(identifier);
+      if (symbol instanceof Variable) {
+        Variable variable = (Variable) symbol;
+        return variable.getValue();
+      }
+      return null;
+    } else if (parent != null) {
+      return parent.getValue(identifier);
+    }
+    return null;
+  }
+
+  public List<Map.Entry<String, SymbolCategory>> getEntries() {
+    List<Map.Entry<String, SymbolCategory>> entries = new ArrayList<>();
+
+    for (String key : identifierMap.keySet()) {
+      entries.add(new AbstractMap.SimpleEntry<>(key, identifierMap.get(key)));
+    }
+
+    return entries;
   }
 }

@@ -10,12 +10,13 @@ import frontend.abstractSyntaxTree.Node;
 import frontend.abstractSyntaxTree.expressions.IdentifierNode;
 import frontend.abstractSyntaxTree.statements.StatementNode;
 import frontend.symbolTable.SemanticErrorList;
+import frontend.symbolTable.SymbolCategory;
 import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.Type;
 
 import java.util.Stack;
 
-public class FunctionDefinitionNode implements Node {
+public class FunctionDefinitionNode extends SymbolCategory implements Node {
   private final IdentifierNode identifier;
   private final StatementNode body;
   private final ParameterListNode parameters;
@@ -30,6 +31,10 @@ public class FunctionDefinitionNode implements Node {
     this.body = stat;
   }
 
+  public StatementNode getBody() {
+    return body;
+  }
+
   public Type getReturnType() {
     return returnType.getType();
   }
@@ -37,7 +42,6 @@ public class FunctionDefinitionNode implements Node {
   public String getIdentifier() {
     return identifier.getName();
   }
-
 
   public ParameterListNode getParameterList() {
     return parameters;
@@ -47,6 +51,12 @@ public class FunctionDefinitionNode implements Node {
   @Override
   public void semanticCheck(SymbolTable symbolTable,
                             SemanticErrorList errorList) {
+    /* Check to see if is using symbol table with correct scope
+     * This will not be the case in the interactive shell where
+     *   functions are not called from the program node */
+    symbolTable = (symbolTable.matchesScope(this))
+            ? symbolTable : symbolTable.newChild(this);
+
     body.matchReturnType(getReturnType());
     parameters.semanticCheck(symbolTable, errorList);
     body.semanticCheck(symbolTable, errorList);

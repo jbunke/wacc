@@ -6,13 +6,15 @@ import backend.Register;
 import backend.instructions.*;
 import frontend.abstractSyntaxTree.assignment.AssignLHS;
 import frontend.abstractSyntaxTree.expressions.IdentifierNode;
-import frontend.symbolTable.SemanticError;
-import frontend.symbolTable.SemanticErrorList;
-import frontend.symbolTable.SymbolTable;
+import frontend.symbolTable.*;
 import frontend.symbolTable.types.BaseTypes;
+import frontend.symbolTable.types.Type;
+import shell.Heap;
+import shell.ShellStatementControl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.Stack;
 
 public class ReadStatementNode extends StatementNode {
@@ -101,5 +103,40 @@ public class ReadStatementNode extends StatementNode {
   @Override
   public String toString() {
     return "read " + lhs.toString();
+  }
+
+  @Override
+  public ShellStatementControl applyStatement(SymbolTable symbolTable,
+      Heap heap) {
+    Scanner in = new Scanner(System.in);
+
+    String input = in.nextLine();
+    input = input.trim();
+
+    if (lhs instanceof IdentifierNode) {
+      IdentifierNode identifier = (IdentifierNode) lhs;
+      Type type = identifier.getType(symbolTable);
+      if (type instanceof BaseTypes) {
+        BaseTypes baseType = (BaseTypes) type;
+        switch (baseType.getBaseType()) {
+          case INT:
+            symbolTable.setValue(identifier.getName(),
+                    Integer.parseInt(input));
+            break;
+          case BOOL:
+            symbolTable.setValue(identifier.getName(),
+                    Boolean.parseBoolean(input));
+            break;
+          case CHAR:
+            symbolTable.setValue(identifier.getName(), input.charAt(0));
+            break;
+        }
+      } else {
+        // TODO
+        symbolTable.setValue(identifier.getName(), input);
+      }
+    }
+
+    return ShellStatementControl.cont();
   }
 }

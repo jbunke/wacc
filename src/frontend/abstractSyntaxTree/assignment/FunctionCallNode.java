@@ -9,16 +9,19 @@ import backend.instructions.MovInstruction;
 import backend.instructions.STRInstruction;
 import frontend.abstractSyntaxTree.expressions.ExpressionNode;
 import frontend.abstractSyntaxTree.expressions.IdentifierNode;
+import frontend.abstractSyntaxTree.typeNodes.FunctionDefinitionNode;
 import frontend.symbolTable.*;
 import frontend.symbolTable.types.Type;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
+import shell.Heap;
 
 public class FunctionCallNode implements AssignRHS {
   private final IdentifierNode functionIdentifier;
   private final List<ExpressionNode> arguments;
-  private Function function;
+  private FunctionDefinitionNode function;
 
   public FunctionCallNode(IdentifierNode functionIdentifier, List<ExpressionNode> arguments) {
     this.functionIdentifier = functionIdentifier;
@@ -27,7 +30,8 @@ public class FunctionCallNode implements AssignRHS {
 
   @Override
   public Type getType(SymbolTable symbolTable) {
-    Function function = (Function) symbolTable.find(functionIdentifier.getName());
+    FunctionDefinitionNode function =
+            (FunctionDefinitionNode) symbolTable.find(functionIdentifier.getName());
     this.function = function;
     return function.getReturnType();
   }
@@ -40,19 +44,19 @@ public class FunctionCallNode implements AssignRHS {
       return;
     }
 
-    if (!(function instanceof Function)) {
+    if (!(function instanceof FunctionDefinitionNode)) {
       errorList.addError(new SemanticError("This is not a function"));
       return;
     }
 
-    Function f = (Function) function;
+    FunctionDefinitionNode f = (FunctionDefinitionNode) function;
 
-    if (f.getParameters().size() > arguments.size()) {
+    if (f.getParameterList().getParamTypes().size() > arguments.size()) {
       errorList.addError(new SemanticError("Too few arguments"));
-    } else if (f.getParameters().size() < arguments.size()) {
+    } else if (f.getParameterList().getParamTypes().size() < arguments.size()) {
       errorList.addError(new SemanticError(("Too many arguments")));
     } else {
-      List<Type> parameters = f.getParameters();
+      List<Type> parameters = f.getParameterList().getParamTypes();
       for (int i = 0; i < arguments.size(); i++) {
         ExpressionNode node = arguments.get(i);
 
@@ -68,9 +72,8 @@ public class FunctionCallNode implements AssignRHS {
           ));
         }
       }
-      this.function = (Function) function;
+      this.function = f;
     }
-
   }
 
   @Override
@@ -107,5 +110,28 @@ public class FunctionCallNode implements AssignRHS {
     generator.addInstruction(new MovInstruction(
             generator.getRegister(available.peek()),
             generator.getRegister(Register.ID.R0)));
+  }
+
+  @Override
+  public Object evaluate(SymbolTable symbolTable, Heap heap) {
+    // TODO
+
+    SymbolTable rootTable = symbolTable.getParent();
+
+    List<Object> argValues = new ArrayList<>();
+
+    for (ExpressionNode expression : arguments) {
+      argValues.add(expression.evaluate(symbolTable, heap));
+    }
+
+    SymbolTable functionTable = rootTable.getChild(function);
+
+    List<String> parameters = function.getParameterList().getIdentifiers();
+
+    for (int i = 0; i < argValues.size(); i++) {
+      functionTable.setValue(parameters.get(i), argValues.get(i));
+    }
+
+    return function.getBody().applyStatement(functionTable, heap).value;
   }
 }

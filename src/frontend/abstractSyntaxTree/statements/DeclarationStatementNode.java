@@ -1,5 +1,8 @@
 package frontend.abstractSyntaxTree.statements;
 
+import static shell.WACCShell.ANSI_RED;
+import static shell.WACCShell.ANSI_RESET;
+
 import backend.AssemblyGenerator;
 import backend.Register;
 import backend.instructions.STRInstruction;
@@ -11,10 +14,13 @@ import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.Variable;
 import frontend.symbolTable.types.Type;
+import shell.Heap;
+import shell.ShellStatementControl;
 
 import java.util.Stack;
 
 public class DeclarationStatementNode extends StatementNode {
+  private static final String RUNTIME_ERROR = "Runtime Error:";
 
   private final TypeNode identifierType;
   private final IdentifierNode identifier;
@@ -74,5 +80,28 @@ public class DeclarationStatementNode extends StatementNode {
   public String toString() {
     return identifierType.toString() + " " + identifier.toString()
             + " = " + rhs.toString();
+  }
+
+  @Override
+  public ShellStatementControl applyStatement(SymbolTable symbolTable,
+      Heap heap) {
+    // Get value
+    Object value = rhs.evaluate(symbolTable, heap);
+
+    if (!isValueErroneous(value)) {
+      symbolTable.setValue(identifier.getName(), value);
+    } else {
+      symbolTable.removeEntry(identifier.getName());
+      System.out.print(ANSI_RED);
+      System.out.println(value);
+      System.out.print(ANSI_RESET);
+    }
+
+    return ShellStatementControl.cont();
+  }
+
+  private static boolean isValueErroneous(Object value) {
+    return (value instanceof String)
+        && ((String) value).startsWith(RUNTIME_ERROR);
   }
 }

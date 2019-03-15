@@ -2,6 +2,7 @@ import antlr.WACCLexer;
 import antlr.WACCParser;
 import backend.AssemblyGenerator;
 import frontend.Visitor;
+import frontend.WACCParserErrorListener;
 import frontend.abstractSyntaxTree.ProgramNode;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;

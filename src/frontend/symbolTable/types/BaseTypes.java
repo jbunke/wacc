@@ -46,6 +46,6 @@ public class BaseTypes extends Type {
 
   @Override
   public String toString() {
-    return baseType.toString();
+    return baseType.toString().toLowerCase();
   }
 }

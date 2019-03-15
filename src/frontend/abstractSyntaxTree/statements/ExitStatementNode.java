@@ -12,6 +12,8 @@ import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.BaseTypes;
 import frontend.symbolTable.types.Type;
+import shell.Heap;
+import shell.ShellStatementControl;
 
 import java.util.Stack;
 
@@ -57,6 +59,12 @@ public class ExitStatementNode extends StatementNode {
   @Override
   public boolean containsExit() {
     return true;
+  }
+
+  @Override
+  public ShellStatementControl applyStatement(SymbolTable symbolTable,
+      Heap heap) {
+    return ShellStatementControl.exit();
   }
 
   @Override

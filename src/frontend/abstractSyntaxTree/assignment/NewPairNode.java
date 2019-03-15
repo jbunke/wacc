@@ -15,6 +15,8 @@ import frontend.symbolTable.types.Pair;
 import frontend.symbolTable.types.Type;
 
 import java.util.Stack;
+import shell.Heap;
+import shell.PairVariableValue;
 
 public class NewPairNode implements AssignRHS {
 
@@ -52,6 +54,16 @@ public class NewPairNode implements AssignRHS {
     allocElem(generator, symbolTable, available, RIGHT_ELEM, ptrReg);
 
     available.push(ptrReg.getRegID());
+  }
+
+  @Override
+  public Object evaluate(SymbolTable symbolTable, Heap heap) {
+    String addr = heap.allocateSpace(NUM_PAIR_ELEMENTS * ADDR_SIZE);
+
+    Object left = leftExpression.evaluate(symbolTable, heap);
+    Object right = rightExpression.evaluate(symbolTable, heap);
+
+    return new PairVariableValue(addr, left, right);
   }
 
   private void allocElem(AssemblyGenerator generator, SymbolTable symbolTable,

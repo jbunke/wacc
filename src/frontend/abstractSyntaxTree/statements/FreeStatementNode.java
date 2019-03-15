@@ -1,18 +1,27 @@
 package frontend.abstractSyntaxTree.statements;
 
+import static shell.WACCShell.ANSI_GREEN;
+import static shell.WACCShell.ANSI_RED;
+import static shell.WACCShell.ANSI_RESET;
+
 import backend.AssemblyGenerator;
 import backend.Condition;
 import backend.Register;
 import backend.Register.ID;
 import backend.instructions.BranchInstruction;
 import backend.instructions.MovInstruction;
+import frontend.abstractSyntaxTree.assignment.AssignPairElementNode;
 import frontend.abstractSyntaxTree.expressions.ExpressionNode;
+import frontend.abstractSyntaxTree.expressions.IdentifierNode;
 import frontend.symbolTable.SemanticError;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.Array;
 import frontend.symbolTable.types.Pair;
 import frontend.symbolTable.types.Type;
+import shell.Heap;
+import shell.PairVariableValue;
+import shell.ShellStatementControl;
 
 import java.util.Stack;
 
@@ -59,4 +68,19 @@ public class FreeStatementNode extends StatementNode {
     generator.addInstruction(new BranchInstruction(Condition.L, FREE_PAIR));
   }
 
+  @Override
+  public ShellStatementControl applyStatement(SymbolTable symbolTable,
+      Heap heap) {
+    if (expression instanceof IdentifierNode) {
+      String id = ((IdentifierNode) expression).getName();
+      PairVariableValue v = (PairVariableValue) symbolTable.getValue(id);
+      if (!v.free()) {
+        System.out.print(ANSI_RED);
+        System.out.println("Runtime Error: attempt to double-free a pair!");
+        System.out.print(ANSI_RESET);
+
+      }
+    }
+    return ShellStatementControl.cont();
+  }
 }

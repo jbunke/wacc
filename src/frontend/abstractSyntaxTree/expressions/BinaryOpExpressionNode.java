@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
+import shell.Heap;
 
 public class BinaryOpExpressionNode extends ExpressionNode {
   private final static String OVERFLOW = "OverflowError: the result is too " +
@@ -326,6 +327,42 @@ public class BinaryOpExpressionNode extends ExpressionNode {
         return new BaseTypes(BaseTypes.base_types.INT);
 //      default:
 //        return new ArrayList<>();
+    }
+  }
+
+  @Override
+  public Object evaluate(SymbolTable symbolTable, Heap heap) {
+    Object left = this.left.evaluate(symbolTable, heap);
+    Object right = this.right.evaluate(symbolTable, heap);
+    switch (operatorType) {
+      case PLUS:
+        return (Integer) left + (Integer) right;
+      case MINUS:
+        return (Integer) left - (Integer) right;
+      case TIMES:
+        return (Integer) left * (Integer) right;
+      case DIVIDE:
+        return (Integer) left / (Integer) right;
+      case MOD:
+        return (Integer) left % (Integer) right;
+      case AND:
+        return (Boolean) left && (Boolean) right;
+      case OR:
+        return (Boolean) left || (Boolean) right;
+      case EQUAL:
+        return left == right;
+      case NOT_EQUAL:
+        return left != right;
+      case GREATER_THAN:
+        return (Integer) left > (Integer) right;
+      case GREATER_THAN_OR_EQUAL:
+        return (Integer) left >= (Integer) right;
+      case LESS_THAN:
+        return (Integer) left < (Integer) right;
+      case LESS_THAN_OR_EQUAL:
+        return (Integer) left <= (Integer) right;
+      default:
+        return null;
     }
   }
 

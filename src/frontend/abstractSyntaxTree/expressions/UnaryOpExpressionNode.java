@@ -16,6 +16,8 @@ import frontend.symbolTable.types.Type;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
+import shell.ArrayVariableValue;
+import shell.Heap;
 
 public class UnaryOpExpressionNode extends ExpressionNode {
   private final static String OVERFLOW = "OverflowError: the result is too " +
@@ -82,6 +84,32 @@ public class UnaryOpExpressionNode extends ExpressionNode {
         return new BaseTypes(BaseTypes.base_types.CHAR);
     }
     return null;
+  }
+
+  @Override
+  public Object evaluate(SymbolTable symbolTable, Heap heap) {
+    Object operand = this.operand.evaluate(symbolTable, heap);
+    switch (operatorType) {
+      case LENGTH:
+        if (operand instanceof String) {
+          return ((String) operand).length();
+        } else if (operand instanceof ArrayVariableValue) {
+          return ((ArrayVariableValue) operand).getLength();
+        }
+        return null;
+      case CHR:
+        return (char) ((Integer) operand).intValue();
+      case ORD:
+        char opChar = (char) operand;
+        return (int) opChar;
+      case NOT:
+        return !((Boolean) operand);
+      case NEGATIVE:
+        return -((Integer) operand);
+      case POSITIVE:
+      default:
+        return operand;
+    }
   }
 
   private Type getOperandType() {

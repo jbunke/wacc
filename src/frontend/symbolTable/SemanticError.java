@@ -1,5 +1,8 @@
 package frontend.symbolTable;
 
+import static shell.WACCShell.ANSI_RED;
+import static shell.WACCShell.ANSI_RESET;
+
 import java.io.PrintStream;
 
 public class SemanticError {
@@ -10,6 +13,6 @@ public class SemanticError {
   }
 
   public void print(PrintStream stream) {
-    stream.println("Semantic Error 200: " + errorMessage);
+    stream.println(ANSI_RED + "Semantic Error 200: " + errorMessage + ANSI_RESET);
   }
 }
