@@ -5,6 +5,7 @@ import backend.Condition;
 import backend.Register;
 import backend.instructions.BranchInstruction;
 import backend.instructions.ExOrInstruction;
+import backend.instructions.LDRInstruction;
 import backend.instructions.RSBSInstruction;
 import frontend.symbolTable.SemanticError;
 import frontend.symbolTable.SemanticErrorList;
@@ -179,6 +180,11 @@ public class UnaryOpExpressionNode extends ExpressionNode {
                 new String[]{OVERFLOW}, AssemblyGenerator::throw_overflow_error);
         generator.addInstruction(new BranchInstruction(blvs,
                 "p_throw_overflow_error"));
+        break;
+      case LENGTH:
+        Register resultReg = generator.getRegister(available.peek());
+        operand.generateAssembly(generator, symbolTable, available);
+        generator.addInstruction(new LDRInstruction(resultReg, resultReg));
         break;
     }
   }
