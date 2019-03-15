@@ -16,8 +16,8 @@ import frontend.symbolTable.types.Type;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
-import shell.ArrayVariableValue;
-import shell.Heap;
+import shell.structural.ArrayVariableValue;
+import shell.structural.Heap;
 
 public class UnaryOpExpressionNode extends ExpressionNode {
   private final static String OVERFLOW = "OverflowError: the result is too " +

@@ -8,7 +8,7 @@ import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.Type;
 
 import java.util.Stack;
-import shell.Heap;
+import shell.structural.Heap;
 
 public class ParenthesisExpressionNode extends ExpressionNode {
   private final ExpressionNode containedExpression;

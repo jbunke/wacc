@@ -15,7 +15,9 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.TokenStream;
 import shell.cliProcessing.CommandProcessing;
+import shell.cliProcessing.ShellSettings;
 import shell.cliProcessing.SpecialCommands;
+import shell.structural.Heap;
 
 import java.io.*;
 import java.util.List;
@@ -38,6 +40,7 @@ public class WACCShell {
   private final static String CONTINUE = "| ";
 
   public static String username = "user";
+  public static ShellSettings settings;
 
   public static SymbolTable symbolTable;
   public static Heap heap;
@@ -47,8 +50,10 @@ public class WACCShell {
   public static void main(String[] args) {
     symbolTable = null;
     heap = new Heap();
+    settings = new ShellSettings();
     in = new Scanner(System.in);
 
+    settings.loadSettings();
     loadUsername();
 
     startUp();
@@ -57,13 +62,15 @@ public class WACCShell {
 
     shellExit();
 
+    settings.saveSettings();
     saveUsername();
   }
 
   public static void commandCycle(Scanner scanner, boolean manualNewline) {
     do {
       prompt();
-      String line = CommandProcessing.acquireCommand(scanner.nextLine(),  0);
+      String line = CommandProcessing.
+              acquireCommand(scanner.nextLine(),0, scanner);
       if (manualNewline) System.out.println(line);
       if (line.equals(QUIT_STRING)) return;
       if (!line.isEmpty() && SpecialCommands.commandMatchCheck(line) &&
@@ -197,13 +204,19 @@ public class WACCShell {
   }
 
   public static void promptWithIndent(int level) {
-    StringBuilder builder = new StringBuilder(CONTINUE);
+    StringBuilder builder = new StringBuilder();
+    // align continues with right arrow above
+    for (int i = 0; i < username.length() + 1; i++) {
+      builder.append(" ");
+    }
 
+    builder.append(CONTINUE);
     for (int i = 0; i < level; i++) {
       builder.append(TAB_CHAR);
     }
 
-    System.out.print(builder.toString());
+    System.out.print(ANSI_PURPLE);
+    System.out.print(builder.toString() + ANSI_RESET);
   }
 
   private static boolean isRuntimeError(Object value) {

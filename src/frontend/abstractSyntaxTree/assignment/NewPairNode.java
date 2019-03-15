@@ -15,8 +15,8 @@ import frontend.symbolTable.types.Pair;
 import frontend.symbolTable.types.Type;
 
 import java.util.Stack;
-import shell.Heap;
-import shell.PairVariableValue;
+import shell.structural.Heap;
+import shell.structural.PairVariableValue;
 
 public class NewPairNode implements AssignRHS {
 

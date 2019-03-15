@@ -1,4 +1,4 @@
-package shell;
+package shell.structural;
 
 import java.util.List;
 

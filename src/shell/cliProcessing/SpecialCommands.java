@@ -33,6 +33,7 @@ public class SpecialCommands {
   private final static String FUNCTIONS_STRING = ":f";
   private final static String RUN_FILE_STRING = ":run";
   private final static String RESET_STRING = ":reset";
+  private final static String SET_STRING = ":set";
   private final static String SCRIPT_STRING = ":script";
   private final static String ME_STRING = ":me";
 
@@ -92,12 +93,58 @@ public class SpecialCommands {
           username = line.substring(line.indexOf(" ") + 1);
           saveUsername();
           return false;
+        } else if (line.startsWith(SET_STRING + " ")) {
+          updateSetting(line);
+          return false;
         } else if (line.startsWith(SPECIAL_COMMAND_STARTER)) {
           invalidCommand(line);
           return false;
         }
         return true;
     }
+  }
+
+  private static void updateSetting(String line) {
+    String setting = line.substring(line.indexOf(" ") + 1);
+    setting = setting.contains(" ") ?
+            setting.substring(0, setting.indexOf(" ")) : setting;
+
+    // triggers if the VALUE field is left off the command
+    if (line.indexOf(" ") == line.lastIndexOf(" ")) {
+      boolean settingState;
+      switch (setting) {
+        case "autocomplete":
+          settingState = settings.isAutocomplete();
+          break;
+        default:
+          System.out.println(ANSI_RED + "No settings matched \""
+                  + setting + "\"" + ANSI_RESET);
+          return;
+      }
+
+      System.out.println(ANSI_GREEN + "Setting \"" + setting +
+              "\" is set to " + settingState + ANSI_RESET);
+      return;
+    }
+
+    // otherwise command is a setting assignment
+    String value = line.substring(line.lastIndexOf(" ") + 1);
+    boolean toSet = Boolean.parseBoolean(value);
+
+    switch (setting) {
+      case "autocomplete":
+        settings.setAutocomplete(toSet);
+        break;
+      default:
+        System.out.println(ANSI_RED + "No settings matched \""
+                + setting + "\"" + ANSI_RESET);
+        return;
+    }
+
+    System.out.println(ANSI_GREEN + "Set setting \"" + setting +
+            "\" to " + toSet + ANSI_RESET);
+    settings.saveSettings();
+
   }
 
   private static void invalidCommand(String command) {
@@ -260,21 +307,45 @@ public class SpecialCommands {
   private static void help() {
     System.out.print(ANSI_GREEN);
     System.out.println("Type any valid WACC expression, statement or function");
+
+    System.out.println();
     System.out.println("Type \"" + FUNCTIONS_STRING +
         "\" for functions in scope");
+
+    System.out.println();
     System.out.println("Type \"" + GRAMMAR_STRING +
         "\" to see the grammar for the language");
+
+    System.out.println();
     System.out.println("Type \"" + INFO_STRING +
         "\" for project information");
+
+    System.out.println();
     System.out.println("Type \"" + ME_STRING + "\" to see username and \"" +
             ME_STRING + " USERNAME\" to set a new username");
+
+    System.out.println();
     System.out.println("Type \":q\" to quit");
+
+    System.out.println();
     System.out.println("Type \"" + RESET_STRING + "\" to reset the shell");
+
+    System.out.println();
     System.out.println("Type \"" + RUN_FILE_STRING + " FILEPATH.wacc\"" +
         " to execute a WACC file");
+
+    System.out.println();
     System.out.println("Type \"" + SCRIPT_STRING + " FILEPATH" +
             SCRIPT_FILE_EXTENSION + "\"" +
             " to execute a script for the shell");
+
+    System.out.println();
+    System.out.println("Type \"" + SET_STRING + " SETTING BOOL-LITERAL\"" +
+            " to update a setting\nSettings: ");
+    System.out.println("\t\tautocomplete: multi-line bodies and statements" +
+            " like \"if\" and \"while\" have autocompletion");
+
+    System.out.println();
     System.out.println("Type \"" + VARIABLES_STRING +
         "\" for variables in scope");
     System.out.print(ANSI_RESET);

@@ -1,6 +1,5 @@
 package frontend.abstractSyntaxTree.statements;
 
-import static shell.WACCShell.ANSI_GREEN;
 import static shell.WACCShell.ANSI_RED;
 import static shell.WACCShell.ANSI_RESET;
 
@@ -10,7 +9,6 @@ import backend.Register;
 import backend.Register.ID;
 import backend.instructions.BranchInstruction;
 import backend.instructions.MovInstruction;
-import frontend.abstractSyntaxTree.assignment.AssignPairElementNode;
 import frontend.abstractSyntaxTree.expressions.ExpressionNode;
 import frontend.abstractSyntaxTree.expressions.IdentifierNode;
 import frontend.symbolTable.SemanticError;
@@ -19,9 +17,9 @@ import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.Array;
 import frontend.symbolTable.types.Pair;
 import frontend.symbolTable.types.Type;
-import shell.Heap;
-import shell.PairVariableValue;
-import shell.ShellStatementControl;
+import shell.structural.Heap;
+import shell.structural.PairVariableValue;
+import shell.structural.ShellStatementControl;
 
 import java.util.Stack;
 

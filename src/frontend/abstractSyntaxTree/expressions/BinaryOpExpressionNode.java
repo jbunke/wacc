@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
-import shell.Heap;
+import shell.structural.Heap;
 
 public class BinaryOpExpressionNode extends ExpressionNode {
   private final static String OVERFLOW = "OverflowError: the result is too " +

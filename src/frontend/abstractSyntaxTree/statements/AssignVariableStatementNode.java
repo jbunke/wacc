@@ -15,10 +15,9 @@ import frontend.symbolTable.SemanticError;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.Type;
-import org.antlr.v4.analysis.LeftRecursiveRuleAnalyzer.ASSOC;
-import shell.Heap;
-import shell.PairVariableValue;
-import shell.ShellStatementControl;
+import shell.structural.Heap;
+import shell.structural.PairVariableValue;
+import shell.structural.ShellStatementControl;
 
 import java.util.Stack;
 

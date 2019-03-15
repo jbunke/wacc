@@ -10,7 +10,7 @@ import frontend.symbolTable.types.BaseTypes;
 import frontend.symbolTable.types.Type;
 
 import java.util.Stack;
-import shell.Heap;
+import shell.structural.Heap;
 
 public class StringLiteralExpressionNode extends ExpressionNode {
   private final String value;

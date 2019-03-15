@@ -9,8 +9,8 @@ import frontend.abstractSyntaxTree.expressions.IdentifierNode;
 import frontend.symbolTable.*;
 import frontend.symbolTable.types.BaseTypes;
 import frontend.symbolTable.types.Type;
-import shell.Heap;
-import shell.ShellStatementControl;
+import shell.structural.Heap;
+import shell.structural.ShellStatementControl;
 
 import java.util.ArrayList;
 import java.util.List;

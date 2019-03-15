@@ -1,8 +1,9 @@
 package shell.cliProcessing;
 
-import shell.WACCShell;
-
+import java.util.Scanner;
 import java.util.function.Consumer;
+
+import static shell.WACCShell.*;
 
 public class CommandProcessing {
   private final static String IF_TOK = "if";
@@ -19,15 +20,15 @@ public class CommandProcessing {
 
   private final static String SEMI_COLON_TOK = ";";
 
-  public static String acquireCommand(String line, int level) {
+  public static String acquireCommand(String line, int level, Scanner scanner) {
     String res = line.trim();
 
     if (res.startsWith(IF_TOK + " ") && line.endsWith(" " + THEN_TOK)) {
-      res = acquireIfCommand(line, level + 1);
+      res = acquireIfCommand(line, level + 1, scanner);
     } else if (res.startsWith(WHILE_TOK + " ") && line.endsWith(" " + DO_TOK)) {
-      res = acquireWhileCommand(line, level + 1);
+      res = acquireWhileCommand(line, level + 1, scanner);
     } else if (res.endsWith(" " + IS_TOK)) {
-      res = acquireFunctionCommand(line, level  + 1);
+      res = acquireFunctionCommand(line, level  + 1, scanner);
     }
 
     return res;
@@ -36,20 +37,21 @@ public class CommandProcessing {
   private static void generalisedAutocomplete(StringBuilder sb, String token,
                                               Consumer<String> function,
                                               int level) {
+    promptWithIndent(level - 1);
     sb.append(" ");
     sb.append(token);
-    WACCShell.promptWithIndent(level - 1);
     function.accept(token);
   }
 
-  private static String acquireFunctionCommand(String startLine, int level) {
+  private static String acquireFunctionCommand(String startLine, int level,
+                                               Scanner scanner) {
     StringBuilder commandBuilder = new StringBuilder(startLine);
     String line;
     boolean end = false;
 
     do {
-      WACCShell.promptWithIndent(level);
-      line = acquireCommand(WACCShell.in.nextLine(), level);
+      promptWithIndent(level);
+      line = acquireCommand(in.nextLine(), level, scanner);
       commandBuilder.append(" ");
       commandBuilder.append(line);
 
@@ -63,14 +65,15 @@ public class CommandProcessing {
     return commandBuilder.toString();
   }
 
-  private static String acquireWhileCommand(String startLine, int level) {
+  private static String acquireWhileCommand(String startLine, int level,
+                                            Scanner scanner) {
     StringBuilder commandBuilder = new StringBuilder(startLine);
     String line;
     boolean done = false;
 
     do {
-      WACCShell.promptWithIndent(level);
-      line = acquireCommand(WACCShell.in.nextLine(), level);
+      promptWithIndent(level);
+      line = acquireCommand(in.nextLine(), level, scanner);
       commandBuilder.append(" ");
       commandBuilder.append(line);
 
@@ -81,7 +84,7 @@ public class CommandProcessing {
       }
     } while (!done);
 
-    line = WACCShell.in.nextLine();
+    line = in.nextLine();
     if (line.equals(SEMI_COLON_TOK)) {
       commandBuilder.append(line);
     }
@@ -89,35 +92,59 @@ public class CommandProcessing {
     return commandBuilder.toString();
   }
 
-  private static String acquireIfCommand(String startLine, int level) {
+  private static String acquireIfCommand(String startLine, int level,
+                                         Scanner scanner) {
     StringBuilder commandBuilder = new StringBuilder(startLine);
     String line;
-    boolean elseIncluded = false;
-    boolean fiIncluded = false;
+    boolean reachedElse = false;
+    boolean reachedFi = false;
 
     do {
-      WACCShell.promptWithIndent(level);
-      line = acquireCommand(WACCShell.in.nextLine(), level);
+      promptWithIndent(level);
+      line = acquireCommand(scanner.nextLine(), level, scanner);
       commandBuilder.append(" ");
       commandBuilder.append(line);
 
-      if (elseIncluded && !fiIncluded && !line.endsWith(SEMI_COLON_TOK)) {
-        fiIncluded = true;
-        generalisedAutocomplete(commandBuilder, FI_TOK,
-                System.out::print, level);
+      if (!reachedElse) {
+        if (!settings.isAutocomplete()) {
+          if (line.endsWith(ELSE_TOK)) {
+            reachedElse = true;
+            level++;
+          } else if (!line.endsWith(SEMI_COLON_TOK)) {
+            level--;
+          }
+        } else {
+          if (!line.endsWith(SEMI_COLON_TOK)) {
+            reachedElse = true;
+            generalisedAutocomplete(commandBuilder, ELSE_TOK,
+                    System.out::println, level);
+          }
+        }
+      } else {
+        if (!settings.isAutocomplete()) {
+          if (line.endsWith(FI_TOK)) {
+            reachedFi = true;
+          } else if (!line.endsWith(SEMI_COLON_TOK)) {
+            level--;
+          } else if (line.endsWith(FI_TOK + SEMI_COLON_TOK) ||
+                  line.endsWith(FI_TOK + " " + SEMI_COLON_TOK)) {
+            reachedFi = true;
+          }
+        } else {
+          if (!line.endsWith(SEMI_COLON_TOK)) {
+            reachedFi = true;
+            generalisedAutocomplete(commandBuilder, FI_TOK,
+                    System.out::print, level);
+          }
+        }
       }
+    } while (!reachedFi);
 
-      if (!elseIncluded && !line.endsWith(SEMI_COLON_TOK)) {
-        elseIncluded = true;
-        generalisedAutocomplete(commandBuilder, ELSE_TOK,
-                System.out::println, level);
+    if (settings.isAutocomplete()) {
+      line = scanner.nextLine().trim();
+      if (line.equals(SEMI_COLON_TOK)) {
+        commandBuilder.append(line);
       }
-
-    } while (!fiIncluded);
-
-    line = WACCShell.in.nextLine();
-    if (line.equals(SEMI_COLON_TOK)) {
-      commandBuilder.append(line);
     }
 
     return commandBuilder.toString();
