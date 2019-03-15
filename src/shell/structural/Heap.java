@@ -1,4 +1,4 @@
-package shell;
+package shell.structural;
 
 public class Heap {
 

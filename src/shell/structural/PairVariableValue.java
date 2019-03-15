@@ -1,5 +1,4 @@
-package shell;
-
+package shell.structural;
 
 public class PairVariableValue {
   private static final String NULL_ADDR = "null";

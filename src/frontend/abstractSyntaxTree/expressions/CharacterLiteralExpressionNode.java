@@ -9,7 +9,7 @@ import frontend.symbolTable.types.BaseTypes;
 import frontend.symbolTable.types.Type;
 
 import java.util.Stack;
-import shell.Heap;
+import shell.structural.Heap;
 
 public class CharacterLiteralExpressionNode extends ExpressionNode {
   private final char value;

@@ -4,7 +4,7 @@ import backend.AssemblyGenerator;
 import backend.Register;
 import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.Type;
-import shell.Heap;
+import shell.structural.Heap;
 
 import java.util.Stack;
 

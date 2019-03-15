@@ -1,4 +1,4 @@
-package shell;
+package shell.structural;
 
 public class ShellStatementControl {
   public final boolean toExit;

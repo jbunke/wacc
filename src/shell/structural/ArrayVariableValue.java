@@ -1,6 +1,5 @@
-package shell;
+package shell.structural;
 
-import frontend.abstractSyntaxTree.expressions.ExpressionNode;
 import java.util.List;
 
 public class ArrayVariableValue {

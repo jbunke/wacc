@@ -4,8 +4,8 @@ import backend.AssemblyGenerator;
 import backend.Register;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
-import shell.Heap;
-import shell.ShellStatementControl;
+import shell.structural.Heap;
+import shell.structural.ShellStatementControl;
 
 import java.util.Stack;
 

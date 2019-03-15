@@ -9,6 +9,7 @@ antlr_config/WACCLexer.tokens
 
 #ignore certain resources
 res/username
+res/settings
 
 #ignore generated assembly files
 *.s

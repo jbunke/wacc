@@ -4,8 +4,8 @@ package frontend.abstractSyntaxTree.statements;
 import frontend.abstractSyntaxTree.Node;
 import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.Type;
-import shell.ShellStatementControl;
-import shell.Heap;
+import shell.structural.ShellStatementControl;
+import shell.structural.Heap;
 
 public abstract class StatementNode implements Node {
   public boolean endsWithReturn() {

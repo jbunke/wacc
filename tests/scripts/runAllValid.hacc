@@ -1,0 +1,204 @@
+:run tests/examples/valid/basic/skip/skip.wacc
+:run tests/examples/valid/basic/skip/comment.wacc
+:run tests/examples/valid/basic/skip/commentInLine.wacc
+:run tests/examples/valid/basic/exit/exitBasic.wacc
+:run tests/examples/valid/basic/exit/exitBasic2.wacc
+:run tests/examples/valid/basic/exit/exitWrap.wacc
+:run tests/examples/valid/basic/exit/exit-1.wacc
+
+:run tests/examples/valid/scope/scopeSimpleRedefine.wacc
+:run tests/examples/valid/scope/scopeRedefine.wacc
+:run tests/examples/valid/scope/indentationNotImportant.wacc
+:run tests/examples/valid/scope/scope.wacc
+:run tests/examples/valid/scope/scopeBasic.wacc
+:run tests/examples/valid/scope/ifNested2.wacc
+:run tests/examples/valid/scope/ifNested1.wacc
+:run tests/examples/valid/scope/scopeVars.wacc
+:run tests/examples/valid/scope/intsAndKeywords.wacc
+:run tests/examples/valid/scope/printAllTypes.wacc
+
+:run tests/examples/valid/variables/capCharDeclaration.wacc
+:run tests/examples/valid/variables/negIntDeclaration.wacc
+:run tests/examples/valid/variables/charDeclaration.wacc
+:run tests/examples/valid/variables/emptyStringDeclaration.wacc
+:run tests/examples/valid/variables/stringDeclaration.wacc
+:run tests/examples/valid/variables/longVarNames.wacc
+:run tests/examples/valid/variables/boolDeclaration.wacc
+:run tests/examples/valid/variables/_VarNames.wacc
+:run tests/examples/valid/variables/charDeclaration2.wacc
+:run tests/examples/valid/variables/intDeclaration.wacc
+:run tests/examples/valid/variables/boolDeclaration2.wacc
+:run tests/examples/valid/variables/zeroIntDeclaration.wacc
+:run tests/examples/valid/variables/puncCharDeclaration.wacc
+:run tests/examples/valid/variables/manyVariables.wacc
+
+# :run tests/examples/valid/advanced/binarySortTree.wacc
+# :run tests/examples/valid/advanced/ticTacToe.wacc
+# :run tests/examples/valid/advanced/hashTable.wacc
+
+:run tests/examples/valid/array/arrayBasic.wacc
+:run tests/examples/valid/array/arrayNested.wacc
+:run tests/examples/valid/array/arrayEmpty.wacc
+:run tests/examples/valid/array/arrayLookup.wacc
+# :run tests/examples/valid/array/modifyString.wacc
+:run tests/examples/valid/array/arraySimple.wacc
+:run tests/examples/valid/array/arrayLength.wacc
+:run tests/examples/valid/array/array.wacc
+:run tests/examples/valid/array/printRef.wacc
+:run tests/examples/valid/array/arrayPrint.wacc
+
+:run tests/examples/valid/pairs/createPair.wacc
+:run tests/examples/valid/pairs/createPair02.wacc
+:run tests/examples/valid/pairs/createPair03.wacc
+:run tests/examples/valid/pairs/free.wacc
+:run tests/examples/valid/pairs/printNull.wacc
+:run tests/examples/valid/pairs/printNullPair.wacc
+:run tests/examples/valid/pairs/nestedPair.wacc
+:run tests/examples/valid/pairs/createRefPair.wacc
+:run tests/examples/valid/pairs/writeSnd.wacc
+:run tests/examples/valid/pairs/writeFst.wacc
+:run tests/examples/valid/pairs/null.wacc
+:run tests/examples/valid/pairs/readPair.wacc
+:run tests/examples/valid/pairs/linkedList.wacc
+:run tests/examples/valid/pairs/printPairOfNulls.wacc
+:run tests/examples/valid/pairs/checkRefPair.wacc
+:run tests/examples/valid/pairs/printPair.wacc
+
+:run tests/examples/valid/if/if1.wacc
+:run tests/examples/valid/if/whitespace.wacc
+:run tests/examples/valid/if/ifFalse.wacc
+:run tests/examples/valid/if/ifBasic.wacc
+:run tests/examples/valid/if/if6.wacc
+:run tests/examples/valid/if/ifTrue.wacc
+:run tests/examples/valid/if/if5.wacc
+:run tests/examples/valid/if/if4.wacc
+:run tests/examples/valid/if/if3.wacc
+:run tests/examples/valid/if/if2.wacc
+
+:run tests/examples/valid/runtimeErr/integerOverflow/intJustOverflow.wacc
+:run tests/examples/valid/runtimeErr/integerOverflow/intnegateOverflow.wacc
+:run tests/examples/valid/runtimeErr/integerOverflow/intWayOverflow.wacc
+:run tests/examples/valid/runtimeErr/integerOverflow/intUnderflow.wacc
+:run tests/examples/valid/runtimeErr/integerOverflow/intnegateOverflow4.wacc
+# :run tests/examples/valid/runtimeErr/nullDereference/readNull2.wacc
+# :run tests/examples/valid/runtimeErr/nullDereference/useNull2.wacc
+# :run tests/examples/valid/runtimeErr/nullDereference/setNull1.wacc
+# :run tests/examples/valid/runtimeErr/nullDereference/freeNull.wacc
+# :run tests/examples/valid/runtimeErr/nullDereference/setNull2.wacc
+# :run tests/examples/valid/runtimeErr/nullDereference/useNull1.wacc
+# :run tests/examples/valid/runtimeErr/nullDereference/readNull1.wacc
+:run tests/examples/valid/runtimeErr/divideByZero/divZero.wacc
+:run tests/examples/valid/runtimeErr/divideByZero/divideByZero.wacc
+:run tests/examples/valid/runtimeErr/divideByZero/modByZero.wacc
+:run tests/examples/valid/runtimeErr/arrayOutOfBounds/arrayNegBounds.wacc
+:run tests/examples/valid/runtimeErr/arrayOutOfBounds/arrayOutOfBounds.wacc
+:run tests/examples/valid/runtimeErr/doubleFrees/doubleFree.wacc
+:run tests/examples/valid/runtimeErr/doubleFrees/hiddenDoubleFree.wacc
+:run tests/examples/valid/runtimeErr/integerOverflow/intmultOverflow.wacc
+:run tests/examples/valid/runtimeErr/integerOverflow/intnegateOverflow3.wacc
+:run tests/examples/valid/runtimeErr/integerOverflow/intnegateOverflow2.wacc
+:run tests/examples/valid/runtimeErr/arrayOutOfBounds/arrayOutOfBoundsWrite.wacc
+
+:run tests/examples/valid/IO/read/echoPuncChar.wacc
+:run tests/examples/valid/IO/read/echoBigInt.wacc
+:run tests/examples/valid/IO/read/echoInt.wacc
+:run tests/examples/valid/IO/read/echoNegInt.wacc
+:run tests/examples/valid/IO/read/echoChar.wacc
+:run tests/examples/valid/IO/read/echoBigNegInt.wacc
+:run tests/examples/valid/IO/read/read.wacc
+:run tests/examples/valid/IO/IOSequence.wacc
+:run tests/examples/valid/IO/print/println.wacc
+:run tests/examples/valid/IO/print/stringAssignmentWithPrint.wacc
+:run tests/examples/valid/IO/print/printEscChar.wacc
+:run tests/examples/valid/IO/print/print.wacc
+:run tests/examples/valid/IO/print/hashInProgram.wacc
+:run tests/examples/valid/IO/print/printBool.wacc
+:run tests/examples/valid/IO/print/printInt.wacc
+:run tests/examples/valid/IO/print/printChar.wacc
+# :run tests/examples/valid/IO/print/multipleStringsAssignment.wacc
+:run tests/examples/valid/IO/IOLoop.wacc
+
+# :run tests/examples/valid/function/nested_functions/printInputTriangle.wacc
+# :run tests/examples/valid/function/nested_functions/functionConditionalReturn.wacc
+# :run tests/examples/valid/function/nested_functions/simpleRecursion.wacc
+# :run tests/examples/valid/function/nested_functions/fibonacciRecursive.wacc
+# :run tests/examples/valid/function/nested_functions/mutualRecursion.wacc
+# :run tests/examples/valid/function/nested_functions/fibonacciFullRec.wacc
+# :run tests/examples/valid/function/nested_functions/fixedPointRealArithmetic.wacc
+# :run tests/examples/valid/function/nested_functions/printTriangle.wacc
+
+:run tests/examples/valid/function/simple_functions/functionDeclaration.wacc
+:run tests/examples/valid/function/simple_functions/sameArgName2.wacc
+:run tests/examples/valid/function/simple_functions/functionSimple.wacc
+:run tests/examples/valid/function/simple_functions/incFunction.wacc
+:run tests/examples/valid/function/simple_functions/sameArgName.wacc
+:run tests/examples/valid/function/simple_functions/negFunction.wacc
+:run tests/examples/valid/function/simple_functions/functionUpdateParameter.wacc
+:run tests/examples/valid/function/simple_functions/functionReturnPair.wacc
+:run tests/examples/valid/function/simple_functions/functionManyArguments.wacc
+# :run tests/examples/valid/function/simple_functions/asciiTable.wacc
+
+:run tests/examples/valid/expressions/intCalc.wacc
+:run tests/examples/valid/expressions/multNoWhitespaceExpr.wacc
+:run tests/examples/valid/expressions/andExpr.wacc
+:run tests/examples/valid/expressions/divExpr.wacc
+:run tests/examples/valid/expressions/negBothMod.wacc
+:run tests/examples/valid/expressions/longSplitExpr.wacc
+:run tests/examples/valid/expressions/negDivisorDiv.wacc
+:run tests/examples/valid/expressions/ordAndchrExpr.wacc
+:run tests/examples/valid/expressions/lessExpr.wacc
+:run tests/examples/valid/expressions/lessCharExpr.wacc
+:run tests/examples/valid/expressions/negDividendDiv.wacc
+:run tests/examples/valid/expressions/longExpr2.wacc
+:run tests/examples/valid/expressions/longSplitExpr2.wacc
+:run tests/examples/valid/expressions/minusExpr.wacc
+:run tests/examples/valid/expressions/intExpr1.wacc
+:run tests/examples/valid/expressions/greaterEqExpr.wacc
+:run tests/examples/valid/expressions/plusPlusExpr.wacc
+:run tests/examples/valid/expressions/lessEqExpr.wacc
+:run tests/examples/valid/expressions/multExpr.wacc
+:run tests/examples/valid/expressions/longExpr3.wacc
+:run tests/examples/valid/expressions/plusNoWhitespaceExpr.wacc
+:run tests/examples/valid/expressions/plusMinusExpr.wacc
+:run tests/examples/valid/expressions/negDividendMod.wacc
+:run tests/examples/valid/expressions/longExpr.wacc
+:run tests/examples/valid/expressions/boolExpr1.wacc
+:run tests/examples/valid/expressions/equalsExpr.wacc
+:run tests/examples/valid/expressions/negDivisorMod.wacc
+:run tests/examples/valid/expressions/negBothDiv.wacc
+:run tests/examples/valid/expressions/orExpr.wacc
+:run tests/examples/valid/expressions/sequentialCount.wacc
+:run tests/examples/valid/expressions/notequalsExpr.wacc
+:run tests/examples/valid/expressions/negExpr.wacc
+:run tests/examples/valid/expressions/stringEqualsExpr.wacc
+:run tests/examples/valid/expressions/notExpr.wacc
+:run tests/examples/valid/expressions/greaterExpr.wacc
+:run tests/examples/valid/expressions/plusExpr.wacc
+:run tests/examples/valid/expressions/charComparisonExpr.wacc
+:run tests/examples/valid/expressions/modExpr.wacc
+:run tests/examples/valid/expressions/minusPlusExpr.wacc
+:run tests/examples/valid/expressions/minusMinusExpr.wacc
+:run tests/examples/valid/expressions/boolCalc.wacc
+:run tests/examples/valid/expressions/minusNoWhitespaceExpr.wacc
+
+:run tests/examples/valid/sequence/stringAssignment.wacc
+:run tests/examples/valid/sequence/charAssignment.wacc
+:run tests/examples/valid/sequence/intLeadingZeros.wacc
+:run tests/examples/valid/sequence/boolAssignment.wacc
+:run tests/examples/valid/sequence/intAssignment.wacc
+:run tests/examples/valid/sequence/basicSeq.wacc
+:run tests/examples/valid/sequence/basicSeq2.wacc
+:run tests/examples/valid/sequence/exitSimple.wacc
+
+:run tests/examples/valid/while/whileBasic.wacc
+:run tests/examples/valid/while/loopIntCondition.wacc
+:run tests/examples/valid/while/rmStyleAddIO.wacc
+:run tests/examples/valid/while/whileFalse.wacc
+:run tests/examples/valid/while/fibonacciFullIt.wacc
+:run tests/examples/valid/while/whileCount.wacc
+:run tests/examples/valid/while/min.wacc
+:run tests/examples/valid/while/max.wacc
+:run tests/examples/valid/while/whileBoolFlip.wacc
+:run tests/examples/valid/while/fibonacciIterative.wacc
+:run tests/examples/valid/while/loopCharCondition.wacc
+:run tests/examples/valid/while/rmStyleAdd.wacc

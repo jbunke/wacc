@@ -16,7 +16,7 @@ import frontend.symbolTable.types.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
-import shell.Heap;
+import shell.structural.Heap;
 
 public class FunctionCallNode implements AssignRHS {
   private final IdentifierNode functionIdentifier;

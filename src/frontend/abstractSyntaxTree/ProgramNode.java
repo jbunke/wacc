@@ -8,7 +8,7 @@ import frontend.abstractSyntaxTree.typeNodes.FunctionDefinitionNode;
 import frontend.symbolTable.SemanticError;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
-import shell.Heap;
+import shell.structural.Heap;
 
 import java.util.ArrayList;
 import java.util.List;

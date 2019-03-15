@@ -13,6 +13,6 @@ public class SemanticError {
   }
 
   public void print(PrintStream stream) {
-    stream.println(ANSI_RED + "Semantic Error 200: " + errorMessage + ANSI_RESET);
+    stream.println(ANSI_RED + "Semantic Error: " + errorMessage + ANSI_RESET);
   }
 }

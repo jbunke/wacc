@@ -11,8 +11,8 @@ import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.Array;
 import frontend.symbolTable.types.BaseTypes;
 import frontend.symbolTable.types.Pair;
-import shell.Heap;
-import shell.ShellStatementControl;
+import shell.structural.Heap;
+import shell.structural.ShellStatementControl;
 
 import java.util.ArrayList;
 import java.util.List;

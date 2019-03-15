@@ -9,8 +9,8 @@ import frontend.symbolTable.SemanticError;
 import frontend.symbolTable.SemanticErrorList;
 import frontend.symbolTable.SymbolTable;
 import frontend.symbolTable.types.Type;
-import shell.Heap;
-import shell.ShellStatementControl;
+import shell.structural.Heap;
+import shell.structural.ShellStatementControl;
 
 import java.util.Stack;
 

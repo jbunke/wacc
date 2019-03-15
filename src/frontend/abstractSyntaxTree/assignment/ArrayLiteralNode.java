@@ -20,8 +20,8 @@ import frontend.symbolTable.types.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
-import shell.ArrayVariableValue;
-import shell.Heap;
+import shell.structural.ArrayVariableValue;
+import shell.structural.Heap;
 
 public class ArrayLiteralNode implements AssignRHS {
 
