@@ -59,7 +59,6 @@ public class InnerScopeStatementNode extends StatementNode {
   @Override
   public ShellStatementControl applyStatement(SymbolTable symbolTable,
       Heap heap) {
-    // TODO: check validity
     return innerStatement.applyStatement(symbolTable.getChild(innerStatement), heap);
   }
 

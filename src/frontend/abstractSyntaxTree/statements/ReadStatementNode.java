@@ -132,7 +132,7 @@ public class ReadStatementNode extends StatementNode {
             break;
         }
       } else {
-        // TODO
+        // TODO: What if isn't string? Will break
         symbolTable.setValue(identifier.getName(), input);
       }
     }

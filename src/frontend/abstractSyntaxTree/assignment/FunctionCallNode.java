@@ -114,7 +114,6 @@ public class FunctionCallNode implements AssignRHS {
 
   @Override
   public Object evaluate(SymbolTable symbolTable, Heap heap) {
-    // TODO
 
     SymbolTable rootTable = symbolTable.getParent();
 

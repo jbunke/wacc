@@ -65,7 +65,6 @@ public class ReturnStatementNode extends StatementNode {
   @Override
   public ShellStatementControl applyStatement(SymbolTable symbolTable,
       Heap heap) {
-    // TODO
     return ShellStatementControl.returnValue(result.evaluate(symbolTable, heap));
   }
 

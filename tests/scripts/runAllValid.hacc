@@ -80,6 +80,7 @@
 :run tests/examples/valid/runtimeErr/integerOverflow/intWayOverflow.wacc
 :run tests/examples/valid/runtimeErr/integerOverflow/intUnderflow.wacc
 :run tests/examples/valid/runtimeErr/integerOverflow/intnegateOverflow4.wacc
+# TODO: Patrick - all of these commented below fail
 # :run tests/examples/valid/runtimeErr/nullDereference/readNull2.wacc
 # :run tests/examples/valid/runtimeErr/nullDereference/useNull2.wacc
 # :run tests/examples/valid/runtimeErr/nullDereference/setNull1.wacc
