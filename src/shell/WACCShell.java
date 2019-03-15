@@ -24,9 +24,13 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
+/**
+ * WACCShell is the root class of our extension
+ * */
 public class WACCShell {
   private static final String RUNTIME_ERROR = "Runtime Error:";
 
+  /* The ANSI constants are for standard output formatting */
   public static final String ANSI_RESET = "\u001B[0m";
   private static final String ANSI_BOLD = "\u001B[1m";
   public static final String ANSI_RED = "\u001B[31m";
@@ -40,12 +44,43 @@ public class WACCShell {
   private final static String TAB_CHAR = "\t";
   private final static String CONTINUE = "| ";
 
+  /**
+   * username is displayed every time the shell prompts the user for input.
+   *
+   * A username USERNAME is assigned with the ":me USERNAME" command
+   *
+   * username is saved when it is assigned and when the shell closes,
+   * and is preserved on start-up
+   * @see #saveUsername()
+   * @see #loadUsername()
+   * */
   public static String username = "user";
+
+  /**
+   * settings for the shell currently include:
+   *
+   * - autocomplete: whether or not the user wants the shell to autocomplete
+   * keywords in multi-line statements like "if" and "while"
+   *
+   * settings is saved when any setting is updated and when the shell closes,
+   * and is preserved on start-up
+   * */
   public static ShellSettings settings;
 
+  /**
+   * symbolTable keeps track of functions and variables that are declared
+   * during the shell's runtime
+   * */
   public static SymbolTable symbolTable;
+
+  /**
+   * heap allocates addresses for pairs and arrays in memory
+   * */
   public static Heap heap;
 
+  /**
+   * in is the Scanner for the standart input stream (System.in)
+   * */
   public static Scanner in;
 
   public static void main(String[] args) {
@@ -67,6 +102,22 @@ public class WACCShell {
     saveUsername();
   }
 
+  /**
+   * commandCycle takes a command as input from scanner, processes it, and
+   * repeats while the scanner has input. This is the core functionality loop
+   * of the shell.
+   *
+   * @param scanner A Scanner with the InputStream from which to be receiving
+   *                input
+   *                Because of the ":script FILEPATH.hacc" command, it is
+   *                possible to receive input from script files in addition
+   *                to System.in
+   *
+   * @param manualNewline If scanner is not from System.in, nextLine() will not
+   *                      be triggered by an ENTER keystroke. Thus, to mimic
+   *                      the behaviour of the "in" Scanner execution, the
+   *                      flag manualNewLine would be passed as "true"
+   * */
   public static void commandCycle(Scanner scanner, boolean manualNewline) {
     do {
       prompt();
@@ -94,6 +145,10 @@ public class WACCShell {
     }
   }
 
+  /**
+   * Attempts to load the username from "res/username". If the file doesn't
+   * exist, creates the file and initialises username to "user"
+   * */
   public static void loadUsername()  {
     File file = new File("res/username");
 
@@ -127,6 +182,15 @@ public class WACCShell {
     System.out.print(ANSI_RESET);
   }
 
+  /**
+   * processCommand takes a String command and passes it to the
+   * ANTLR-constructed lexer and parser. The parse tree is constructed with
+   * the "command" rule as the root. "command" is an extension to the
+   * WACCParser.g4 file that can be a rhs, a statement, or a function: the
+   * valid WACC inputs into the shell
+   *
+   * @param line The String to be lexed, parsed, and executed as a command
+   * */
   private static void processCommand(String line) {
     CharStream input = CharStreams.fromString(line);
     WACCLexer lexer = new WACCLexer(input);
@@ -160,12 +224,26 @@ public class WACCShell {
     }
   }
 
+  /**
+   * @see #processCommand(String)
+   * processFunction is called from processCommand. It populates the
+   * function into the symbolTable
+   * @see #symbolTable
+   *
+   * @param function The FunctionDefinitionNode to be populated
+   * */
   private static void processFunction(FunctionDefinitionNode function) {
     if (semErrorCheck(function)) return;
 
     symbolTable.add(function.getIdentifier(), function);
   }
 
+  /**
+   * @see #processCommand(String)
+   * processStatement is called from processCommand. It executes statement.
+   *
+   * @param statement The StatementNode to be executed
+   * */
   private static void processStatement(StatementNode statement) {
     if (semErrorCheck(statement)) return;
     /* symbol table should now have populated any variables
@@ -174,6 +252,14 @@ public class WACCShell {
     statement.applyStatement(symbolTable, heap);
   }
 
+  /**
+   * @see #processCommand(String)
+   * processRHS is called from processCommand if line evaluates to an
+   * AssignRHS Node after AST construction. It evaluates rhs and
+   * prints its result.
+   *
+   * @param rhs The AssignRHS node to be evaluated
+   * */
   private static void processRHS(AssignRHS rhs) {
     if (semErrorCheck(rhs)) return;
 
@@ -187,6 +273,19 @@ public class WACCShell {
     }
   }
 
+  /**
+   * semErrorCheck is called from the processCommand splinter methods.
+   * It checks node for semantic errors and returns true if there are
+   * any. When true is returned to the caller, it returns early before
+   * executing the node.
+   * @see #processFunction(FunctionDefinitionNode)
+   * @see #processStatement(StatementNode)
+   * @see #processRHS(AssignRHS)
+   *
+   * @param node The Node to be checked for errors
+   *
+   * @return Whether Node causes SemanticError(s)
+   * */
   public static boolean semErrorCheck(Node node) {
     SemanticErrorList semErrors = new SemanticErrorList();
 
@@ -207,6 +306,12 @@ public class WACCShell {
             ANSI_BOLD + ANSI_PURPLE + username + PROMPTER + ANSI_RESET);
   }
 
+  /**
+   * promptWithIndent formats the input prompt on successive
+   * lines of a multi-line statement
+   *
+   * @param level The indentation level
+   * */
   public static void promptWithIndent(int level) {
     StringBuilder builder = new StringBuilder();
     // align continues with right arrow above
