@@ -16,6 +16,8 @@ import frontend.symbolTable.types.Type;
 
 import java.util.List;
 import java.util.Stack;
+
+import shell.WACCShell;
 import shell.structural.ArrayVariableValue;
 import shell.structural.Heap;
 
@@ -168,10 +170,11 @@ public class ArrayElementNode extends ExpressionNode {
       int i = (int) e.evaluate(symbolTable, heap);
 
       if (!v.indexInUpperBound(i)) {
-        return "Runtime Error: array index too large!";
+        return WACCShell.ANSI_RED + "Runtime Error: array index too large!" +
+                WACCShell.ANSI_RESET;
       } else if (!v.indexInLowerBound(i)) {
-        return "Runtime Error: array index less than " +
-            ArrayVariableValue.MIN_ARRAY_INDEX + "!";
+        return WACCShell.ANSI_RED + "Runtime Error: array index less than " +
+            ArrayVariableValue.MIN_ARRAY_INDEX + "!" + WACCShell.ANSI_RESET;
       } else {
         res = v.getElementAtIndex(i);
 

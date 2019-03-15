@@ -28,6 +28,7 @@ public class WACCShell {
   private static final String RUNTIME_ERROR = "Runtime Error:";
 
   public static final String ANSI_RESET = "\u001B[0m";
+  private static final String ANSI_BOLD = "\u001B[1m";
   public static final String ANSI_RED = "\u001B[31m";
   public static final String ANSI_GREEN = "\u001B[32m";
   private static final String ANSI_PURPLE = "\u001B[35m";
@@ -35,7 +36,7 @@ public class WACCShell {
   private final static String QUIT_STRING = ":q";
 
   private final static String COMMENT = "#";
-  private final static String PROMPTER = "> ";
+  private final static String PROMPTER = " > ";
   private final static String TAB_CHAR = "\t";
   private final static String CONTINUE = "| ";
 
@@ -71,12 +72,14 @@ public class WACCShell {
       prompt();
       String line = CommandProcessing.
               acquireCommand(scanner.nextLine(),0, scanner);
-      if (manualNewline) System.out.println(line);
       if (line.equals(QUIT_STRING)) return;
-      if (!line.isEmpty() && SpecialCommands.commandMatchCheck(line) &&
+      if (!line.isEmpty() &&
               !line.startsWith(COMMENT)) {
-        processCommand(line);
-      }
+        if (manualNewline) System.out.println(line);
+        if (SpecialCommands.commandMatchCheck(line)) {
+          processCommand(line);
+        }
+      } else if (manualNewline) System.out.println();
     } while (scanner.equals(in) || scanner.hasNext());
   }
 
@@ -116,9 +119,9 @@ public class WACCShell {
   }
 
   private static void startUp() {
-    System.out.print(ANSI_PURPLE);
+    System.out.print(ANSI_PURPLE + ANSI_BOLD);
     System.out.println("\n-- WELCOME TO THE WACC INTERACTIVE SHELL --\n");
-    System.out.print(ANSI_GREEN);
+    System.out.print(ANSI_RESET + ANSI_GREEN);
     System.out.println("Type \":h\" for help");
     System.out.println("Type \"" + QUIT_STRING + "\" to quit");
     System.out.print(ANSI_RESET);
@@ -200,7 +203,8 @@ public class WACCShell {
   }
 
   private static void prompt() {
-    System.out.print(ANSI_PURPLE + username + " " + PROMPTER + ANSI_RESET);
+    System.out.print(
+            ANSI_BOLD + ANSI_PURPLE + username + PROMPTER + ANSI_RESET);
   }
 
   public static void promptWithIndent(int level) {
@@ -210,6 +214,7 @@ public class WACCShell {
       builder.append(" ");
     }
 
+    builder.append(ANSI_BOLD);
     builder.append(CONTINUE);
     for (int i = 0; i < level; i++) {
       builder.append(TAB_CHAR);

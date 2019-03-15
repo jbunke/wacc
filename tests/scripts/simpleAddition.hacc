@@ -1,1 +1,7 @@
-1 + 1
+int x = 0
+int y = 0
+println "Left hand operand:"
+read x
+println "Right hand operand: "
+read y
+x + y

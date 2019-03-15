@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
+
+import shell.WACCShell;
 import shell.structural.Heap;
 
 public class BinaryOpExpressionNode extends ExpressionNode {
@@ -330,6 +332,12 @@ public class BinaryOpExpressionNode extends ExpressionNode {
     }
   }
 
+  private void divideByZeroError() {
+    System.out.print(WACCShell.ANSI_RED);
+    System.out.println("Runtime Error: Attempted divide by zero");
+    System.out.print(WACCShell.ANSI_RESET);
+  }
+
   @Override
   public Object evaluate(SymbolTable symbolTable, Heap heap) {
     Object left = this.left.evaluate(symbolTable, heap);
@@ -342,8 +350,18 @@ public class BinaryOpExpressionNode extends ExpressionNode {
       case TIMES:
         return (Integer) left * (Integer) right;
       case DIVIDE:
+        if ((Integer) right == 0) {
+          divideByZeroError();
+          // potential refactor to clean
+          return "";
+        }
         return (Integer) left / (Integer) right;
       case MOD:
+        if ((Integer) right == 0) {
+          divideByZeroError();
+          // potential refactor to clean
+          return "";
+        }
         return (Integer) left % (Integer) right;
       case AND:
         return (Boolean) left && (Boolean) right;
@@ -354,13 +372,44 @@ public class BinaryOpExpressionNode extends ExpressionNode {
       case NOT_EQUAL:
         return left != right;
       case GREATER_THAN:
-        return (Integer) left > (Integer) right;
       case GREATER_THAN_OR_EQUAL:
-        return (Integer) left >= (Integer) right;
       case LESS_THAN:
-        return (Integer) left < (Integer) right;
       case LESS_THAN_OR_EQUAL:
-        return (Integer) left <= (Integer) right;
+        Integer leftOp;
+        Integer rightOp;
+        boolean res;
+
+        if (left instanceof Character) {
+          char leftChar = (Character) left;
+          leftOp = (int) leftChar;
+        } else {
+          leftOp = (Integer) left;
+        }
+
+        if (right instanceof Character) {
+          char rightChar = (Character) right;
+          rightOp = (int) rightChar;
+        } else {
+          rightOp = (Integer) right;
+        }
+
+        switch (operatorType) {
+          case GREATER_THAN:
+            res = leftOp > rightOp;
+            break;
+          case GREATER_THAN_OR_EQUAL:
+            res = leftOp >= rightOp;
+            break;
+          case LESS_THAN:
+            res = leftOp < rightOp;
+            break;
+          case LESS_THAN_OR_EQUAL:
+          default:
+            res = leftOp <= rightOp;
+            break;
+        }
+
+        return res;
       default:
         return null;
     }

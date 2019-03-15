@@ -341,7 +341,9 @@ public class SpecialCommands {
 
     System.out.println();
     System.out.println("Type \"" + SET_STRING + " SETTING BOOL-LITERAL\"" +
-            " to update a setting\nSettings: ");
+            " to update a setting");
+    System.out.println("Type \"" + SET_STRING + " SETTING\"" +
+            " to check the status of a setting\nSettings: ");
     System.out.println("\t\tautocomplete: multi-line bodies and statements" +
             " like \"if\" and \"while\" have autocompletion");
 

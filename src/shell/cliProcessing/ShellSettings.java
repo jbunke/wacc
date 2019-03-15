@@ -13,11 +13,11 @@ public class ShellSettings {
     autocomplete = true;
   }
 
-  public boolean isAutocomplete() {
+  boolean isAutocomplete() {
     return autocomplete;
   }
 
-  public void setAutocomplete(boolean autocomplete) {
+  void setAutocomplete(boolean autocomplete) {
     this.autocomplete = autocomplete;
   }
 
