@@ -23,6 +23,19 @@ public abstract class StatementNode implements Node {
   public void matchReturnType(Type type) {
   }
 
+  /**
+   * All StatementNodes override this method for statement execution from shell
+   *
+   * @param symbolTable SymbolTable in this scope for access to functions and
+   *                    variables
+   * @param heap Heap from shell used for memory allocation for pairs and
+   *             arrays
+   *
+   * @return Usually cont() from ShellStatementNode, but a structure telling
+   * the caller to return a specific Object or cease executing statements in
+   * the case that StatementNode happens to be ExitStatementNode or
+   * ReturnStatementNode
+   * */
   public abstract ShellStatementControl applyStatement(SymbolTable symbolTable,
       Heap heap);
 }

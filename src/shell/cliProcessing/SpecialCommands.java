@@ -22,10 +22,18 @@ import java.util.stream.Collectors;
 
 import static shell.WACCShell.*;
 
+/**
+ * SpecialCommands handles shell inputs that are special commands.
+ * @see #commandMatchCheck(String)
+ *
+ * SpecialCommands are not related to the WACC Language and start with the
+ * colon (:) character
+ * */
 public class SpecialCommands {
 
   private final static String SPECIAL_COMMAND_STARTER = ":";
 
+  /* Special command String constants */
   private final static String HELP_STRING = ":h";
   private final static String GRAMMAR_STRING = ":g";
   private final static String INFO_STRING = ":i";
@@ -38,7 +46,16 @@ public class SpecialCommands {
   private final static String ME_STRING = ":me";
 
   private final static String SCRIPT_FILE_EXTENSION = ".hacc";
+  private final static String WACC_FILE_EXTENSION = ".wacc";
 
+  /**
+   * Takes an input String line and matches it with possible special commands
+   *
+   * @param line The line taken from shell input (File or System.in) to be
+   *             matched with commands
+   *
+   * @return Whether line matches with any commands
+   * */
   public static boolean commandMatchCheck(String line) {
     switch (line) {
       case HELP_STRING:
@@ -159,6 +176,7 @@ public class SpecialCommands {
     symbolTable = null;
     heap.reset();
     username = "user";
+    settings = new ShellSettings();
     saveUsername();
 
     System.out.print(ANSI_GREEN);
@@ -166,7 +184,24 @@ public class SpecialCommands {
     System.out.print(ANSI_RESET);
   }
 
+  /**
+   * Takes a filepath for a HACC script file and runs it
+   *
+   * runScript calls the commandCycle in WACCShell, but with a FileInputStream
+   * of the File from filepath instead of System.in
+   *
+   * While the script is executing, the filename is the shell username.
+   * This conveys that the user is not manually typing commands during script
+   * execution.
+   *
+   * @param filepath The filepath of the HACC script file
+   * */
   private static void runScript(String filepath) throws IOException {
+    if (!filepath.contains(SCRIPT_FILE_EXTENSION)) {
+      System.out.println(ANSI_RED + "File is not a HACC script" + ANSI_RESET);
+      return;
+    }
+
     FileInputStream stream = new FileInputStream(new File(filepath));
 
     int lastSlash = Math.max(filepath.lastIndexOf("\\") + 1,
@@ -189,7 +224,20 @@ public class SpecialCommands {
     System.out.print(ANSI_RESET);
   }
 
+  /**
+   * Takes a filepath for a WACC file and runs it
+   *
+   * runFile produces an AST from the File with the prog rule as root.
+   * The ProgramNode is then executed.
+   *
+   * @param filepath The filepath of the WACC file
+   * */
   private static void runFile(String filepath) throws IOException {
+    if (!filepath.contains(WACC_FILE_EXTENSION)) {
+      System.out.println(ANSI_RED + "File is not a WACC file" + ANSI_RESET);
+      return;
+    }
+
     CharStream input = CharStreams.fromFileName(filepath);
     WACCLexer lexer = new WACCLexer(input);
     lexer.removeErrorListeners();
@@ -222,6 +270,10 @@ public class SpecialCommands {
     program.execute(symbolTable, heap);
   }
 
+  /**
+   * functions fetches the FunctionDefinitionNodes in symbolTable and
+   * prints their identifiers, parameter types, and return types
+   * */
   private static void functions() {
     System.out.print(ANSI_GREEN);
     if (symbolTable == null ||
@@ -258,6 +310,10 @@ public class SpecialCommands {
     System.out.print(ANSI_RESET);
   }
 
+  /**
+   * variables fetches the Variables in symbolTable and
+   * prints the identifier and value of each one
+   * */
   private static void variables() {
     System.out.print(ANSI_GREEN);
     if (symbolTable == null ||
@@ -353,6 +409,11 @@ public class SpecialCommands {
     System.out.print(ANSI_RESET);
   }
 
+  /**
+   * printGrammar prints a formatted version of the WACCParser.g4 file so that
+   * shell users can understand valid WACC expression and statement
+   * constructions.
+   * */
   private static void printGrammar() throws IOException {
     System.out.print(ANSI_GREEN);
     System.out.println("\n-- WACC LANGUAGE GRAMMAR --\n");
