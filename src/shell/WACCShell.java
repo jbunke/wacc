@@ -37,7 +37,7 @@ public class WACCShell {
   private final static String TAB_CHAR = "\t";
   private final static String CONTINUE = "| ";
 
-  public static String username = "";
+  public static String username = "user";
 
   public static SymbolTable symbolTable;
   public static Heap heap;
@@ -113,7 +113,7 @@ public class WACCShell {
     System.out.println("\n-- WELCOME TO THE WACC INTERACTIVE SHELL --\n");
     System.out.print(ANSI_GREEN);
     System.out.println("Type \":h\" for help");
-    System.out.println("Type \"" + QUIT_STRING + "\" to quit\n");
+    System.out.println("Type \"" + QUIT_STRING + "\" to quit");
     System.out.print(ANSI_RESET);
   }
 

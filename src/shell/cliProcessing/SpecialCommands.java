@@ -47,7 +47,8 @@ public class SpecialCommands {
         try {
           printGrammar();
         } catch (IOException e) {
-          e.printStackTrace();
+          System.out.print(ANSI_RED);
+          System.out.println("Unable to fetch grammar" + ANSI_RESET);
         }
         return false;
       case INFO_STRING:
@@ -72,7 +73,9 @@ public class SpecialCommands {
           try {
             runFile(filepath);
           } catch (IOException e) {
-            e.printStackTrace();
+            System.out.print(ANSI_RED);
+            System.out.println("Unable to find file at \"" +
+                    filepath + "\"" + ANSI_RESET);
           }
           return false;
         } else if (line.startsWith(SCRIPT_STRING + " ")) {
@@ -80,7 +83,9 @@ public class SpecialCommands {
           try {
             runScript(filepath);
           } catch (IOException e) {
-            e.printStackTrace();
+            System.out.print(ANSI_RED);
+            System.out.println("Unable to find file at \"" +
+                    filepath + "\"" + ANSI_RESET);
           }
           return false;
         } else if (line.startsWith(ME_STRING + " ")) {
@@ -110,7 +115,7 @@ public class SpecialCommands {
     saveUsername();
 
     System.out.print(ANSI_GREEN);
-    System.out.println("Shell has been reset\n");
+    System.out.println("Shell has been reset");
     System.out.print(ANSI_RESET);
   }
 
@@ -174,12 +179,12 @@ public class SpecialCommands {
     System.out.print(ANSI_GREEN);
     if (symbolTable == null ||
         symbolTable.getEntries().size() == 0) {
-      System.out.println("No functions in scope\n");
+      System.out.println("No functions in scope");
       System.out.print(ANSI_RESET);
       return;
     }
 
-    System.out.println("Functions in scope:\n");
+    System.out.println("\nFunctions in scope:\n");
 
     List<Map.Entry<String, SymbolCategory>> entries =
         symbolTable.getEntries();
@@ -210,12 +215,12 @@ public class SpecialCommands {
     System.out.print(ANSI_GREEN);
     if (symbolTable == null ||
         symbolTable.getEntries().size() == 0) {
-      System.out.println("No variables in scope\n");
+      System.out.println("No variables in scope");
       System.out.print(ANSI_RESET);
       return;
     }
 
-    System.out.println("Variables in scope:\n");
+    System.out.println("\nVariables in scope:\n");
 
     List<Map.Entry<String, SymbolCategory>> entries =
         symbolTable.getEntries();
@@ -248,7 +253,7 @@ public class SpecialCommands {
     System.out.println("Authors:\nJordan Bunke (jtb17@ic.ac.uk)\n" +
         "Patrick Henderson (pah17@ic.ac.uk)\n" +
         "Buneme Kyakilika (bk317@ic.ac.uk)\n" +
-        "Kapilan Manu Neethi Cholan (km2717@ic.ac.uk)\n");
+        "Kapilan Manu Neethi Cholan (km2717@ic.ac.uk)");
     System.out.print(ANSI_RESET);
   }
 
