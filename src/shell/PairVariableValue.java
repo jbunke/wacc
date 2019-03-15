@@ -1,6 +1,5 @@
 package shell;
 
-
 public class PairVariableValue {
   private static final String NULL_ADDR = "null";
 

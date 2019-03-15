@@ -13,7 +13,6 @@ import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.TokenStream;
-import shell.WACCShell;
 
 import java.io.*;
 import java.util.List;
@@ -24,6 +23,8 @@ import java.util.stream.Collectors;
 import static shell.WACCShell.*;
 
 public class SpecialCommands {
+
+  private final static String SPECIAL_COMMAND_STARTER = ":";
 
   private final static String HELP_STRING = ":h";
   private final static String GRAMMAR_STRING = ":g";
@@ -57,7 +58,7 @@ public class SpecialCommands {
         return false;
       case ME_STRING:
         System.out.println(ANSI_GREEN + "Username: " +
-                WACCShell.username + ANSI_RESET);
+                username + ANSI_RESET);
         return false;
       case FUNCTIONS_STRING:
         functions();
@@ -83,19 +84,30 @@ public class SpecialCommands {
           }
           return false;
         } else if (line.startsWith(ME_STRING + " ")) {
-          WACCShell.username = line.substring(line.indexOf(" ") + 1);
-          WACCShell.saveUsername();
+          username = line.substring(line.indexOf(" ") + 1);
+          saveUsername();
+          return false;
+        } else if (line.startsWith(SPECIAL_COMMAND_STARTER)) {
+          invalidCommand(line);
           return false;
         }
         return true;
     }
   }
 
+  private static void invalidCommand(String command) {
+    System.out.print(ANSI_RED);
+    System.out.println(command + " is not a valid command");
+    System.out.println("Type \"" + HELP_STRING +
+            "\" for a list of valid commands");
+    System.out.print(ANSI_RESET);
+  }
+
   private static void reset() {
-    WACCShell.symbolTable = null;
-    WACCShell.heap.reset();
-    WACCShell.username = "user";
-    WACCShell.saveUsername();
+    symbolTable = null;
+    heap.reset();
+    username = "user";
+    saveUsername();
 
     System.out.print(ANSI_GREEN);
     System.out.println("Shell has been reset\n");
@@ -151,17 +163,17 @@ public class SpecialCommands {
     Visitor visitor = new Visitor();
     ProgramNode program = (ProgramNode) visitor.visit(parseTree);
 
-    if (WACCShell.semErrorCheck(program)) {
+    if (semErrorCheck(program)) {
       return;
     }
 
-    program.execute(WACCShell.symbolTable, WACCShell.heap);
+    program.execute(symbolTable, heap);
   }
 
   private static void functions() {
     System.out.print(ANSI_GREEN);
-    if (WACCShell.symbolTable == null ||
-        WACCShell.symbolTable.getEntries().size() == 0) {
+    if (symbolTable == null ||
+        symbolTable.getEntries().size() == 0) {
       System.out.println("No functions in scope\n");
       System.out.print(ANSI_RESET);
       return;
@@ -170,7 +182,7 @@ public class SpecialCommands {
     System.out.println("Functions in scope:\n");
 
     List<Map.Entry<String, SymbolCategory>> entries =
-        WACCShell.symbolTable.getEntries();
+        symbolTable.getEntries();
     entries = entries.parallelStream().
         filter(x -> x.getValue() instanceof FunctionDefinitionNode).
         collect(Collectors.toList());
@@ -196,8 +208,8 @@ public class SpecialCommands {
 
   private static void variables() {
     System.out.print(ANSI_GREEN);
-    if (WACCShell.symbolTable == null ||
-        WACCShell.symbolTable.getEntries().size() == 0) {
+    if (symbolTable == null ||
+        symbolTable.getEntries().size() == 0) {
       System.out.println("No variables in scope\n");
       System.out.print(ANSI_RESET);
       return;
@@ -206,7 +218,7 @@ public class SpecialCommands {
     System.out.println("Variables in scope:\n");
 
     List<Map.Entry<String, SymbolCategory>> entries =
-        WACCShell.symbolTable.getEntries();
+        symbolTable.getEntries();
     entries = entries.parallelStream().
         filter(x -> x.getValue() instanceof Variable).
         collect(Collectors.toList());

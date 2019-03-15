@@ -76,7 +76,8 @@ public class WACCCompiler {
       // Secondary syntax error check from AST
       if (!synErrors.isEmpty()) {
         for (String error : synErrors) {
-          System.out.println("Syntax Error: " + error);
+          System.out.println("(code " + SYNTAX_ERROR_EXIT
+                  + ") Syntax error: " + error);
         }
         System.exit(SYNTAX_ERROR_EXIT);
       }
